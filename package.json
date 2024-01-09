@@ -4,7 +4,6 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "build": "npm-run-all --parallel dev tailwind",
     "dev": "nodemon ./src/app.js -e js,hbs,css",
     "tailwind": "npx tailwindcss -i ./src/public/styles/input.css -o ./src/public/styles/output.css --watch",
     "production": "node ./src/app.js"
