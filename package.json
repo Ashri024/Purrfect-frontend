@@ -4,6 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
+    "build": "npm-run-all --parallel dev tailwind",
     "dev": "nodemon ./src/app.js -e js,hbs,css",
     "tailwind": "npx tailwindcss -i ./src/public/styles/input.css -o ./src/public/styles/output.css --watch",
     "production": "node ./src/app.js"
@@ -17,7 +18,8 @@
     "express": "^4.18.2",
     "hbs": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3"
+    "mongoose": "^8.0.3",
+    "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.0"
