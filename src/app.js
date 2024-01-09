@@ -28,7 +28,10 @@ let settings_options=[
 
 
 app.get('/', (req, res) => {
+    if(req.cookies["jwt0"])
     console.log(req.cookies["jwt0"]);
+else 
+console.log("there is no token");
     res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"]})
 });
 
