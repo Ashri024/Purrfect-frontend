@@ -28,7 +28,7 @@ let settings_options=[
 
 
 app.get('/', (req, res) => {
-    console.log(req.cookies);
+    console.log(req.cookies["jwt0"]);
     res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"]})
 });
 
