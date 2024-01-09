@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 100 100" width="91%" class="cursor-hover absolute top-[16px] left-[7px]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect width="100%" height="100%" fill="none"/>
+<g transform="rotate(180 50 50)" fill="none" stroke-width="9">
+<circle cx="50" cy="50" r="45" stroke="darkred" stroke-dashoffset="-100" stroke-dasharray="24 200" pathLength="200"/>
+<circle cx="50" cy="50" r="45" stroke="red" stroke-dashoffset="-65" stroke-dasharray="38 200" pathLength="200"/>
+<circle cx="50" cy="50" r="45" stroke="orange" stroke-dashoffset="-25" stroke-dasharray="42 200" pathLength="200" class="cursor-hover"/>
+<circle cx="50" cy="50" r="45" stroke="lightgreen" stroke-dashoffset="0" stroke-dasharray="25 200" pathLength="200"/>
+<circle cx="50" cy="50" r="45" stroke="green" stroke-dashoffset="46" stroke-dasharray="25 200" pathLength="200" class="cursor-hover"/>
+</g>
+</svg>

@@ -1,0 +1,31 @@
+<div class="h-[100px] max-[780px]:h-[110px] max-[780px]:w-full max-[780px]:m-0 w-[95%] m-auto max-[780px]:mb-[12px]">
+<div class="h-[100px] max-[780px]:h-[110px] bg-transparent w-full right-0">
+ <div class="header w-full h-full bg-transparent max-[780px]:flex-col-reverse max-[780px]:justify-center max-[780px]:gap-0 px-4 py-0 pb-0 flex flex-row items-center justify-between gap-4 relative ">
+
+                <div class="search_box bg-white px-4 py-2 items-center rounded-lg ml-[0px] mt-[10px] w-[55%] max-w-[600px] flex-shrink-[10] max-[780px]:w-full max-[780px]:max-w-full">
+                    <input type="search" class="bg-transparent focus:outline-none w-full" name="search_city" id="search_city" placeholder="Search city...">
+                    <div class="circle"></div>
+                    <img src="./resources/dark_profile/search.png" class="w-[16px] h-[16px] ml-2">
+                </div>
+
+                <div class="profile-mode relative right-[0px] gap-[10px] px-4 py-1 h-[50px] flex items-center justify-center max-[780px]:p-0 max-[780px]:w-full max-[780px]:justify-between">
+                    <button id="darkMode" class=" darkMode flex items-center justify-center  w-[50px] h-[50px] dark:hidden rounded-full" ><img class="w-[95%]" src="./resources/dark_profile/Dark.svg"></button>
+
+                    <button id="darkMode" class=" darkMode items-center justify-center  w-[50px] h-[50px] rounded-full hidden dark:flex" ><img class="w-[95%]" src="./resources/darkModeIcons/Dark.svg"></button>
+
+                    <div class="relative z-40">
+                    <button id="profileBtn" class=" profileBtn items-center justify-center  w-[50px] h-[50px] rounded-full flex {{#unless loggedIn}}hidden{{/unless}}" ><img class="w-[95%]" src="./resources/dark_profile/profile.svg"></button>
+                    <div class="absolute pfpDropDown hidden bg-white right-0">
+                        <div class="py-1 flex w-[200px] h-auto flex-col" role="none">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 border-b border-black break-words" role="menuitem">Email: {{email}}</a>
+                        <a href=" http://localhost:4000/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem">Logout</a>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <button class="p-2 px-4 font-semibold text-base bg-white outline-2 outline-black outline dark:bg-[#181C2D] {{#if loggedIn}} hidden{{/if}} dark:outline-white min-w-[100px] rounded ml-2 max-[780px]:text-[0.9rem] max-[780px]:"><a href="/login">Login/SignUp</a></button>
+                </div>
+            </div>
+</div>
+</div>

@@ -1,0 +1,29 @@
+// navigator.geolocation.getCurrentPosition((pos)=>{
+//     let longitude= pos.coords.longitude;
+//     let latitude= pos.coords.latitude;
+
+//     // fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=faf70f7374045db9ec71f5ecfdc10eb4`).then(data=> data.json()).then(data=>{
+//     //     console.log(data);
+//     //     document.querySelector("img").setAttribute("src", `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+//     // })
+//     const params = {
+//         "latitude": latitude,
+//         "longitude": longitude,
+//         "current": "wind_speed_10m",
+//         "hourly": "temperature_2m",
+//         "daily": ["temperature_2m_max", "temperature_2m_min", "sunrise", "sunset", "uv_index_max", "precipitation_sum", "rain_sum", "wind_speed_10m_max"],
+//         "timezone": "Asia/Bangkok",
+//         "forecast_days": 14
+//     };
+//     const url = "https://api.open-meteo.com/v1/forecast";
+    
+//     // Construct query string from parameters
+//     const queryString = new URLSearchParams(params).toString();
+    
+//     // Construct the full URL with parameters
+//     const urlWithParams = `${url}?${queryString}`;
+//     console.log(urlWithParams);
+//     fetch(urlWithParams).then(data=> data.json()).then(data=>{
+//         console.log(data);
+//     })
+// }) 

@@ -1,0 +1,13 @@
+{{#each settings_options}}
+ <div class="unit-options max-[780px]:mb-2 max-[780px]:p-2 max-[780px]:h-[115px] dark:bg-[#ffffff1f] outline-1 outline-white dark:outline ">
+    <h3>{{this.name}}</h3>
+    <div class="options_container dark:bg-[#181c2d]">
+        {{#each this.options as |option|}}
+        <div class="unit-option w-[calc(100% / {{this.options.length}})]">
+            <input type="radio" id="{{option}}" name="{{../this.name}}" value="{{option}}" {{#if @first}}checked{{/if}}>
+            <label for="{{option}}">{{option}}</label>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/each}}

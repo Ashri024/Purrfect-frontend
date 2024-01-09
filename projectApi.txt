@@ -1,0 +1,21 @@
+WEATHER API-
+APi key- faf70f7374045db9ec71f5ecfdc10eb4
+
+Get weather by lattitude and longitude -> https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=faf70f7374045db9ec71f5ecfdc10eb4
+Get weather by city name (in Kelvin)-> https://api.openweathermap.org/data/2.5/weather?q={city name}&appid=faf70f7374045db9ec71f5ecfdc10eb4
+Get weather by city name (in Celsius)-> https://api.openweathermap.org/data/2.5/weather?q={city name}&appid=faf70f7374045db9ec71f5ecfdc10eb4&units=metric
+Get weather by city name (in Fahrenheit)-> https://api.openweathermap.org/data/2.5/weather?q={city name}&appid=faf70f7374045db9ec71f5ecfdc10eb4&units=imperial
+
+Google Map Client Api: AIzaSyCImorjw-msHM6TXuw5IGXhVmfPVaO7sN0
+
+Map Api- https://tile.openweathermap.org/map/temp_new/0/0/0.png?appid=faf70f7374045db9ec71f5ecfdc10eb4
+
+GeoCoding Api - TO get location by city name
+By city name- http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid=faf70f7374045db9ec71f5ecfdc10eb4
+
+Weather Icons details- https://openweathermap.org/weather-conditions
+
+/**********FORGET ALL AND JUST SEE THE BELOW ********/
+OPEN-METEO-https://api.open-meteo.com/v1/forecast?latitude=25.4220136&longitude=81.9029087&current=temperature_2m%2Crelative_humidity_2m%2Capparent_temperature%2Cis_day%2Cprecipitation%2Crain%2Cwind_speed_10m&hourly=temperature_2m&daily=temperature_2m_max%2Ctemperature_2m_min%2Csunrise%2Csunset%2Cuv_index_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FBangkok&forecast_days=1
+
+For Air quality index: https://api.waqi.info/feed/geo:34;77/?token=b2216b10674710f9627ca4d5d6294d66e51134a2

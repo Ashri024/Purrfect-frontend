@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+</head>
+<body>
+    <h1>Login Form</h1>
+    {{!-- Create a login form which ask for email and password --}}
+    <form action="{{backend_Url}}/login" method="post">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        
+        <input type="submit" value="Login">
+        <span>Not already Registeres? <a href="/signUp">Sign Up</a></span>
+    </form>
+</body>
+</html>
