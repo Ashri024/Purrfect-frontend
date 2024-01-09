@@ -40,3 +40,6 @@ app.get('/signUp', (req, res) => res.render('signUp',{loggedIn: req.cookies["log
 
 app.get('/', (req, res) => res.status(404).send("Sorry the file couldn't be found!!"));
 
+app.listen(port,()=>{
+    console.log(`SErver is running on port http://localhost:${port}`);
+})
