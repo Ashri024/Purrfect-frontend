@@ -208,9 +208,9 @@ console.log(loginUrl)
     
     }).then(res=>res.json()).then(data=>{
       console.log(data)
-      document.cookie = `jwt0=${data.token}; path=/`;
-      document.cookie = `loggedIn=${data.loggedIn}; path=/`;
-      document.cookie = `email=${data.email}; path=/`;
+      document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None`;
+      document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None`;
+      document.cookie = `email=${data.email}; path=/; Secure; SameSite=None`;
       console.log("cookie set")
       window.location.replace(`/`);
     });
