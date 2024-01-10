@@ -176,20 +176,21 @@ calculatePositions(canvas, dataValues);
       slider.scrollLeft = scrollLeft - walk;
     });
   })
-console.log("hello");
+
   $(".profileBtn").each(function(i, profileBtn){
-    $(profileBtn).click(function(){
+    $(profileBtn).click(function(event){
       console.log("clicked");
-      $($('.pfpDropDown')[i]).toggleClass("hidden");
+      $($('.pfpDropDown')[i]).toggleClass('hidden');
+      event.stopPropagation(); // Prevent this click from triggering the document click event below
     });
   });
 
-  // console.log(document.getElementById('loginForm'))
-console.log("THe : ",backend_Url);
-// backend_Url= backend_Url;
+  $(document).click(function() {
+    $('.pfpDropDown').addClass('hidden'); // Hide the dropdown when clicking outside
+  });
+
 let loginUrl= `${backend_Url}/login`
 console.log(loginUrl)
-// let loginUrl= `${backend_Url}/login`
   if(document.getElementById('loginForm')){
   document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent default form submission behavior
@@ -208,9 +209,14 @@ console.log(loginUrl)
     
     }).then(res=>res.json()).then(data=>{
       console.log(data)
-      document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None`;
-      document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None`;
-      document.cookie = `email=${data.email}; path=/; Secure; SameSite=None`;
+      var date = new Date();
+      date.setHours(date.getHours() + 1);
+      var expires = "; expires=" + date.toGMTString();
+
+      document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None${expires}`;
+      document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
+      document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
+
       console.log("cookie set")
       window.location.replace(`/`);
     });
@@ -261,43 +267,11 @@ console.log(loginUrl)
       for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        var name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
       window.location.replace(`/`);
       console.log("logged out");
-    });
-  });
-
-  $(".logoutAll").each(function(i, logoutBtn){
-    $(logoutBtn).click(function(){
-      console.log("clicked");
-      //remove all the set cookies
-      var cookies = document.cookie.split(";");
-
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      }
-      fetch(`${backend_Url}/logoutAll`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      }).then(res => {
-        return res.json();
-      }).then(data=>{
-        console.log(data);
-        if(data){
-        window.location.replace(`/`);
-      }else{
-        console.log("error while logout all");
-      }
-    })
-    
-    console.log("successfully logout all");
     });
   });
 
