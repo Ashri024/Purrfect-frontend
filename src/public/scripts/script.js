@@ -252,4 +252,53 @@ console.log(loginUrl)
 
 });}
 
+  $(".logout").each(function(i, logoutBtn){
+    $(logoutBtn).click(function(){
+      console.log("clicked");
+      //remove all the set cookies
+      var cookies = document.cookie.split(";");
+
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+      window.location.replace(`/`);
+      console.log("logged out");
+    });
+  });
+
+  $(".logoutAll").each(function(i, logoutBtn){
+    $(logoutBtn).click(function(){
+      console.log("clicked");
+      //remove all the set cookies
+      var cookies = document.cookie.split(";");
+
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+      fetch(`${backend_Url}/logoutAll`, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      }).then(res => {
+        return res.json();
+      }).then(data=>{
+        console.log(data);
+        if(data){
+        window.location.replace(`/`);
+      }else{
+        console.log("error while logout all");
+      }
+    })
+    
+    console.log("successfully logout all");
+    });
+  });
+
 });
