@@ -4,8 +4,9 @@ const app = express()
 const path = require("path");
 const hbs = require("hbs");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 app.use(cookieParser());
-
+app.use(cors());
 hbs.registerHelper('isActive', function (activePage, page, options) {
     return (activePage === page) ? 'bg-[#585c67b5] dark:bg-[#585c67b5] text-white' : 'bg-white';
 });
@@ -28,17 +29,17 @@ let settings_options=[
 
 
 app.get('/', (req, res) => {
-    if(req.cookies["jwt0"])
-    console.log(req.cookies["jwt0"]);
-else 
-console.log("there is no token");
-    res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"]})
+    res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL, backend_Url: process.env.BACKEND_URL})
 });
 
-app.get('/mycities', (req, res) => res.render('myCities', {activePage: "mycities" , loggedIn: req.cookies["loggedIn"], email: req.cookies["email"]}));
-app.get('/map', (req, res) => res.render('map', {activePage: "map", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"]}));
-app.get('/settings', (req, res) => res.render('settings', {activePage: "settings", settings_options:settings_options, loggedIn: req.cookies["loggedIn"] , email: req.cookies["email"]}));
+app.get('/mycities', (req, res) => res.render('myCities', {activePage: "mycities" , loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL}));
+
+app.get('/map', (req, res) => res.render('map', {activePage: "map", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL}));
+
+app.get('/settings', (req, res) => res.render('settings', {activePage: "settings", settings_options:settings_options, loggedIn: req.cookies["loggedIn"] , email: req.cookies["email"], backend_Url: process.env.BACKEND_URL}));
+
 app.get('/login', (req, res) => res.render('login',{loggedIn: req.cookies["loggedIn"], backend_Url: process.env.BACKEND_URL}));
+
 app.get('/signUp', (req, res) => res.render('signUp',{loggedIn: req.cookies["loggedIn"],backend_Url: process.env.BACKEND_URL}));
 
 app.get('/', (req, res) => res.status(404).send("Sorry the file couldn't be found!!"));

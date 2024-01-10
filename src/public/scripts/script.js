@@ -183,4 +183,73 @@ console.log("hello");
       $($('.pfpDropDown')[i]).toggleClass("hidden");
     });
   });
+
+  // console.log(document.getElementById('loginForm'))
+console.log("THe : ",backend_Url);
+// backend_Url= backend_Url;
+let loginUrl= `${backend_Url}/login`
+console.log(loginUrl)
+// let loginUrl= `${backend_Url}/login`
+  if(document.getElementById('loginForm')){
+  document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    let emailField = document.getElementById('email');
+    let passwordField = document.getElementById('password');
+
+    fetch(loginUrl,{
+      method:"POST",
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        email: emailField.value,
+        password:passwordField.value
+      })
+    
+    }).then(res=>res.json()).then(data=>{
+      console.log(data)
+      document.cookie = `jwt0=${data.token}; path=/`;
+      document.cookie = `loggedIn=${data.loggedIn}; path=/`;
+      document.cookie = `email=${data.email}; path=/`;
+      console.log("cookie set")
+      window.location.replace(`/`);
+    });
+
+});}
+
+  if(document.getElementById('signUpForm')){
+  document.getElementById('signUpForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    console.log("clicked sign up");
+    let name = document.getElementById('name');
+    let password = document.getElementById('password');
+    let confirmPass = document.getElementById('confirmPass');
+    let phone = document.getElementById('phone');
+    let emailField = document.getElementById('email');
+    
+    fetch(`${backend_Url}/signUp`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: emailField.value,
+        password: password.value,
+        phone: phone.value,
+        name: name.value,
+        confirmPass: confirmPass.value
+      }),
+    }).then(res => {
+      return res.json();
+    }).then(data=>{
+      if(data.status){
+        window.location.replace(`/login`);
+      }
+    })
+    .catch(err => {
+      console.log("Error while redirecting: ", err);
+    });
+
+});}
+
 });

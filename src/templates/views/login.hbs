@@ -8,7 +8,7 @@
 <body>
     <h1>Login Form</h1>
     {{!-- Create a login form which ask for email and password --}}
-    <form action="{{backend_Url}}/login" method="post">
+    <form id="loginForm">
         <label for="email">Email</label>
         <input type="email" name="email" id="email">
         <label for="password">Password</label>
@@ -17,5 +17,7 @@
         <input type="submit" value="Login">
         <span>Not already Registeres? <a href="/signUp">Sign Up</a></span>
     </form>
+    {{>script}}
 </body>
+
 </html>

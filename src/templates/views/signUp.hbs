@@ -56,7 +56,7 @@
 </style>
 <body>
     <h1>Hello this is SignUp page</h1>
-    <form action="{{backend_Url}}/signUp" method="post">
+    <form id="signUpForm">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" placeholder="Enter your name">
         <label for="email">Email</label>
@@ -69,5 +69,6 @@
         <input type="password" name="confirmPass" id="confirmPass" placeholder="Confirm your password">
         <input type="submit" value="Submit">
     </form>
+    {{>script}}
 </body>
 </html>
