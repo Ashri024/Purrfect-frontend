@@ -105,14 +105,14 @@
                     <div class="dark-sub-shimmer hidden" ></div>
                     <div class="sub_card1 mr-[0px]">
 
-                        <div class="inner_subCard1 min-[1400px]:w-[180px] w-[150px]">
+                        <div class="inner_subCard1 relative max-[830px]:top-[10px] min-[1400px]:w-[180px] w-[150px]">
                             <img class="w-full weatherIcon" src="https://f005.backblazeb2.com/file/WeatherApp/DayIcons/clear.svg" class="w-full">
                         </div>
-                        <div class="status font-bold text-[1.5rem] min-[1200px]:text-[2rem] relative bottom-[25px] ">
+                        <div class="status font-bold text-[1.5rem] min-[1200px]:text-[2rem] relative min-[831px]:bottom-[25px] w-full max-w-[200px]">
 
                             Cloudy</div>
                     </div>
-                    <div class="sub_card2 flex flex-row gap-2 h-[100px] items-center justify-center relative bottom-[20px]">
+                    <div class="sub_card2 flex flex-row gap-2 h-[100px] items-center justify-center relative min-[831px]:bottom-[20px]">
 
                         <div class="min[1400px]:text-[3rem] text-[2rem] font-semibold main_temp">
                             <span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">33&#176;</span>
@@ -181,7 +181,8 @@
 
         <!-- 24 hour weather line chart-->
         <div class="layout_box dayHourChart col-start-2 col-span-3 max-[1200px]:row-start-3 h-[200px] bg-white dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 lg:mr-0 relative">
-            <h1 class="absolute w-full mt-2">24 Hour Chart</h1>
+            <div class="dark-sub-shimmer"></div>
+            <h1 class="absolute w-fit left-[40px] m-[3px]">24 Hour Chart</h1>
             <div id="graphContainer" class="relative p-2">
                         {{>24hourSvg weather="cloudy"}}
                         {{>24hourSvg weather="rain"}}
@@ -311,8 +312,8 @@
                 </div>
 
                 <div class="air_detail text-left font-normal text-base flex flex-col items-start justify-center h-full w-full">
-                    <div class="relative min-[830px]:h-[109px] min-[830px]:w-full px-2 max-[500px]:px-0" >
-                    <p class="air_description text-left mb-[13px] text-[#606781] font-medium text-[1.1rem] dark:text-white aqi_description max-[500px]:font-normal max-[500px]:text-base max-[500px]:break-all">
+                    <div class="relative min-[830px]:h-[109px] min-[830px]:w-full px-2 max-[500px]:px-0 flex items-end" >
+                    <p class="air_description text-left mb-[13px] text-[#606781] font-medium text-[1.1rem] dark:text-white aqi_description max-[500px]:font-normal max-[500px]:text-base max-[500px]:break-all  ">
                         Very good quality air 
                         </p>
                     <div class="dark-sub-shimmer"></div>

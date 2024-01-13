@@ -226,6 +226,22 @@
       background-position: -200% 0;
     }
   }
+
+  .sub_card1{
+    display: flex;
+    min-width: 220px;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media screen and (max-width:500px) {
+    .sub_card1{
+      min-width: 130px;
+    }
+    
+  }
+  .sub_card2{
+    /* margin-left: -10px; */
+  }
   .nice-select{
     font-weight: 600;
     font-size: 1.1rem;
@@ -602,7 +618,7 @@ body .layout_box{
   }
   .sub_card1{
     margin-right: 0;
-    height: 86%;
+    height: 100%;
   }
   .temperature{
     font-size: 3rem;

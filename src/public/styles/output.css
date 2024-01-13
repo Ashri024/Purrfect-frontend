@@ -564,16 +564,12 @@ video {
   bottom: 0px;
 }
 
-.bottom-\[20px\] {
-  bottom: 20px;
-}
-
-.bottom-\[25px\] {
-  bottom: 25px;
-}
-
 .left-0 {
   left: 0px;
+}
+
+.left-\[40px\] {
+  left: 40px;
 }
 
 .left-\[46\.5\%\] {
@@ -658,6 +654,10 @@ video {
 
 .row-span-8 {
   grid-row: span 8 / span 8;
+}
+
+.m-\[3px\] {
+  margin: 3px;
 }
 
 .m-auto {
@@ -968,6 +968,11 @@ video {
   width: fit-content;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
 }
@@ -990,6 +995,10 @@ video {
 
 .max-w-\[120px\] {
   max-width: 120px;
+}
+
+.max-w-\[200px\] {
+  max-width: 200px;
 }
 
 .max-w-\[600px\] {
@@ -1632,6 +1641,23 @@ video {
   }
 }
 
+.sub_card1{
+  display: flex;
+  min-width: 220px;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width:500px) {
+  .sub_card1{
+    min-width: 130px;
+  }
+}
+
+.sub_card2{
+  /* margin-left: -10px; */
+}
+
 .nice-select{
   font-weight: 600;
   font-size: 1.1rem;
@@ -2052,7 +2078,7 @@ body .layout_box{
 
   .sub_card1{
     margin-right: 0;
-    height: 86%;
+    height: 100%;
   }
 
   .temperature{
@@ -2308,6 +2334,10 @@ body .layout_box{
 }
 
 @media (max-width: 830px) {
+  .max-\[830px\]\:top-\[10px\] {
+    top: 10px;
+  }
+
   .max-\[830px\]\:col-span-1 {
     grid-column: span 1 / span 1;
   }
@@ -2503,13 +2533,13 @@ body .layout_box{
     font-size: 0.9rem;
   }
 
+  .max-\[500px\]\:text-\[1\.2rem\] {
+    font-size: 1.2rem;
+  }
+
   .max-\[500px\]\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-
-  .max-\[500px\]\:text-\[1\.2rem\] {
-    font-size: 1.2rem;
   }
 
   .max-\[500px\]\:font-light {
@@ -2567,6 +2597,14 @@ body .layout_box{
 }
 
 @media (min-width: 831px) {
+  .min-\[831px\]\:bottom-\[20px\] {
+    bottom: 20px;
+  }
+
+  .min-\[831px\]\:bottom-\[25px\] {
+    bottom: 25px;
+  }
+
   .min-\[831px\]\:col-span-3 {
     grid-column: span 3 / span 3;
   }
@@ -2711,8 +2749,8 @@ body .layout_box{
     height: 61%;
   }
 
-  .xl\:w-\[40px\] {
-    width: 40px;
+  .xl\:w-\[30px\] {
+    width: 30px;
   }
 
   .xl\:w-\[94\%\] {

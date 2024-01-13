@@ -1,5 +1,7 @@
-let isDarkMode=$("html").hasClass("dark");
 $(document).ready(function(){
+
+  let isDarkMode=$("html").hasClass("dark");
+  const dataValues = [20, 22, 25, 23, 26, 27, 24, 22];
   let chart;
   const darkMode=$(".darkMode");
   darkMode.each(function(){
@@ -7,7 +9,7 @@ $(document).ready(function(){
       isDarkMode= !isDarkMode;
       $("html").toggleClass("dark");
       chart.destroy();
-      createChart();
+      createChart(dataValues);
     })
   })
   $('td[id]').each(function() {
@@ -26,13 +28,29 @@ $(document).ready(function(){
     ctx = canvas.getContext('2d');
 }
   const labels=["1 AM","4 AM","7 AM","10 AM","1 PM","4 PM","7 PM","10 PM"];
-  const dataValues = [20, 22, 25, 23, 26, 27, 24, 22];
 
-function createChart(){
+let minTicks="";
+let maxTicks="";
+function createChart(dataValues){
   let isDarkMode = document.documentElement.classList.contains('dark');
+
   let backgroundColor = isDarkMode ? '#ffffff40' : '#eef6ff';
   let labelColor = isDarkMode ? '#fff' : '#000';
   Chart.register(ChartDataLabels);
+  Chart.register({
+    id: 'customPlugin',
+    afterUpdate: function(chart, options) {
+      let yScale = chart.scales.y;
+      let ticks = yScale.getTicks();
+      if (ticks.length > 0) {
+        let minValue = ticks[0].value;
+        let maxValue = ticks[ticks.length - 1].value;
+        minTicks=minValue;
+        maxTicks=maxValue;
+      }
+    }
+  });
+
   chart=new Chart(ctx, {
     type: 'line',
     data: {
@@ -52,9 +70,9 @@ function createChart(){
       scales: {
         y: {
           grid: {
-            display: false // Hide the grid lines on the y-axis
+            display: false,
           },
-          suggestedMax: Math.max(...dataValues) + 2, // Adjust based on data
+         
           ticks: {
             stepSize: 5,
             color: labelColor,
@@ -84,50 +102,45 @@ function createChart(){
             value = value + '°C';
             return value.toString();
           }
-        }
+        },
+          beforeDraw: function(chart) {
+            let yScale = chart.scales.y;
+            let ticks = yScale.getTicks();
+            let minValue = ticks[0].value;
+            let maxValue = ticks[ticks.length - 1].value;
+    
+            console.log("Min Value:", minValue);
+            console.log("Max Value:", maxValue);
+          },
     }
   }});
-
 }
 
 if(canvas)
-  createChart();
+  createChart(dataValues);
 
   const imgWidth = 50; // Width of the image
-
-  if(canvas)
-  window.addEventListener("resize", () => calculatePositions(canvas, dataValues));
 
   function calculatePositions(canvas, data) {
     const chartArea = canvas.getBoundingClientRect();
     const scale = (chartArea.width - imgWidth) / (Math.max(...data) - Math.min(...data));
 
     const images = document.querySelectorAll('#graphContainer img');
-    images.forEach((img, i) => {
-        if(window.innerWidth<600){
-          img.style.display="none";
-          return;
-        }
-        let left =Math.floor(i*(100 / 7));
-        
-        if(i==0) {img.style.left="10px";}
-        else if(i==images.length-1){
-          left= `calc(${left}% - 50px)`;
-          img.style.left = `${left}`;
-        }
-        else if(left<50) {
-          img.style.left = `${left}%`;
-        }
-        else{
-          left= `calc(${left}% - ${img.clientWidth -10}px)`;
-          img.style.left = `${left}`;
-        }
 
-        if(window.innerWidth>1280)
-        img.style.bottom= `${(dataValues[i]-20)*14}px`
-        else{
-          img.style.bottom= `${(dataValues[i]-20)*16}px`
-        }
+    images.forEach((img, i) => {
+      let canvaRealWidth= canvas.clientWidth-60;
+      let space = canvaRealWidth/7;
+
+        let posLeft= 26+space*i;
+
+        img.style.left= `${posLeft}px`;
+
+        let canvaseREalHeight= canvas.clientHeight-30;
+        let totalDeg= maxTicks-minTicks;
+        let oneDeg= canvaseREalHeight/totalDeg;
+
+        let posBottom= oneDeg* (Math.floor(data[i])-(minTicks-2));
+        img.style.bottom= `${posBottom}px`
     });
 }
 // Call the function passing the canvas and data values
@@ -515,7 +528,6 @@ search_box_responsive();
   }
 
 
-
   function loadDetailCards(wind_speed,pressure,uv_index,visibility,air_pm25,air_pm10,aqi,sunrise,sunset)
   {
     $(".wind_speed").html(`${wind_speed} ${wind_unit}`);
@@ -555,6 +567,24 @@ search_box_responsive();
 
   }
   
+  function load24HourChart(hourly_temp,weather_code){
+    let three_hour=[1,4,7,10,13,16,19,22];  
+    let hourly_temp_3_hour=[];
+    let weather_code_3_hour=[];
+    for(let i =0; i<8; i++){
+      hourly_temp_3_hour.push(hourly_temp[three_hour[i]]);
+      weather_code_3_hour.push(weather_code[three_hour[i]]);
+    }
+    let dataValues=hourly_temp_3_hour;
+    chart.destroy();
+    createChart(dataValues);
+    // console.log(suggestedMax, minValue);
+    calculatePositions(canvas, dataValues);
+    window.addEventListener("resize", () => calculatePositions(canvas, dataValues));
+    
+    console.log("new chart created");
+  }
+
   function loadHomePage(lat=25,lon=81, location="Prayagraj, Uttar Pradesh"){
   console.log("Loading data ...");
   console.log("Location:",location)  ;
@@ -586,7 +616,7 @@ search_box_responsive();
       const weatherIcon= weatherImg.icon;
       const weatherBg= weatherImg.url;
       const desc= weatherDescription.desc;
-      console.log(min, max);
+      // console.log(min, max);
 
       loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
       let img = new Image();
@@ -598,7 +628,6 @@ search_box_responsive();
       // Perform your operation here
     };
      
-      
       //Loadiing Detail Cards
       const currentHour= new Date().getHours();
       const wind_speed= weatherData.current.wind_speed_10m;
@@ -613,10 +642,19 @@ search_box_responsive();
 
       loadDetailCards(wind_speed,pressure,uv_index,visibility,air_pm25,air_pm10,aqi,sunrise,sunset);
       $(".detail_cards .dark-sub-shimmer").css("display", "none");
+
+      //Load 24 3-hour chart
+      let hourly_temp= weatherData.hourly.temperature_2m;
+      let weather_code= weatherData.hourly.weather_code;
+
+      load24HourChart(hourly_temp,weather_code);
+      $(".dayHourChart .dark-sub-shimmer").css("display", "none");
+
       console.log(data);
     })
   }
 
-  
+  var element = document.querySelector('.status');
+  $clamp(element, {clamp: 2});
   loadHomePage();
 });
