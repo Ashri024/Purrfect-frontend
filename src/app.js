@@ -29,6 +29,7 @@ let settings_options=[
 
 
 app.get('/', (req, res) => {
+    
     res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL, backend_Url: process.env.BACKEND_URL})
 });
 

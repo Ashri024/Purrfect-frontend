@@ -159,7 +159,7 @@
     }
   }
   
-  .shimmer{
+  .dark-sub-shimmer{
     background: #ffffff;
     background-image: linear-gradient(to right, #ffffff 0%, #cef0ff 20%, #a3e0ff 30%,#cdefff 50%,#ffffff 100%);
     background-repeat: no-repeat;
@@ -167,14 +167,31 @@
     display: inline-block;
     width: 100%;
     position: absolute;
-    animation: shimmer 2s infinite ease-in-out;
+    animation: dark-shimmer 2s infinite ease-in-out;
     height: 100%;
+    border-radius: 5px;
+    z-index: 5;
+    left: 0;
+    top: 0;
+  }
+  .dark-shimmer{
+    background: #ffffff;
+    background-image: linear-gradient(to right, #ffffff 0%, #cef0ff 20%, #a3e0ff 30%,#cdefff 50%,#ffffff 100%);
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    animation: dark-shimmer 2s infinite ease-in-out;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid white;
     z-index: 5;
     left: 0;
     top: 0;
   }
 
-  .dark-shimmer{
+  html.dark .dark-shimmer{
     background: #00071e;
     background-image: linear-gradient(to right, #00071C 0%, #212537 30%, #20273d 40%,#1f2435 60%,#00071e 100%);
     background-repeat: no-repeat;
@@ -190,7 +207,7 @@
     left: 0;
     top: 0;
   }
-  .dark-sub-shimmer{
+  html.dark .dark-sub-shimmer{
     
     background: #00071e;
     background-image: linear-gradient(to right, #00071C 0%, #212537 30%, #20273d 40%,#1f2435 60%,#00071e 100%);
@@ -202,11 +219,11 @@
     animation: dark-shimmer 2s infinite ease-in-out;
     height: 100%;
     border-radius: 5px;
-    /* border: 1px solid white; */
     z-index: 5;
     left: 0;
     top: 0;
   }
+  
   .precipitation,.sub_card2, .humidity, .feelsLike,.date, .sub_card1,.inner_main,.shimmer_main_temp{
     position: relative;
   }
@@ -269,7 +286,7 @@
     font-size: 1.1rem;
     margin-bottom: 5px;
     /* max-width: 470px; */
-    position: relative;
+    /* position: relative; */
     /* overflow-x: auto; */
   }
   table {
@@ -672,7 +689,7 @@ body .layout_box{
   height: 20px;
  }
 
- .layout_box .header .search_box_visible{
+ .header .search_box_visible{
   max-width: 600px;
   min-width: 270px;
   width: 90%;

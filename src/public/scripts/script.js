@@ -1,26 +1,27 @@
+let isDarkMode=$("html").hasClass("dark");
+const dataValues = [20, 22, 25, 23, 26, 27, 24, 22];
+let chart;
+const darkMode=$(".darkMode");
+darkMode.each(function(){
+  $(this).click(function(){
+    isDarkMode= !isDarkMode;
+    $("html").toggleClass("dark");
+    localStorage.setItem('darkMode', isDarkMode);
+    chart.destroy();
+    createChart(dataValues);
+  })
+})
 $(document).ready(function(){
 
-  let isDarkMode=$("html").hasClass("dark");
-  const dataValues = [20, 22, 25, 23, 26, 27, 24, 22];
-  let chart;
-  const darkMode=$(".darkMode");
-  darkMode.each(function(){
-    $(this).click(function(){
-      isDarkMode= !isDarkMode;
-      $("html").toggleClass("dark");
-      chart.destroy();
-      createChart(dataValues);
-    })
-  })
-  $('td[id]').each(function() {
-    $(this).on('click', function() {
-      const targetRow = $(`tr[data-target="${this.id}"]`);
-      targetRow.find('.dropdown-content').toggleClass('h-[150px]');
-      targetRow.find('.dropdown-content').toggleClass('opacity-0');
-      targetRow.find('.dropdown-content').toggleClass('h-[0px]');
-      targetRow.toggleClass('tr_margin_bottom');
-    });
-  });
+
+if(localStorage.getItem('darkMode') === 'true'){
+  $("html").addClass("dark");
+  isDarkMode=true;
+}else{
+  $("html").removeClass("dark");
+  isDarkMode=false;
+}
+
 
   const canvas = document.getElementById('myChart');
   let ctx;
@@ -109,8 +110,6 @@ function createChart(dataValues){
             let minValue = ticks[0].value;
             let maxValue = ticks[ticks.length - 1].value;
     
-            console.log("Min Value:", minValue);
-            console.log("Max Value:", maxValue);
           },
     }
   }});
@@ -188,7 +187,6 @@ calculatePositions(canvas, dataValues);
 
   $(".profileBtn").each(function(i, profileBtn){
     $(profileBtn).click(function(event){
-      console.log("clicked");
       $($('.pfpDropDown')[i]).toggleClass('hidden');
       event.stopPropagation(); // Prevent this click from triggering the document click event below
     });
@@ -197,7 +195,6 @@ calculatePositions(canvas, dataValues);
   
 
 let loginUrl= `${backend_Url}/login`
-console.log(loginUrl)
   if(document.getElementById('loginForm')){
   document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent default form submission behavior
@@ -215,7 +212,6 @@ console.log(loginUrl)
       })
     
     }).then(res=>res.json()).then(data=>{
-      console.log(data)
       var date = new Date();
       date.setHours(date.getHours() + 1);
       var expires = "; expires=" + date.toGMTString();
@@ -224,7 +220,6 @@ console.log(loginUrl)
       document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
 
-      console.log("cookie set")
       window.location.replace(`/`);
     });
 
@@ -233,7 +228,6 @@ console.log(loginUrl)
   if(document.getElementById('signUpForm')){
   document.getElementById('signUpForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent default form submission behavior
-    console.log("clicked sign up");
     let name = document.getElementById('name');
     let password = document.getElementById('password');
     let confirmPass = document.getElementById('confirmPass');
@@ -260,14 +254,12 @@ console.log(loginUrl)
       }
     })
     .catch(err => {
-      console.log("Error while redirecting: ", err);
     });
 
 });}
 
   $(".logout").each(function(i, logoutBtn){
     $(logoutBtn).click(function(){
-      console.log("clicked");
       //remove all the set cookies
       var cookies = document.cookie.split(";");
 
@@ -278,11 +270,11 @@ console.log(loginUrl)
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
       window.location.replace(`/`);
-      console.log("logged out");
     });
   });
 
   function search_box_responsive(){
+    console.log("responsive");
     $(".search_box").each(function(i, searchBox){
       $(searchBox).click(function(event){
 
@@ -340,12 +332,17 @@ search_box_responsive();
             </div>
            `
             )
-          .click(function(){
+          .click(async function(){
             let location =`${city.name}, ${city.admin1 ? city.admin1+",": ""} ${city.country? city.country:""} `;
-
-            $("#search_city").val(`${location}`);
+            
             let latitude= city.latitude;
             let longitude= city.longitude;
+            if(window.location.pathname!=="/")
+            await redirect(location, latitude, longitude);
+            localStorage.setItem('location', location);
+            localStorage.setItem('lat', lat);
+            localStorage.setItem('lon', lon);
+
             city_list.empty();
             let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
             $(".shimmer, .dark-shimmer, .dark-sub-shimmer").css("display", "inline-block");
@@ -359,6 +356,19 @@ search_box_responsive();
     }
   });
   
+  function redirect(location,lat,lon){
+    return new Promise((resolve, reject)=>{
+        try{
+            localStorage.setItem('location', location);
+            localStorage.setItem('lat', lat);
+            localStorage.setItem('lon', lon);
+            window.location.href="/";
+            resolve(true);
+        }catch(err){
+            reject(err);
+        }
+    })
+}
   let precipitaion_unit="mm";
   let temp_unit="&#176;";
   let temp_word="C";
@@ -367,7 +377,6 @@ search_box_responsive();
   let visibility_unit="m";
 
   function loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
-    console.log("Loading main card");
     $(".location span").html(location);
     $(".min").html(`Min: ${min}${temp_unit}`);
     $(".max").html(`Max: ${max}${temp_unit}`);
@@ -578,16 +587,107 @@ search_box_responsive();
     let dataValues=hourly_temp_3_hour;
     chart.destroy();
     createChart(dataValues);
-    // console.log(suggestedMax, minValue);
     calculatePositions(canvas, dataValues);
     window.addEventListener("resize", () => calculatePositions(canvas, dataValues));
     
-    console.log("new chart created");
+  }
+  
+let globalLat=0;
+let globalLon=0;
+$('tr[id]').each(function() {
+  $(this).on('click', function() {
+    const targetRow = $(`tr[data-target="${this.id}"]`);
+    targetRow.find('.dropdown-content').toggleClass('h-[150px]');
+    targetRow.find('.dropdown-content').toggleClass('opacity-0');
+    targetRow.find('.dropdown-content').toggleClass('h-[0px]');
+    targetRow.toggleClass('tr_margin_bottom');
+  })})
+
+  function closeAllForecastCards(){
+    console.log("closeAllForecastCards");
+  $('tr[id]').each(function() {
+    const targetRow = $(`tr[data-target="${this.id}"]`);
+    targetRow.find('.dropdown-content').removeClass('h-[150px]');
+    targetRow.find('.dropdown-content').addClass('opacity-0');
+    targetRow.find('.dropdown-content').addClass('h-[0px]');
+    targetRow.removeClass('tr_margin_bottom');
+  })
+}
+
+  function loadForecastHourly(){
+    $('tr[id]').each(function() {
+      $(this).on('click', function() {
+        loadOnClick(globalLat,globalLon, $(this));
+      });
+    });
+    }
+
+    function loadOnClick(lat, lon, data_target){
+      const targetRow = $(`tr[data-target="${data_target.attr("id")}"]`);
+      if(targetRow.attr('infoSet') === 'false'){
+        let date = data_target.attr('forecast_date');
+        fetch(`${backend_Url}/hourlyForecast?lat=${lat}&lon=${lon}&startDate=${date}`).then(res=>res.json()).then(data=>{
+          targetRow.attr('infoSet', 'true');
+          let hourlyObj= data.hourObj;
+          for(let i=0; i<hourlyObj.length; i++){
+            targetRow.find(".dropdown-item").eq(i).find(".detail_icon").attr("src", hourlyObj[i].weatherIcon);
+
+            targetRow.find(".dropdown-item").eq(i).find(".detail_time").html(hourlyObj[i].label);
+
+            targetRow.find(".dropdown-item").eq(i).find(".detail_temp").html(`${hourlyObj[i].temperature}${temp_unit}${temp_word}`);
+          }
+        targetRow.find(".dark-sub-shimmer").css("display", "none");
+
+        })
+      }
+     
+    }
+
+    loadForecastHourly();
+
+  function loadForecastSection(lat,lon){
+    return new Promise((resolve, reject)=>{
+      try{
+    let forecastSelect= document.getElementById("forecast");
+    let forecast= forecastSelect.value;
+    fetch(`${backend_Url}/forecast?lat=${lat}&lon=${lon}&forecast_days=${forecast}`).then(res=>res.json()).then(data=>{
+      let forecastArray= data.forecastArray;
+      for(let i =0; i<forecastArray.length; i++){
+        let forecast= forecastArray[i];
+        let day= forecast.day;
+        let desc = forecast.weatherDescription;
+        let min= forecast.temperature_min;
+        let max= forecast.temperature_max;
+        let weatherIcon= forecast.weatherIcon;
+        let forecast_id= `row${i+1}`;
+        let forecastRow= $(`#${forecast_id}`);
+        let date= forecast.date;
+        forecastRow.attr("forecast_date", date);
+        forecastRow.find(".forecast_day").html(day);
+        forecastRow.find(".forecast_desc").html(desc);
+        forecastRow.find(".forecast_desc").attr("title", desc);
+
+        forecastRow.find(".forecast_min").html(`${min}${temp_unit}${temp_word}`);
+        forecastRow.find(".forecast_max").html(`${max}${temp_unit}${temp_word}`);
+        forecastRow.find(".forecast_icon").attr("src", weatherIcon);
+      }
+    })
+    resolve(true);
+  }
+    catch(err){
+      reject(err);
+    }
+  })
   }
 
-  function loadHomePage(lat=25,lon=81, location="Prayagraj, Uttar Pradesh"){
-  console.log("Loading data ...");
-  console.log("Location:",location)  ;
+
+
+  function loadHomePage(lat,lon, location){
+  globalLat=lat;
+  globalLon=lon;
+  closeAllForecastCards();
+  console.log(lat, lon,location);
+  console.log(`${backend_Url}/weather?lat=${lat}&lon=${lon}`);
     fetch(`${backend_Url}/weather?lat=${lat}&lon=${lon}`).then(res=>res.json()).then(data=>{
 
       //Received all the data now retrieving data for main Card
@@ -616,7 +716,6 @@ search_box_responsive();
       const weatherIcon= weatherImg.icon;
       const weatherBg= weatherImg.url;
       const desc= weatherDescription.desc;
-      // console.log(min, max);
 
       loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
       let img = new Image();
@@ -650,11 +749,34 @@ search_box_responsive();
       load24HourChart(hourly_temp,weather_code);
       $(".dayHourChart .dark-sub-shimmer").css("display", "none");
 
-      console.log(data);
+
+      //Last thing - Load Forecast Section
+      $("tr[infoSet='true']").each(function(i, row){
+       $(this).attr("infoSet", "false");
+      })
+      loadForecastSection(lat,lon).then(()=>{
+        $(".forecast_instance .dark-sub-shimmer").css("display", "none");
+      });
     })
   }
 
   var element = document.querySelector('.status');
+  if(element)
   $clamp(element, {clamp: 2});
-  loadHomePage();
+  //check if the link url is of index
+  let url = window.location.pathname;
+  let location= localStorage.getItem('location');
+  let lat= localStorage.getItem('lat');
+  let lon= localStorage.getItem('lon');
+  if(location && lat && lon){
+    loadHomePage(lat,lon,location);
+  }else{
+    loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
+  }
+
+  // if(url === '/'){
+  //   console.log("home page");
+  //   loadHomePage();
+  // }
+  
 });
