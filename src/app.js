@@ -32,6 +32,7 @@ app.get('/', (req, res) => {
     res.render('index', {activePage: "home", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL, backend_Url: process.env.BACKEND_URL})
 });
 
+
 app.get('/mycities', (req, res) => res.render('myCities', {activePage: "mycities" , loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL}));
 
 app.get('/map', (req, res) => res.render('map', {activePage: "map", loggedIn: req.cookies["loggedIn"], email: req.cookies["email"], backend_Url: process.env.BACKEND_URL}));

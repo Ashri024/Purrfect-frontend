@@ -1,11 +1,10 @@
+let isDarkMode=$("html").hasClass("dark");
 $(document).ready(function(){
   let chart;
   const darkMode=$(".darkMode");
-  // darkMode.click(function(){
-  //   $("html").toggleClass("dark");
-  // })
   darkMode.each(function(){
     $(this).click(function(){
+      isDarkMode= !isDarkMode;
       $("html").toggleClass("dark");
       chart.destroy();
       createChart();
@@ -105,14 +104,12 @@ if(canvas)
 
     const images = document.querySelectorAll('#graphContainer img');
     images.forEach((img, i) => {
-        // const left = ((data[i] - Math.min(...data)) * scale) + chartArea.left;
         if(window.innerWidth<600){
           img.style.display="none";
           return;
         }
         let left =Math.floor(i*(100 / 7));
         
-        console.log(left);
         if(i==0) {img.style.left="10px";}
         else if(i==images.length-1){
           left= `calc(${left}% - 50px)`;
@@ -123,7 +120,6 @@ if(canvas)
         }
         else{
           left= `calc(${left}% - ${img.clientWidth -10}px)`;
-          console.log(left);
           img.style.left = `${left}`;
         }
 
@@ -139,12 +135,12 @@ if(canvas){
 calculatePositions(canvas, dataValues);
 }
 
-
   const sunny= ["#ff9900", "#fdf966","#6e6b02","#ffe23e" ];
   const snowy= ["#9f9f8f", "#ffffff","#494942","#ffffff" ];
   const rainy= ["#8393ef", "#0e1cf9","#4400f9","#979dfc" ];
   const thunder= ["#9900a3", "#c800fd","#600067","#f5d2ff" ];
   let forecastSelect= document.getElementById("forecast");
+
   if(forecastSelect)
   NiceSelect.bind(forecastSelect);
   
@@ -185,9 +181,7 @@ calculatePositions(canvas, dataValues);
     });
   });
 
-  $(document).click(function() {
-    $('.pfpDropDown').addClass('hidden'); // Hide the dropdown when clicking outside
-  });
+  
 
 let loginUrl= `${backend_Url}/login`
 console.log(loginUrl)
@@ -275,4 +269,354 @@ console.log(loginUrl)
     });
   });
 
+  function search_box_responsive(){
+    $(".search_box").each(function(i, searchBox){
+      $(searchBox).click(function(event){
+
+        event.stopPropagation();
+        $(this).addClass("search_box_visible");
+        $(this).find("input[type='search']").removeClass("max-[830px]:hidden");
+        $(this).find("input[type='search']").addClass("max-[830px]:block");
+      })
+    })
+  }
+
+  $(document).click(function() {
+    $('.pfpDropDown').addClass('hidden'); 
+    $(".city_list").empty();
+    $(".search_box").removeClass("search_box_visible");
+    $(".search_box").find("input[type='search']").removeClass("max-[830px]:block");
+    $(".search_box").find("input[type='search']").addClass("max-[830px]:hidden");
+    //prevent the propagation of search box
+
+  });
+window.addEventListener("resize", function(){
+  if(window.innerWidth<830){
+   search_box_responsive();
+  }
+});
+
+search_box_responsive();
+
+
+  // MAIN APP STARTS HERE
+
+  // SEARCH BOX FUNCTIONALITY
+  
+  $("#search_city").on("keyup", function() {
+    let value = $(this).val().toLowerCase();
+    $("#search_city").val(value);
+    let city_list = $(".city_list");
+    if(value.trim().length>0){
+      fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${value.trim()}&count=7&language=en&format=json`).then(res=>res.json()).then(data=>{
+        if(data.results){
+        let cities=data.results;
+
+        city_list.empty();
+        cities.forEach(city=>{
+          let cityLi = $("<li></li>")
+          .addClass("border-b border-b-black px-4 py-2 flex flex-row items-center cursor-pointer hover:bg-gray-200 ")
+          .html(
+            `<i class="fa-solid fa-location-dot text-3xl mr-4"></i>
+            <div class="flex flex-col">
+              <span class="font-medium text-lg"> ${city.name}, ${city.admin1 ? city.admin1+",": ""} ${city.country? city.country:""}</span>
+              <div class="text-sm text-gray-600">
+                <span>${city.latitude ? "Lat: "+ city.latitude +", " : ""}</span>
+                <span>${city.longitude ? "Lon: "+ city.longitude : ""}</span>
+              </div>
+            </div>
+           `
+            )
+          .click(function(){
+            let location =`${city.name}, ${city.admin1 ? city.admin1+",": ""} ${city.country? city.country:""} `;
+
+            $("#search_city").val(`${location}`);
+            let latitude= city.latitude;
+            let longitude= city.longitude;
+            city_list.empty();
+            let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
+            $(".shimmer, .dark-shimmer, .dark-sub-shimmer").css("display", "inline-block");
+            loadHomePage(latitude, longitude,location2);
+          });
+          
+          city_list.append(cityLi);
+        })
+      }
+      })
+    }
+  });
+  
+  let precipitaion_unit="mm";
+  let temp_unit="&#176;";
+  let temp_word="C";
+  let wind_unit="km/h";
+  let pressure_unit="hPa";
+  let visibility_unit="m";
+
+  function loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
+    console.log("Loading main card");
+    $(".location span").html(location);
+    $(".min").html(`Min: ${min}${temp_unit}`);
+    $(".max").html(`Max: ${max}${temp_unit}`);
+    $(".date span").html(currDate);
+    $(".precipitation span").html(`Precipitaion: ${precipitaion}${precipitaion_unit} `);
+    $(".humidity span").html(`Humidity: ${humidity}%`);
+    $(".feelsLike span").html(`Feels Like: ${feelsLike}${temp_unit}`);
+    $(".main_temp").html(`<span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">${temp}${temp_unit}</span>${temp_word}</div>`);
+    $(".status").html(desc);
+    $(".weatherIcon").attr("src", weatherIcon);
+
+    
+  }
+
+  function getWindStatus(windSpeed) {
+    if (windSpeed < 1) {
+      return 'Calm';
+    } else if (windSpeed <= 5) {
+      return 'Light Air';
+    } else if (windSpeed <= 11) {
+      return 'Light Breeze';
+    } else if (windSpeed <= 19) {
+      return 'Gentle Breeze';
+    } else if (windSpeed <= 28) {
+      return 'Moderate Breeze';
+    } else if (windSpeed <= 38) {
+      return 'Fresh Breeze';
+    } else if (windSpeed <= 49) {
+      return 'Strong Breeze';
+    } else if (windSpeed <= 61) {
+      return 'Near Gale';
+    } else if (windSpeed <= 74) {
+      return 'Gale';
+    } else if (windSpeed <= 88) {
+      return 'Strong Gale';
+    } else if (windSpeed <= 102) {
+      return 'Storm';
+    } else if (windSpeed <= 117) {
+      return 'Violent Storm';
+    } else {
+      return 'Hurricane Force';
+    }
+  }
+
+  function getPressureCategory(pressure) {
+    if (pressure < 980) {
+        return {
+            pressure_status: 'Very Low Pressure',
+            pressure_deg: -105
+        };
+    } else if (pressure <= 1000) {
+        return {
+            pressure_status: 'Low Pressure',
+            pressure_deg: -65
+        };
+    } else if (pressure <= 1013) {
+        return {
+            pressure_status: 'Normal Pressure',
+            pressure_deg: 0
+        };
+    } else if (pressure <= 1030) {
+        return {
+            pressure_status: 'High Pressure',
+            pressure_deg: 60
+        };
+    } else {
+        return {
+            pressure_status: 'Very High Pressure',
+            pressure_deg: 113
+        };
+    }
+}
+  function getVisibilityCategory(visibility) {
+    if (visibility > 10) {
+      return 'Excellent Visibility';
+    } else if (visibility >= 5) {
+      return 'Good Visibility';
+    } else if (visibility >= 2) {
+      return 'Moderate Visibility';
+    } else if (visibility >= 1) {
+      return 'Poor Visibility';
+    } else {
+      return 'Very Poor Visibility';
+    }
+  }
+  function getUVIndexCategory(uvIndex) {
+    if (uvIndex <= 2) {
+        return {
+            uv_status: 'Low UV Index',
+            uv_degree: -105
+        };
+    } else if (uvIndex <= 5) {
+        return {
+            uv_status: 'Normal UV Index',
+            uv_degree: -65
+        };
+    } else if (uvIndex <= 7) {
+        return {
+            uv_status: 'Moderate UV Index',
+            uv_degree: 0
+        };
+    } else if (uvIndex <= 10) {
+        return {
+            uv_status: 'High UV Index',
+            uv_degree: 60
+        };
+    } else {
+        return {
+            uv_status: 'Extreme UV Index',
+            uv_degree: 113
+        };
+    }
+}
+  function getEAQICategoryAndDescription(eaqi) {
+    let category, description, aqui_deg;
+
+    if (eaqi <= 25) {
+      category = 'Very Low (Good)';
+      description = 'The air is very good, you can breathe freely. 😊';
+      aqui_deg = -90;
+    } else if (eaqi <= 50) {
+      category = 'Low (Good)';
+      description = 'The air quality is good, enjoy the fresh air! 😊';
+      aqui_deg = -45;
+
+    } else if (eaqi <= 75) {
+      category = 'Moderate';
+      description = 'Air quality is acceptable, but sensitive individuals may experience slight health effects. 🌤️';
+      aqui_deg = 0;
+
+    } else if (eaqi <= 100) {
+      category = 'High';
+      description = 'Members of sensitive groups may experience health effects. Take precautions if needed. 😷';
+      aqui_deg = 50;
+
+    } else if (eaqi <= 150) {
+      category = 'Very High';
+      description = 'Everyone may begin to experience adverse health effects. Consider reducing outdoor activities. 🚫';
+      aqui_deg = 70;
+    } else {
+      category = 'Extremely High';
+      description = 'Health warnings of emergency conditions. Take immediate actions to protect yourself. 🚨';
+      aqui_deg = 105;
+    }
+
+    return { category, description, aqui_deg};
+  }
+  function convertTime(time) {
+    let dateObj = new Date(time);
+    let hours = dateObj.getHours();
+    let minutes = dateObj.getMinutes();
+    let period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    let timeStr = hours + ':' + minutes + ' ' + period;
+    return timeStr;
+  }
+
+
+
+  function loadDetailCards(wind_speed,pressure,uv_index,visibility,air_pm25,air_pm10,aqi,sunrise,sunset)
+  {
+    $(".wind_speed").html(`${wind_speed} ${wind_unit}`);
+    $(".wind_status").html(`${getWindStatus(wind_speed)}`);
+
+    $(".pressure").html(`${pressure} ${pressure_unit}`);
+    let { pressure_status, pressure_deg } = getPressureCategory(pressure);
+    $(".pressure_status").html(`${pressure_status}`);
+    // if(isDarkMode){
+      $(".pressure_dark_dial").css("transform", `rotate(${pressure_deg}deg)`);
+    // }else{
+      $(".pressure_light_dial").css("transform", `rotate(${pressure_deg}deg)`);
+    // }
+
+    $(".uv_index").html(`${uv_index} UV`);
+    let { uv_status, uv_degree } = getUVIndexCategory(uv_index);
+    $(".uv_index_status").html(`${uv_status}`);
+    // if(isDarkMode){
+      $(".uv_dark_dial").css("transform", `rotate(${uv_degree}deg)`);
+    // }else{
+      $(".uv_light_dial").css("transform", `rotate(${uv_degree}deg)`);
+    // }
+
+    $(".visibility").html(`${visibility} ${visibility_unit}`);
+    $(".visibility_status").html(`${getVisibilityCategory(visibility)}`);
+
+    $(".air_pm25").html(`Pm2.5: ${air_pm25} &#181;g/m<sup>3</sup>`);
+    $(".air_pm10").html(`Pm10: ${air_pm10} &#181;g/m<sup>3</sup>`);
+    $(".aqi").html(`European AQI: ${aqi} EAQI`);
+    let { category, description, aqui_deg } = getEAQICategoryAndDescription(aqi);
+    $(".aqi_status").html(`${category}`);
+    $(".aqi_description").html(`${description}`);
+    $(".air_dial").css("transform", `rotate(${aqui_deg}deg)`);
+
+    $(".sunset_time").html(`${convertTime(sunset)}`);
+    $(".sunrise_time").html(`${convertTime(sunrise)}`);
+
+  }
+  
+  function loadHomePage(lat=25,lon=81, location="Prayagraj, Uttar Pradesh"){
+  console.log("Loading data ...");
+  console.log("Location:",location)  ;
+    fetch(`${backend_Url}/weather?lat=${lat}&lon=${lon}`).then(res=>res.json()).then(data=>{
+
+      //Received all the data now retrieving data for main Card
+      const now = new Date();
+      const options = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      };
+      let weatherData= data.WeatherData;
+      let weatherImg= data.weatherImg;
+      let weatherDescription= data.weatherDescription;
+
+      //Main cards info
+
+      const currDate = now.toLocaleString('en-US', options).replace(' at ', ' | ');
+      const temp=weatherData.current.temperature_2m;
+      const min= weatherData.daily.temperature_2m_min[0];
+      const max= weatherData.daily.temperature_2m_max[0];
+      const feelsLike= weatherData.current.apparent_temperature;
+      const humidity= weatherData.current.relative_humidity_2m;
+      const precipitaion= weatherData.current.precipitation;
+      const weatherIcon= weatherImg.icon;
+      const weatherBg= weatherImg.url;
+      const desc= weatherDescription.desc;
+      console.log(min, max);
+
+      loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
+      let img = new Image();
+      img.src = weatherBg;
+      img.onload = function() {
+      $(".weather_main_card_before").css("background", `url(${weatherBg})`);
+      $(".weather_main_card .dark-sub-shimmer").css("display", "none");
+      $(".weather_main_card .dark-shimmer").css("display", "none");
+      // Perform your operation here
+    };
+     
+      
+      //Loadiing Detail Cards
+      const currentHour= new Date().getHours();
+      const wind_speed= weatherData.current.wind_speed_10m;
+      const pressure= weatherData.current.pressure_msl;
+      const uv_index= weatherData.daily.uv_index_max[0];
+      const visibility = weatherData.hourly.visibility[currentHour];
+      const air_pm25 = data.AirQuality.current.pm2_5;
+      const air_pm10 = data.AirQuality.current.pm10;
+      const aqi = data.AirQuality.current.european_aqi;
+      const sunrise = weatherData.daily.sunrise[0];
+      const sunset = weatherData.daily.sunset[0];
+
+      loadDetailCards(wind_speed,pressure,uv_index,visibility,air_pm25,air_pm10,aqi,sunrise,sunset);
+      $(".detail_cards .dark-sub-shimmer").css("display", "none");
+      console.log(data);
+    })
+  }
+
+  
+  loadHomePage();
 });

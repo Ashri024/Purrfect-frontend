@@ -1,50 +1,50 @@
-<div class="w-[170px] min-[781px]:w-[200px] max-[780px]:h-auto h-screen max-[780px]:w-0">
-<div class="flex flex-col items-start bottom-0 justify-center fixed w-[170px] min-[781px]:w-[200px] max-[780px]:h-auto h-full max-[780px]:w-full">
+<div class="w-[170px] min-[831px]:w-[200px] max-[830px]:h-auto h-screen max-[830px]:w-0">
+<div class="flex flex-col items-start bottom-0 justify-center fixed w-[170px] min-[831px]:w-[200px] max-[830px]:h-auto h-full max-[830px]:w-full">
 
 
 
-<div class="bg-[#EEF6FF] min-[781px]:bg-[white] dark:bg-[#181C2D] max-[780px]:h-[65px] max-[780px]:text-[0.9rem] max-[780px]:p-0 max-[780px]:gap-[3px] h-[100%] w-[100%] min-[781px]:rounded-l-lgr-3xl pl-2 py-2 outline-1 dark:outline outline-[#80808082]">
-                <div class="panel_header flex flex-row items-center justify-evenly max-[780px]:hidden dark:hidden">
+<div class="bg-[#EEF6FF] min-[831px]:bg-[white] dark:bg-[#181C2D] max-[830px]:h-[65px] max-[830px]:text-[0.9rem] max-[830px]:p-0 max-[830px]:gap-[3px] h-[100%] w-[100%] min-[831px]:rounded-l-lgr-3xl pl-2 py-2 outline-1 dark:outline outline-[#80808082]">
+                <div class="panel_header flex flex-row items-center justify-evenly max-[830px]:hidden dark:hidden">
                     <img src="./resources/Purrfect Weather.svg">
                     <img src="./resources/Catinflowers.svg">
                 </div>
-                <div class="panel_header flex-row items-center justify-evenly hidden dark:flex max-[780px]:hidden"><img src="./resources/darkModeIcons/Purrfect Weather.svg">
+                <div class="panel_header flex-row items-center justify-evenly hidden dark:flex max-[830px]:hidden"><img src="./resources/darkModeIcons/Purrfect Weather.svg">
                     <img src="./resources/darkModeIcons/Catinflowers.svg">
                 </div>
 
-                <div class="pages flex min-[781px]:flex-col max-[780px]:flex-row max-[780px]:items-end min-[781px]:mt-5 items-center justify-center min-[781px]:pl-6 min-[781px]:py-4 min-[781px]:gap-[1.4rem] ">
-                    <a href="/" class="flex dark:text-white dark:bg-[#181C2D] min-[781px]:flex-row max-[780px]:flex-col items-center w-full max-[780px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'home'}}">
-                    <img class="min-[781px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/home.svg">
-                    <img class=" hidden dark:block min-[781px]:mr-4 w-[25px]" src="./resources/darkModeIcons/home.svg">
+                <div class="pages flex min-[831px]:flex-col max-[830px]:flex-row max-[830px]:items-end min-[831px]:mt-5 items-center justify-center min-[831px]:pl-6 min-[831px]:py-4 min-[831px]:gap-[1.4rem] ">
+                    <a href="/" class="flex dark:text-white dark:bg-[#181C2D] min-[831px]:flex-row max-[830px]:flex-col items-center w-full max-[830px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'home'}}">
+                    <img class="min-[831px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/home.svg">
+                    <img class=" hidden dark:block min-[831px]:mr-4 w-[25px]" src="./resources/darkModeIcons/home.svg">
                     <span>Home</span>
                     </a>
 
-                    <a class="flex dark:bg-[#181C2D] min-[781px]:flex-row max-[780px]:flex-col items-center w-full max-[780px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'mycities'}} {{#unless loggedIn}} lockPages{{/unless}}" {{#if loggedIn}}href="/myCities"{{else}}title="Login to get access" {{/if}}>
+                    <a class="flex dark:bg-[#181C2D] min-[831px]:flex-row max-[830px]:flex-col items-center w-full max-[830px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'mycities'}} {{#unless loggedIn}} lockPages{{/unless}}" {{#if loggedIn}}href="/myCities"{{else}}title="Login to get access" {{/if}}>
                         
                         {{#if loggedIn}}
-                        <img class="min-[781px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/compass.svg">
-                        <img class="hidden dark:block min-[781px]:mr-4 w-[25px]" src="./resources/darkModeIcons/compass.svg">
+                        <img class="min-[831px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/compass.svg">
+                        <img class="hidden dark:block min-[831px]:mr-4 w-[25px]" src="./resources/darkModeIcons/compass.svg">
                         {{else}}
-                            <i class="fa-lock w-[25px] fa-solid min-[781px]:mr-4"></i>
+                            <i class="fa-lock w-[25px] fa-solid min-[831px]:mr-4"></i>
                         {{/if}}
                         
                         <span>Mycities</span>
                     </a>
 
-                    <a class="flex dark:bg-[#181C2D] min-[781px]:flex-row max-[780px]:flex-col items-center w-full max-[780px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'map'}}{{#unless loggedIn}} lockPages{{/unless}}" {{#if loggedIn}}href='/map'{{else}}title="Login to get access" {{/if}}>
+                    <a class="flex dark:bg-[#181C2D] min-[831px]:flex-row max-[830px]:hidden items-center w-full max-[830px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'map'}}{{#unless loggedIn}} lockPages{{/unless}}" {{#if loggedIn}}href='/map'{{else}}title="Login to get access" {{/if}}>
 
                     {{#if loggedIn}}
-                    <img class="min-[781px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/map.svg">
-                    <img class=" hidden dark:block min-[781px]:mr-4 w-[25px]" src="./resources/darkModeIcons/map.svg">
+                    <img class="min-[831px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/map.svg">
+                    <img class=" hidden dark:block min-[831px]:mr-4 w-[25px]" src="./resources/darkModeIcons/map.svg">
                     {{else}}
-                        <i class="fa-lock w-[25px] fa-solid min-[781px]:mr-4"></i>
+                        <i class="fa-lock w-[25px] fa-solid min-[831px]:mr-4"></i>
                     {{/if}}
                     <span>Map</span>
                     </a>
 
-                    <a href="/settings" class="flex dark:text-white dark:bg-[#181C2D] min-[781px]:flex-row max-[780px]:flex-col items-center w-full max-[780px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'settings'}}">
-                    <img class="min-[781px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/settings.svg" >
-                    <img class=" hidden dark:block min-[781px]:mr-4 w-[25px]" src="./resources/darkModeIcons/settings.svg" >
+                    <a href="/settings" class="flex dark:text-white dark:bg-[#181C2D] min-[831px]:flex-row max-[830px]:flex-col items-center w-full max-[830px]:p-2 p-2 pr-0 rounded-l-lg {{isActive activePage 'settings'}}">
+                    <img class="min-[831px]:mr-4 dark:hidden w-[25px]" src="./resources/navigation/settings.svg" >
+                    <img class=" hidden dark:block min-[831px]:mr-4 w-[25px]" src="./resources/darkModeIcons/settings.svg" >
                     <span>Settings</span>
                     </a>
                 </div>

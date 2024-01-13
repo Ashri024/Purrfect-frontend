@@ -7,24 +7,28 @@
     {{>link}}
 </head>
 <body class="h-screen bg-[#EEF6FF] dark:bg-[#00071E] relative dark:text-white">
-    <div class="main_container grid grid-cols-layout max-[1024px]:grid-cols-layout-sm max-[780px]:grid-cols-1 gap-4 h-auto">
+    <div class="search_cover hidden absolute top-0 bottom-0 left-0 right-0 opacity-30 bg-black z-30"></div>
+    <div class="main_container grid grid-cols-layout max-[1200px]:grid-cols-layout-sm max-[830px]:grid-cols-1 gap-4 h-auto min-[830px]:pr-3">
 
         <!-- Side Panel -->
-        <div class="layout_box lg:row-span-5 row-span-8 text-center flex flex-col items-start bottom-0 justify-center fixed w-[170px] lg:w-[200px] max-[780px]:h-auto max-[780px]:w-full h-full z-20 ">
+        <div class="layout_box lg:row-span-5 row-span-8 text-center flex flex-col items-start bottom-0 justify-center fixed w-[170px] min-[830px]:w-[200px] max-[830px]:h-auto max-[830px]:w-full h-full z-20 ">
             {{>sidePanel}}
         </div>
 
         <!-- Header -->
-        <div class="layout_box min-[781px]:col-start-2 min-[781px]:col-span-3 lg:col-span-5 lg:col-start-2 max-[780px]:col-start-1 h-[100px] max-[1024px]:h-[100px] bg-transparent">
-            <div class="header w-full h-full bg-transparent max-[780px]:flex-col-reverse max-[780px]:justify-center max-[780px]:gap-0 px-4 py-0 pb-0 flex flex-row items-center justify-between gap-4 relative ">
+        <div class="layout_box min-[831px]:col-start-2 min-[831px]:col-span-3 min-[1200px]:col-span-5 min-[1200px]:col-start-2 lg:col-start-2 max-[830px]:col-start-1 h-[100px] max-[1200px]:h-[100px] bg-transparent">
+            <div class="header w-full h-full bg-transparent max-[830px]:flex-row max-[830px]:justify-center max-[830px]:gap-0 px-4 py-0 pb-0 flex flex-row items-center justify-between gap-4 relative ">
 
-                <div class="search_box bg-white px-4 py-2 items-center rounded-lg ml-[0px] mt-[10px] w-[55%] max-w-[600px] flex-shrink-[10] max-[780px]:w-full max-[780px]:max-w-full">
-                    <input type="search" class="bg-transparent focus:outline-none w-full" name="search_city" id="search_city" placeholder="Search city...">
-                    <div class="circle"></div>
-                    <img src="./resources/dark_profile/search.png" class="w-[16px] h-[16px] ml-2">
+                <div class="search_box bg-white items-center rounded-t-lg border-b border-b-black ml-[0px] mt-[10px] w-[55%] max-w-[600px] flex-shrink-[10] max-[830px]:w-full max-[830px]:max-w-full text-black">
+                    <input type="search" class=" px-4 py-2 bg-transparent focus:outline-none w-full max-[830px]:hidden" name="search_city" id="search_city" placeholder="Search city...">
+                    <div class="circle">
+                    <img src="./resources/dark_profile/search.png" class="w-[16px] h-[16px] max-[830px]:ml-0">
+                    </div>
+                    <ul class="city_list bg-white text-black absolute top-[104%] z-20 left-0 w-full h-auto rounded-b-lg">
+                    </ul>
                 </div>
 
-                <div class="profile-mode relative right-[0px] gap-[10px] px-4 py-1 h-[50px] flex items-center justify-center max-[780px]:p-0 max-[780px]:w-full max-[780px]:justify-between">
+                <div class="profile-mode relative right-[0px] gap-[10px] px-4 py-1 h-[50px] flex items-center justify-center max-[830px]:p-0 max-[830px]:w-full max-[830px]:justify-end max-[830px]:gap-[2px]">
                     <button id="darkMode" class=" darkMode flex items-center justify-center  w-[50px] h-[50px] dark:hidden rounded-full" ><img class="w-[95%]" src="./resources/dark_profile/Dark.svg"></button>
 
                     <button id="darkMode" class=" darkMode items-center justify-center  w-[50px] h-[50px] rounded-full hidden dark:flex" ><img class="w-[95%]" src="./resources/darkModeIcons/Dark.svg"></button>
@@ -41,21 +45,27 @@
 
                     </div>
 
-                    <button class="p-2 px-4 font-semibold text-base bg-white outline-2 outline-black outline dark:bg-[#181C2D] {{#if loggedIn}} hidden{{/if}} dark:outline-white min-w-[100px] rounded ml-2 max-[780px]:text-[0.9rem] max-[780px]:"><a href="/login">Login/SignUp</a></button>
+                    <button class=" font-semibold text-base  {{#if loggedIn}} hidden{{/if}} "><a class="p-2 px-4 bg-white dark:outline-white min-w-[100px] rounded ml-2 max-[830px]:text-[0.9rem] hover:bg-white hover:text-black outline-2 transition-all outline-black outline dark:bg-[#181C2D]" href="/login">Login/SignUp</a></button>
                 </div>
             </div>
         </div>
 
         <!-- Main card -->
-        <div class="layout_box weather_main_card overflow-hidden mr-4 lg:mr-0 col-start-2 col-span-3 max-[780px]:col-start-1 max-[780px]:col-span-1 h-[330px] max-[1024px]:h-[300px] bg-white  text-center dark:bg-[#181C2D] p-4 rounded-[20px] relative">
+        <div class="layout_box weather_main_card overflow-hidden  col-start-2 col-span-3 max-[830px]:col-start-1 max-[830px]:col-span-1 h-[330px] max-[1200px]:h-[280px] bg-white  text-center dark:bg-[#181C2D] p-4 rounded-[20px] relative ">
+            <div class="weather_main_card_before"></div>
+            <div class="dark-shimmer" ></div>
 
-            <div class="main_card w-[93%] m-auto  h-[100%] dark flex flex-col items-center justify-evenly relative z-10">
-                <div class="inner_main flex flex-row justify-between items-center w-full">
+            <div class="main_card flex w-[93%] m-auto  h-[100%] dark  flex-col items-center justify-evenly relative z-10">
+                <div class="inner_main flex flex-row justify-between items-center w-full ">
+                    <div class="dark-sub-shimmer"></div>
                     <div class="location items-end flex gap-3">
-                        <img class="w-[35px] h-[40px]" src="./resources/dark_profile/map-pin-2-fill.png"><span class="font-bold min-[1400px]:text-3xl text-2xl text-left">Prayagraj, Uttar Pradesh</span>
+
+                        <img class="w-[35px] h-[40px]" src="./resources/dark_profile/map-pin-2-fill.png">
+
+                        <span class="font-bold min-[1400px]:text-3xl text-2xl text-left">Prayagraj, Uttar Pradesh</span>
                     </div> 
 
-                    <div class="relative flex gap-4 min_max">
+                    <div class="relative flex gap-4 min_max items-start text-left min-w-[80px]">
                         <div class="min">Min: 30 &#176;</div>
                         <div class="max">Max: 40 &#176;</div>
                     </div>
@@ -63,23 +73,51 @@
 
                 <div class="flex flex-row w-full items-center gap-4">
                 <div class="sub_card3 flex flex-col w-[90%] gap-2 ml-[15px]">
-                        <span class="font-semibold text-[1.2rem] w-[fit-content] text-left"> Sunday, 2 January | 06:06 AM</span>
+                        <div class="font-semibold text-[1.2rem] w-[fit-content] text-left date">
+                          <div class="dark-sub-shimmer"></div>
 
-                        <div class="precipitation flex gap-4"><img class="w-[30px] h-[30px]" src="./resources/main_card/precipitation.png"><span>Precipitaion: 21%</span></div>
-                        <div class="humidity flex gap-4"><img class="w-[30px] h-[30px]"src="./resources/main_card/humidity.png"><span>Humidity: 79%</span></div>
-                        <div class="flex gap-4 feelsLike"><img class="w-[30px] h-[30px] hidden" src="./resources/main_card/feels.png"><span class="font-semibold text-[1.2rem]">Feels Like 29&#176;</span></div>
+                           <span>Sunday, 2 January | 06:06 AM
+                            </span>
+                           </div>
+
+                        <div class="precipitation flex gap-4 ">
+                            <div class="dark-sub-shimmer"></div>
+
+                            <img class="w-[30px] h-[30px]" src="./resources/main_card/precipitation.png">
+                            <span class="lg:min-w-[130px] text-left">
+                            Precipitaion: 21%</span>
+                        </div>
+
+                        <div class="text-left humidity flex gap-4 ">
+                            <div class="dark-sub-shimmer"></div>
+                            <img class="w-[30px] h-[30px]"src="./resources/main_card/humidity.png"><span class="lg:min-w-[130px] text-left">Humidity: 79%</span>
+                        </div>
+
+                        <div class="flex gap-4 feelsLike ">
+                            <div class="dark-sub-shimmer"></div>
+
+                            <img class="w-[30px] h-[30px] hidden" src="./resources/main_card/feels.png">
+                            <span class="font-semibold text-[1.2rem]">Feels Like 29&#176;</span>
+                        </div>
                 </div>
 
-                <div class="flex flex-row items-center justify-around min-[780px]:w-[90%] w-[60%] h-[200px] main_info">
-                    <div class="sub_card1 mr-[30px]">
-                        <div class="inner_subCard1 min-[1400px]:w-[180px] w-[150px]"><img class="w-full" src="./resources/dayIcons/partly_cloudy.svg" class="w-full"></div>
-                        <div class="status font-bold text-[2rem] relative bottom-[25px]">Cloudy</div>
+                <div class="flex flex-row items-center max-[1200px]:justify-end justify-around min-[830px]:w-[90%] w-[60%] h-[200px] main_info shimmer_main_temp">
+                    <div class="dark-sub-shimmer hidden" ></div>
+                    <div class="sub_card1 mr-[0px]">
+
+                        <div class="inner_subCard1 min-[1400px]:w-[180px] w-[150px]">
+                            <img class="w-full weatherIcon" src="https://f005.backblazeb2.com/file/WeatherApp/DayIcons/clear.svg" class="w-full">
+                        </div>
+                        <div class="status font-bold text-[1.5rem] min-[1200px]:text-[2rem] relative bottom-[25px] ">
+
+                            Cloudy</div>
                     </div>
                     <div class="sub_card2 flex flex-row gap-2 h-[100px] items-center justify-center relative bottom-[20px]">
-                        <div class="min[1400px]:text-[3rem] text-[2rem] font-semibold"><span class="temperature font-bold text-[4rem] min-[1400px]:text-[5rem]">33&#176;</span>C</div>
-                        {{!-- <div class="text-[1rem] font-semibold flex flex-col items-center justify-between h-[100%]">
-                           
-                        </div> --}}
+
+                        <div class="min[1400px]:text-[3rem] text-[2rem] font-semibold main_temp">
+                            <span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">33&#176;</span>
+                            C
+                            </div>
                     </div>
                 </div>
 
@@ -89,7 +127,7 @@
         </div>
 
         <!-- Right first card- Forecast Card -->
-        <div class="layout_box max-[780px]:col-start-1 max-[780px]:col-span-1 col-span-2 max-[1024px]:col-start-2 max-[1024px]:row-start-4 max-[1024px]:col-span-3 h-[auto] min-h-[550px] row-span-2 bg-white dark:bg-[#181C2D] text-center  min-[781px]:max-h-[550px] overflow-hidden rounded-[20px] xl:mx-4 ml-0 mr-4" >
+        <div class="layout_box max-[830px]:col-start-1 max-[830px]:col-span-1 col-span-2 max-[1200px]:col-start-2 max-[1200px]:row-start-4 max-[1200px]:col-span-3 h-[auto] min-h-[550px] row-span-2 bg-white dark:bg-[#181C2D] text-center  min-[831px]:max-h-[550px] overflow-hidden rounded-[20px]" >
 
             <div class="right-forecast w-full h-full p-4">
                 <div class="forecast-selection w-1/2 h-[50px] m-auto dark:text-black font-semibold mt-2 min-w-[200px]">
@@ -142,38 +180,39 @@
         </div>
 
         <!-- 24 hour weather line chart-->
-        <div class="layout_box dayHourChart col-start-2 col-span-3 max-[1024px]:row-start-3 h-[200px] bg-white dark:bg-[#181C2D] text-center max-[780px]:col-start-1 max-[780px]:col-span-1 mr-4 lg:mr-0 relative">
+        <div class="layout_box dayHourChart col-start-2 col-span-3 max-[1200px]:row-start-3 h-[200px] bg-white dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 lg:mr-0 relative">
             <h1 class="absolute w-full mt-2">24 Hour Chart</h1>
             <div id="graphContainer" class="relative p-2">
                         {{>24hourSvg weather="cloudy"}}
+                        {{>24hourSvg weather="rain"}}
+                        {{>24hourSvg weather="cloudy"}}
+                        {{>24hourSvg weather="fog"}}
                         {{>24hourSvg weather="cloudy"}}
                         {{>24hourSvg weather="cloudy"}}
-                        {{>24hourSvg weather="cloudy"}}
-                        {{>24hourSvg weather="cloudy"}}
-                        {{>24hourSvg weather="cloudy"}}
-                        {{>24hourSvg weather="cloudy"}}
+                        {{>24hourSvg weather="freezingRain"}}
                         {{>24hourSvg weather="cloudy"}}
                     <canvas id="myChart" ></canvas>
               </div>
         </div>
 
         {{!-- More detailed 4 cards --}}
-        <div class="layout_box col-start-2 col-end-5 h-[500px] bg-[#EEF6FF] dark:bg-[#181C2D] text-center max-[780px]:col-start-1 max-[780px]:col-span-1 flex flex-row flex-wrap justify-between gap-0 align-content-around mr-4 lg:mr-0">
+        <div class="layout_box detail_cards col-start-2 col-end-5 h-[500px] bg-[#EEF6FF] dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 flex flex-row flex-wrap justify-between gap-0 align-content-around lg:mr-0">
             {{#if loggedIn}}
-            <div class="flex flex-col items-center justify-around min-[780px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+            <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Wind Speed</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
                 <img class="w-[100%] mb-0 dark:hidden" src="./resources/weatherSubCards/windIcon1.svg" alt="Image description">
                 <img class="w-[100%] mb-0 hidden dark:block" src="./resources/weatherSubCards/windIconDark.svg" alt="Image description">
                 </div>
-                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[780px]:text-left lg:gap-4 justify-between  w-full px-6">
-                  <span>7.50 km/h</span>
-                  <span>Slow</span>
+                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[830px]:text-left lg:gap-4 justify-between  w-full px-6 py-2 relative">
+                    <div class="dark-sub-shimmer"></div>
+                  <span class="wind_speed">7.50 km/h</span>
+                  <span class="wind_status">Slow</span>
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[780px]:justify-center h-[230px] lg: lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg: lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">UV Index</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -192,21 +231,21 @@
                           <circle cx="50" cy="50" r="45" stroke="#71bf71" stroke-dashoffset="46" stroke-dasharray="25 200" pathLength="200" class=""></circle>
                         </g>
                       </svg>
-                    <object data="./resources/dial2.svg" type="image/svg+xml" class="absolute h-[45%] left-[46%] dark:hidden top-[7%] ">
+                    <object data="./resources/dial2.svg" type="image/svg+xml" class="uv_light_dial absolute transition-all h-[59%] left-[46.5%] origin-bottom dark:hidden top-[0%] ">
                     </object>
-                    <object data="./resources/dial2Dark.svg" type="image/svg+xml" class="absolute h-[45%] left-[46%] dark:block hidden top-[7%] "></object>
+                    <object data="./resources/dial2Dark.svg" type="image/svg+xml" class=" transition-all uv_dark_dial absolute h-[59%] left-[46.5%] origin-bottom dark:block hidden top-[0%] "></object>
 
-                    {{!-- <img src="./resources/dial2Dark.svg" class="absolute dark:block hidden h-[45%] left-[46%] top-[7%] "> --}}
                     </div>
                 </div>
 
-                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[780px]:text-left lg:gap-4 justify-between  w-full px-6">
-                  <span>5.50 UV</span>
-                  <span>Minimal sun protectin</span>
+                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[830px]:text-left lg:gap-4 justify-between  w-full px-6 relative min-[830px]:py-2">
+                    <div class="dark-sub-shimmer"></div>
+                  <span class="uv_index ">5.50 UV</span>
+                  <span class="uv_index_status">Minimal sun protectin</span>
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[780px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Visibility</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -214,13 +253,15 @@
                     <img class="w-[100%] mb-0 dark:block hidden"  src="./resources/weatherSubCards/fogGrayDark.svg" alt="Image description">
                     
                 </div>
-                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[780px]:text-left lg:gap-4 justify-between  w-full px-6">
-                  <span>04 km </span>
-                  <span>Clear</span>
+                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[830px]:text-left lg:gap-4 justify-between  w-full px-6 relative min-[830px]:py-2">
+                  <div class="dark-sub-shimmer"></div>
+
+                  <span class="visibility">04 km </span>
+                  <span class="visibility_status">Clear</span>
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[780px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Sea Level Pressure</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -239,13 +280,14 @@
                         </g>
                       </svg>
 
-                    <img src="./resources/dial2.svg" class="absolute h-[45%] dark:hidden left-[46%] top-[7%] ">
-                    <img src="./resources/dial2Dark.svg" class="absolute h-[45%] dark:block hidden left-[46%] top-[7%] ">
+                    <img src="./resources/dial2.svg" class="pressure_light_dial absolute transition-all h-[59%] dark:hidden left-[46.5%] origin-bottom top-[0%] ">
+                    <img src="./resources/dial2Dark.svg" class="pressure_dark_dial absolute transition-all h-[59%] dark:block hidden left-[46.5%] origin-bottom top-[0%] ">
                     </div>
                 </div>
-                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[780px]:text-left lg:gap-4 justify-between  w-full px-6">
-                  <span>990 hPa</span>
-                  <span>High Pressure</span>
+                <div class="flex flex-col lg:flex-row items-start gap-[0.1rem] max-[830px]:text-left lg:gap-4 justify-between  w-full px-6 relative min-[830px]:py-2">
+                    <div class="dark-sub-shimmer"></div>
+                  <span class="pressure">990 hPa</span>
+                  <span class="pressure_status">High Pressure</span>
                 </div>
               </div>
             {{else}}
@@ -254,29 +296,48 @@
         </div>
 
         <!-- right bottom card (2 SubCards) -->
-        <div class="layout_box col-span-2 max-[1024px]:col-span-3 max-[1024px]:col-start-2 min-h-[500px] row-span-1 dark:bg-[#181C2D] text-center max-[780px]:col-start-1 max-[780px]:col-span-1 flex flex-col items-center justify-around mr-4 xl:mr-0">
-            <div class="flex flex-row items-center justify-center h-[230px] xl:w-[94%] w-full bg-white rounded-[20px] gap-[10px] px-4 dark:bg-[#181c2d] dark:outline outline-white outline-1">
+        <div class="layout_box detail_cards col-span-2 max-[1200px]:col-span-3 max-[1200px]:col-start-2 min-h-[500px] row-span-1 dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 flex flex-col items-center justify-around  xl:mr-0 max-[500px]:gap-[15px]">
+            <div class="flex flex-row items-center justify-center h-[230px] xl:w-[94%] w-full bg-white rounded-[20px] gap-[0px] px-4 dark:bg-[#181c2d] dark:outline outline-white outline-1 max-[500px]:h-[400px] max-[500px]:p-4 max-[500px]:flex-col">
                 <div class="air-visual w-full flex flex-col h-full justify-around">
-                    <h2 class="mb-0 text-left font-medium text-[1.4rem]">Air Quality</h2>
-                    <div class="relative w-[69%] mx-auto min-w-[100px]">
+                    <h2 class="mb-0 text-left font-medium text-[1.4rem] max-[500px]:text-[1.2rem]">Air Quality</h2>
+                    <div class="relative w-[69%] max-[500px]:w-[100px] mx-auto min-w-[100px]">
                     <img class="w-full max-w-[120px] mx-auto" src="./resources/weatherSubCards/speedSvg.svg" alt="Image description">
                     <img class="w-[auto] left-[48%] lg:left-[47%] h-[45%] top-[6%] origin-bottom absolute mx-auto air_dial" src="./resources/weatherSubCards/speedDial.svg" alt="Image description">
                     </div>
-                    <div class="flex flex-col justify-between w-full px-6">
-                        <span class="text-base font-normal">Moderate</span>
+                    <div class="flex max-[500px]:mt-[8px] flex-col justify-between w-full px-6 relative">
+                    <div class="dark-sub-shimmer"></div>
+                        <span class="text-base font-normal aqi_status">Moderate</span>
                     </div>
                 </div>
 
-                <div class="air_detail font-normal text-base flex flex-col items-start justify-center h-full w-full">
-                    <p class="air_description text-left mb-[13px] text-[#606781] font-medium text-[1.1rem] dark:text-white">Very good quality air </p>
-                    <span class="font-normal">P2.5: 119 &micro;g/m<sup>3</sup></span>
-                    <span class="font-normal">P10: 239 &micro;g/m<sup>3</sup></span>
+                <div class="air_detail text-left font-normal text-base flex flex-col items-start justify-center h-full w-full">
+                    <div class="relative min-[830px]:h-[109px] min-[830px]:w-full px-2 max-[500px]:px-0" >
+                    <p class="air_description text-left mb-[13px] text-[#606781] font-medium text-[1.1rem] dark:text-white aqi_description max-[500px]:font-normal max-[500px]:text-base max-[500px]:break-all">
+                        Very good quality air 
+                        </p>
+                    <div class="dark-sub-shimmer"></div>
+                    </div>
+
+                    <div class="px-2 flex flex-col relative w-[90%] mt-[5px] max-[500px]:px-0">
+                        <div class="dark-sub-shimmer"></div>
+                    <span class="font-normal max-[500px]:font-light max-[500px]:text-[0.9rem] air_pm25">
+                        P2.5: 119 &micro;g/m<sup>3</sup>
+                    </span>
+
+                    <span class="font-normal max-[500px]:font-light max-[500px]:text-[0.9rem] air_pm10 relative">
+                        P10: 239 &micro;g/m<sup>3</sup>
+                    </span>
+
+                    <span class="font-normal max-[500px]:font-light max-[500px]:text-[0.9rem] aqi relative">
+                        European AQI: 239 &micro;g/m<sup>3</sup>
+                    </span>
+                    </div>
                 </div>
             </div>
               
 
             <div class="flex flex-col items-start justify-around h-[230px] bg-white rounded-[20px] px-4 xl:w-[94%] w-full dark:bg-[#181c2d] dark:outline outline-white outline-1">
-                <h3 class="mb-0 text-left font-medium text-[1.4rem]">Sunrise & Sunset</h3>
+                <h3 class="mb-0 text-left font-medium text-[1.4rem] max-[500px]:text-[1.2rem]">Sunrise & Sunset</h3>
 
                 <div class="flex flex-row items-center justify-around w-full">
                     <div class="sunrise w-full flex flex-col items-center justify-center h-full">
@@ -284,15 +345,15 @@
                            <img class="w-full" src="./resources/weatherSubCards/sunRise.svg">
                         </div>
                         <h2 class="text-xl mb-1">Sunrise</h2>
-                        <span>05:47 AM</span>
+                        <span class="sunrise_time">05:47 AM</span>
                     </div>
                     <div class="sunset w-full flex flex-col items-center justify-center h-full">
-                        <!-- <img class="w-[170px] mb-4" src="./resources/weatherSubCards/circleSvg.svg" alt="Image description"> -->
+                        
                         <div class="w-[170px] mb-4">
                             <img class="w-full" src="./resources/weatherSubCards/sunset.svg">
                          </div>
                         <h2 class="text-xl mb-1">Sunset</h2>
-                        <span>07:55 PM</span>
+                        <span class="sunset_time">07:55 PM</span>
                     </div>
                 </div>
             </div>
