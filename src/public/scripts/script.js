@@ -211,8 +211,15 @@ let loginUrl= `${backend_Url}/login`
         password:passwordField.value
       })
     
-    }).then(res=>res.json()).then(data=>{
+    }).then(res=>{
+      if(!res.ok){
+        throw new Error(res.status);
+      }
+      return res.json();
+    })
+      .then(data=>{
       var date = new Date();
+      // if(data.email){
       date.setHours(date.getHours() + 1);
       var expires = "; expires=" + date.toGMTString();
       console.log("Email backend data: ",data);
@@ -220,7 +227,10 @@ let loginUrl= `${backend_Url}/login`
       document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
 
-      // window.location.replace(`/`);
+      window.location.replace(`/`);
+      // }else{
+      //   console.log("Error, ", data);
+      // }
     }).catch(err=>{
       console.log("Sorry the email was not found: ",err);
       // window.location.replace(`/`);
