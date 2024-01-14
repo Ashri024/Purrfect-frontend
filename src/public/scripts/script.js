@@ -878,11 +878,18 @@ console.log("Email: ", email);
   let searchHistory = "";
 
   function loadSearchHistory(searchHistory){
+    console.log("load: ",searchHistory);
+    let searchHistoryLength = searchHistory.length;
     let numberOfCities = $(".city").length;
-    let citiesToView = 20- numberOfCities-6;
-    console.log("Number of cities: ", numberOfCities);
-    for(let i = 19-numberOfCities; i >= citiesToView; i--){
+    let citiesToView = searchHistoryLength - numberOfCities-6;
+    console.log("SearchHistory Length", searchHistoryLength);
+    console.log("Number of cities", numberOfCities);
+    console.log("Cities to view", citiesToView);
+    
+    for(let i= searchHistoryLength-numberOfCities-1; i >= citiesToView; i--){
+      console.log(i);
       let city = searchHistory[i];
+      console.log(city);
       if(city){
       let cityName= city.location;
       let min= city.min;
