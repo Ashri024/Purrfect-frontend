@@ -1,4 +1,4 @@
- <tr class="relative forecast_instance lg:hover:cursor-pointer" id="{{id}}" forecast_date="">
+ <tr class="relative forecast_instance lg:hover:cursor-pointer hidden" id="{{id}}" forecast_date="">
     {{!-- <td class="dark-sub-shimmer"></td> --}}
         <td  class="dayName forecast_instance1">
             <div class="dark-sub-shimmer"></div>
@@ -18,7 +18,7 @@
         
 </tr>
 
-<tr class="lg:hover:cursor-grab" data-target="{{id}}" infoSet="false">
+<tr class="lg:hover:cursor-grab tr-hidden" data-target="{{id}}" infoSet="false">
 <td colspan="4" >
     <div id="dropdown" class="relative">
         <div class="dropdown-content dark:text-black flex flex-row flex-wrap-none gap-3 overflow-x lg:overflow-x-hidden lg:hover:overflow-x-auto active:cursor-grabbing h-[0px] opacity-0">

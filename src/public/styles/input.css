@@ -578,6 +578,17 @@ body .layout_box{
   border-radius: 10px;
 }
  @media screen and (max-width:830px) {
+  html.dark .main_info .dark-sub-shimmer{
+    height: 108%;
+    top: -20px;
+  }
+  .location span{
+    /* font-size: 1.3rem; */
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .panel_header{
     display: none!important;
   }
@@ -706,6 +717,10 @@ body .layout_box{
 }
 .location span{
   font-size: 1.3rem;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .sub_card3 > span{
   font-size: 1.1rem;
@@ -718,12 +733,14 @@ body .layout_box{
  }
  .status{
   font-size: 1.5rem;
+  font-weight: 600;
  }
  .sub_card2>div{
   font-size: 1.5rem;
  }
  .temperature{
   font-size: 2.5rem;
+  font-weight: 600;
  }
  .dayHourChart{
   display: none!important;
@@ -735,7 +752,14 @@ body .layout_box{
  thead th:nth-child(1), tbody td:nth-child(1) {
   padding-left: 0;
 }
+thead th:nth-child(2), tbody td:nth-child(2) {
+  display: none;
 }
+.weather_main_card::after {
+  background: rgba(255, 255, 255, 0.6);
+}
+}
+
  @media screen and (min-width:1024px) and (max-width:1400px) {
  thead th:nth-child(2), tbody td:nth-child(2) {
     width: 30%;
@@ -749,4 +773,19 @@ body .layout_box{
     width: 20px;
     height: 20px;
   }
+  .sub_card1 {
+    display: flex;
+    min-width: 200px;
+  }
+  .layout_box .right-forecast{
+    padding: 0.5rem 0;
+
+  }
+  .layout_box .right-forecast .forecast_instance i{
+    margin-right: 0.1rem;
+  }
+ }
+
+ table tbody .tr-hidden{
+    display: none;
  }

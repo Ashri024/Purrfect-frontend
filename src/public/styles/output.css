@@ -690,8 +690,8 @@ video {
   margin-bottom: 1.25rem;
 }
 
-.mb-\[13px\] {
-  margin-bottom: 13px;
+.mb-\[0px\] {
+  margin-bottom: 0px;
 }
 
 .ml-2 {
@@ -746,10 +746,6 @@ video {
   margin-top: 5px;
 }
 
-.mb-\[0px\] {
-  margin-bottom: 0px;
-}
-
 .block {
   display: block;
 }
@@ -802,8 +798,8 @@ video {
   height: 200px;
 }
 
-.h-\[230px\] {
-  height: 230px;
+.h-\[210px\] {
+  height: 210px;
 }
 
 .h-\[240px\] {
@@ -828,6 +824,10 @@ video {
 
 .h-\[45\%\] {
   height: 45%;
+}
+
+.h-\[47\%\] {
+  height: 47%;
 }
 
 .h-\[500px\] {
@@ -865,14 +865,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[210px\] {
-  height: 210px;
-}
-
-.h-\[47\%\] {
-  height: 47%;
 }
 
 .min-h-\[420px\] {
@@ -976,11 +968,6 @@ video {
 }
 
 .w-\[fit-content\] {
-  width: -moz-fit-content;
-  width: fit-content;
-}
-
-.w-fit {
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -1298,10 +1285,6 @@ video {
   line-height: 2.25rem;
 }
 
-.text-\[1\.1rem\] {
-  font-size: 1.1rem;
-}
-
 .text-\[1\.2rem\] {
   font-size: 1.2rem;
 }
@@ -1312,6 +1295,10 @@ video {
 
 .text-\[1\.5rem\] {
   font-size: 1.5rem;
+}
+
+.text-\[1rem\] {
+  font-size: 1rem;
 }
 
 .text-\[2rem\] {
@@ -1340,10 +1327,6 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-\[1rem\] {
-  font-size: 1rem;
 }
 
 .font-bold {
@@ -2039,6 +2022,19 @@ body .layout_box{
 }
 
 @media screen and (max-width:830px) {
+  html.dark .main_info .dark-sub-shimmer{
+    height: 108%;
+    top: -20px;
+  }
+
+  .location span{
+    /* font-size: 1.3rem; */
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .panel_header{
     display: none!important;
   }
@@ -2194,6 +2190,10 @@ body .layout_box{
 
   .location span{
     font-size: 1.3rem;
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .sub_card3 > span{
@@ -2210,6 +2210,7 @@ body .layout_box{
 
   .status{
     font-size: 1.5rem;
+    font-weight: 600;
   }
 
   .sub_card2>div{
@@ -2218,6 +2219,7 @@ body .layout_box{
 
   .temperature{
     font-size: 2.5rem;
+    font-weight: 600;
   }
 
   .dayHourChart{
@@ -2230,6 +2232,14 @@ body .layout_box{
 
   thead th:nth-child(1), tbody td:nth-child(1) {
     padding-left: 0;
+  }
+
+  thead th:nth-child(2), tbody td:nth-child(2) {
+    display: none;
+  }
+
+  .weather_main_card::after {
+    background: rgba(255, 255, 255, 0.6);
   }
 }
 
@@ -2250,6 +2260,23 @@ body .layout_box{
     width: 20px;
     height: 20px;
   }
+
+  .sub_card1 {
+    display: flex;
+    min-width: 200px;
+  }
+
+  .layout_box .right-forecast{
+    padding: 0.5rem 0;
+  }
+
+  .layout_box .right-forecast .forecast_instance i{
+    margin-right: 0.1rem;
+  }
+}
+
+table tbody .tr-hidden{
+  display: none;
 }
 
 .hover\:bg-gray-200:hover {
@@ -2367,6 +2394,10 @@ body .layout_box{
 }
 
 @media (max-width: 830px) {
+  .max-\[830px\]\:top-\[-20px\] {
+    top: -20px;
+  }
+
   .max-\[830px\]\:top-\[10px\] {
     top: 10px;
   }
@@ -2401,6 +2432,10 @@ body .layout_box{
 
   .max-\[830px\]\:hidden {
     display: none;
+  }
+
+  .max-\[830px\]\:h-\[108\%\] {
+    height: 108%;
   }
 
   .max-\[830px\]\:h-\[50px\] {
@@ -2774,24 +2809,16 @@ body .layout_box{
     margin-right: 0px;
   }
 
-  .xl\:h-\[61\%\] {
-    height: 61%;
-  }
-
-  .xl\:h-full {
-    height: 100%;
-  }
-
   .xl\:h-\[47\%\] {
     height: 47%;
   }
 
-  .xl\:w-\[30px\] {
-    width: 30px;
+  .xl\:h-\[61\%\] {
+    height: 61%;
   }
 
-  .xl\:w-\[94\%\] {
-    width: 94%;
+  .xl\:w-\[30px\] {
+    width: 30px;
   }
 
   .xl\:min-w-\[300px\] {

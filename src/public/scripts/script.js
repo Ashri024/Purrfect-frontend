@@ -1,14 +1,103 @@
 let isDarkMode=$("html").hasClass("dark");
-const dataValues = [20, 22, 25, 23, 26, 27, 24, 22];
+let globalDataValues = [20, 22, 25, 23, 26, 27, 24, 22];
 let chart;
+const canvas = document.getElementById('myChart');
+let ctx;
+if(canvas){
+  ctx = canvas.getContext('2d');
+}
+const labels=["1 AM","4 AM","7 AM","10 AM","1 PM","4 PM","7 PM","10 PM"];
+
+let minTicks="";
+let maxTicks="";
+function createChart(dataValues){
+let isDarkMode = document.documentElement.classList.contains('dark');
+let maxValue= Math.max(...dataValues)+5;
+let minValue= Math.min(...dataValues)-5;
+let backgroundColor = isDarkMode ? '#ffffff40' : '#eef6ff';
+let labelColor = isDarkMode ? '#fff' : '#000';
+Chart.register(ChartDataLabels);
+Chart.register({
+  id: 'customPlugin',
+  afterUpdate: function(chart, options) {
+    let yScale = chart.scales.y;
+    let ticks = yScale.getTicks();
+    if (ticks.length > 0) {
+      let minValue = ticks[0].value;
+      let maxValue = ticks[ticks.length - 1].value;
+      minTicks=minValue;
+      maxTicks=maxValue;
+    }
+  }
+});
+
+chart=new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '24 Hour Forecast',
+      data: dataValues,
+      fill: true,
+      borderColor: labelColor,
+      backgroundColor: backgroundColor, 
+      tension: 0.1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        grid: {
+          display: false,
+        },
+        suggestedMax: maxValue,
+        suggestedMin: minValue,
+       
+        ticks: {
+          stepSize: 5,
+          color: labelColor,
+
+        }
+      },
+      x: {
+        grid: {
+          display: false // Hide grid lines on the x-axis
+        },
+        ticks: {
+          color: labelColor // Set color of x-axis labels
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        enabled: false // Disable default tooltips
+      },
+      legend: {
+        display: false
+      },
+      datalabels: {
+        align: 'end',
+        anchor: 'end',
+        color: labelColor ,
+        formatter: function(value, context) {
+          value = value + '°C';
+          return value.toString();
+        }
+      }
+  }
+}});
+}
+
 const darkMode=$(".darkMode");
 darkMode.each(function(){
   $(this).click(function(){
     isDarkMode= !isDarkMode;
     $("html").toggleClass("dark");
-    localStorage.setItem('darkMode', isDarkMode);
     chart.destroy();
-    createChart(dataValues);
+    createChart(globalDataValues);
+    localStorage.setItem('darkMode', isDarkMode);
   })
 })
 $(document).ready(function(){
@@ -23,97 +112,9 @@ if(localStorage.getItem('darkMode') === 'true'){
 }
 
 
-  const canvas = document.getElementById('myChart');
-  let ctx;
-  if(canvas){
-    ctx = canvas.getContext('2d');
-}
-  const labels=["1 AM","4 AM","7 AM","10 AM","1 PM","4 PM","7 PM","10 PM"];
-
-let minTicks="";
-let maxTicks="";
-function createChart(dataValues){
-  let isDarkMode = document.documentElement.classList.contains('dark');
-  let maxValue= Math.max(...dataValues)+5;
-  let minValue= Math.min(...dataValues)-5;
-  let backgroundColor = isDarkMode ? '#ffffff40' : '#eef6ff';
-  let labelColor = isDarkMode ? '#fff' : '#000';
-  Chart.register(ChartDataLabels);
-  Chart.register({
-    id: 'customPlugin',
-    afterUpdate: function(chart, options) {
-      let yScale = chart.scales.y;
-      let ticks = yScale.getTicks();
-      if (ticks.length > 0) {
-        let minValue = ticks[0].value;
-        let maxValue = ticks[ticks.length - 1].value;
-        minTicks=minValue;
-        maxTicks=maxValue;
-      }
-    }
-  });
-
-  chart=new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '24 Hour Forecast',
-        data: dataValues,
-        fill: true,
-        borderColor: labelColor,
-        backgroundColor: backgroundColor, 
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          grid: {
-            display: false,
-          },
-          suggestedMax: maxValue,
-          suggestedMin: minValue,
-         
-          ticks: {
-            stepSize: 5,
-            color: labelColor,
-
-          }
-        },
-        x: {
-          grid: {
-            display: false // Hide grid lines on the x-axis
-          },
-          ticks: {
-            color: labelColor // Set color of x-axis labels
-          }
-        }
-      },
-      plugins: {
-        tooltip: {
-          enabled: false // Disable default tooltips
-        },
-        legend: {
-          display: false
-        },
-        datalabels: {
-          align: 'end',
-          anchor: 'end',
-          color: labelColor ,
-          formatter: function(value, context) {
-            value = value + '°C';
-            return value.toString();
-          }
-        }
-    }
-  }});
-}
 
 if(canvas)
-  createChart(dataValues);
+  createChart(globalDataValues);
 
   const imgWidth = 50; // Width of the image
 
@@ -141,7 +142,7 @@ if(canvas)
 }
 // Call the function passing the canvas and data values
 if(canvas){
-calculatePositions(canvas, dataValues);
+calculatePositions(canvas, globalDataValues);
 }
 
   const sunny= ["#ff9900", "#fdf966","#6e6b02","#ffe23e" ];
@@ -331,18 +332,18 @@ search_box_responsive();
             )
           .click(async function(){
             let location =`${city.name}, ${city.admin1 ? city.admin1+",": ""} ${city.country? city.country:""} `;
+            let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
             
             let latitude= city.latitude;
             let longitude= city.longitude;
-            localStorage.setItem('location', location);
+            localStorage.setItem('location', location2);
             localStorage.setItem('lat', latitude);
             localStorage.setItem('lon', longitude);
             if(window.location.pathname!=="/"){
-            await redirect(location, latitude, longitude);
+            await redirect(location2, latitude, longitude);
             }
-
+            $("#search_city").val(location);
             city_list.empty();
-            let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
             $(".shimmer, .dark-shimmer, .dark-sub-shimmer").css("display", "inline-block");
             loadHomePage(latitude, longitude,location2);
           });
@@ -357,9 +358,6 @@ search_box_responsive();
   function redirect(location,lat,lon){
     return new Promise((resolve, reject)=>{
         try{
-            // localStorage.setItem('location', location);
-            // localStorage.setItem('lat', lat);
-            // localStorage.setItem('lon', lon);
             window.location.href="/";
             resolve(true);
         }catch(err){
@@ -583,6 +581,7 @@ search_box_responsive();
       weather_code_3_hour.push(weather_code[three_hour[i]]);
     }
     let dataValues=hourly_temp_3_hour;
+    globalDataValues=dataValues;
     chart.destroy();
     createChart(dataValues);
     calculatePositions(canvas, dataValues);
@@ -620,7 +619,7 @@ $('tr[id]').each(function() {
     });
     }
 
-    function loadOnClick(lat, lon, data_target){
+  function loadOnClick(lat, lon, data_target){
       const targetRow = $(`tr[data-target="${data_target.attr("id")}"]`);
       if(targetRow.attr('infoSet') === 'false'){
         let date = data_target.attr('forecast_date');
@@ -641,13 +640,14 @@ $('tr[id]').each(function() {
      
     }
 
-    loadForecastHourly();
+  loadForecastHourly();
 
   function loadForecastSection(lat,lon){
     return new Promise((resolve, reject)=>{
       try{
     let forecastSelect= document.getElementById("forecast");
     let forecast= forecastSelect.value;
+
     fetch(`${backend_Url}/forecast?lat=${lat}&lon=${lon}&forecast_days=${forecast}`).then(res=>res.json()).then(data=>{
       let forecastArray= data.forecastArray;
       for(let i =0; i<forecastArray.length; i++){
@@ -678,13 +678,36 @@ $('tr[id]').each(function() {
   })
   }
 
+  function forecastSelectVisible(forecast){
+    let numberOfForecastVisible = $("tr[id]:not(.hidden)").length;
+    if(forecast>numberOfForecastVisible){
+      for(let i=numberOfForecastVisible; i<forecast; i++){
+    for(let i=0; i<forecast; i++){
+    $("tr[id]").eq(i).removeClass("hidden");
+    // console.log($("tr[data-target]").eq(i));
+    $("tr[data-target]").eq(i).removeClass("tr-hidden");
+    }
+  } }
+  else if(forecast<numberOfForecastVisible){
+    for(let i=forecast; i<numberOfForecastVisible; i++){
+      $("tr[id]").eq(i).addClass("hidden");
+      $("tr[data-target]").eq(i).addClass("tr-hidden");
+      }
+    } 
+}
 
+  $("#forecast").on("change", function(){
+    let forecast= $(this).val();
+    forecastSelectVisible(forecast);
+  })
 
   function loadHomePage(lat,lon, location){
   globalLat=lat;
   globalLon=lon;
   closeAllForecastCards();
-  console.log(lat, lon,location);
+  let forecast= document.getElementById("forecast").value;
+  forecastSelectVisible(forecast);
+  console.log("Frontend query lat, lon, location :", lat, lon,location);
   console.log(`${backend_Url}/weather?lat=${lat}&lon=${lon}`);
     fetch(`${backend_Url}/weather?lat=${lat}&lon=${lon}`).then(res=>res.json()).then(data=>{
 
@@ -752,7 +775,9 @@ $('tr[id]').each(function() {
       $("tr[infoSet='true']").each(function(i, row){
        $(this).attr("infoSet", "false");
       })
+      
       loadForecastSection(lat,lon).then(()=>{
+        console.log("Forecast loaded");
         $(".forecast_instance .dark-sub-shimmer").css("display", "none");
       });
     })
@@ -767,9 +792,14 @@ $('tr[id]').each(function() {
   let lat= localStorage.getItem('lat');
   let lon= localStorage.getItem('lon');
   if(url === '/'){
-  if(location && lat && lon){
+    lat= parseFloat(lat);
+    lon= parseFloat(lon);
+  if(location && typeof location === 'string' && lat && typeof lat === 'number' && lon && typeof lon === 'number'){
+    console.log("local storage found: ", location, lat, lon );
     loadHomePage(lat,lon,location);
   }else{
+    console.log("false local storage found: ", location, lat, lon );
+
     loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
   }
   }
