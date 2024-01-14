@@ -568,8 +568,8 @@ video {
   left: 0px;
 }
 
-.left-\[40px\] {
-  left: 40px;
+.left-\[0px\] {
+  left: 0px;
 }
 
 .left-\[46\.5\%\] {
@@ -592,6 +592,10 @@ video {
   right: 0px;
 }
 
+.right-\[10px\] {
+  right: 10px;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -606,6 +610,10 @@ video {
 
 .top-\[4px\] {
   top: 4px;
+}
+
+.top-\[5px\] {
+  top: 5px;
 }
 
 .top-\[6\%\] {
@@ -867,10 +875,6 @@ video {
   height: 100vh;
 }
 
-.max-h-\[400px\] {
-  max-height: 400px;
-}
-
 .max-h-\[500px\] {
   max-height: 500px;
 }
@@ -885,6 +889,14 @@ video {
 
 .min-h-\[550px\] {
   min-height: 550px;
+}
+
+.min-h-\[87\%\] {
+  min-height: 87%;
+}
+
+.min-h-\[130px\] {
+  min-height: 130px;
 }
 
 .w-1\/2 {
@@ -994,6 +1006,10 @@ video {
 
 .min-w-\[80px\] {
   min-width: 80px;
+}
+
+.min-w-\[132px\] {
+  min-width: 132px;
 }
 
 .max-w-\[115px\] {
@@ -1273,6 +1289,14 @@ video {
 
 .pr-\[0px\] {
   padding-right: 0px;
+}
+
+.pt-2 {
+  padding-top: 0.5rem;
+}
+
+.pt-0 {
+  padding-top: 0px;
 }
 
 .text-left {
@@ -1794,13 +1818,18 @@ thead th:nth-child(4), tbody td:nth-child(4) {
   transition: all 0.3s ease-in-out;
 }
 
-body::-webkit-scrollbar,.dropdown-content::-webkit-scrollbar,.tbody::-webkit-scrollbar, .city_list::-webkit-scrollbar {
+body::-webkit-scrollbar,
+.dropdown-content::-webkit-scrollbar,
+tbody::-webkit-scrollbar,
+.city_list::-webkit-scrollbar {
   width: 5px;
   /* Width of the scrollbar */
   height: 5px;
 }
 
-body::-webkit-scrollbar-track,.dropdown-content::-webkit-scrollbar-track, tbody::-webkit-scrollbar-track,.city_list::-webkit-scrollbar-track  {
+body::-webkit-scrollbar-track,
+.dropdown-content::-webkit-scrollbar-track, tbody::-webkit-scrollbar-track,
+.city_list::-webkit-scrollbar-track {
   background: #f1f1f1;
   /* Track background color */
 }
@@ -1967,67 +1996,11 @@ input:checked + .slider:before {
   color: gray;
 }
 
-/* @media screen and (min-width:1024px){
-  .unit-option label:hover {
-    background-color: #ddd;
-  }
-  html.dark .pages .lockPages:hover, html .pages .lockPages:hover{
-    color: gray;
-    background: transparent;
-  }
-  html.dark .pages a:hover{
-    background: #ffffff3b;
-      padding: 0.5rem;
-      padding-right: 0;
-      color: white;
-  }
-  .pages a:hover{
-    background: #EEF6FF;
-      padding: 0.5rem;
-      padding-right: 0;
-      color: black;
-  }
-  
-  body::-webkit-scrollbar-thumb:hover,.dropdown-content::-webkit-scrollbar-thumb:hover,tbody::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
-} */
-
 @media screen and (max-width:1024px) {
   .pages{
     padding: 1rem 0 !important;
   }
 }
-
-/* @media screen and (min-width:1024px) and (max-width:1200px) {
-  .weather_main_card{
-    height: 300px;
-  }
-  .location{
-    align-items: center;
-  }
-  .main_info{
-    flex-direction: row-reverse;
-    align-items: baseline;
-  }
-  .sub_card1{
-    margin-right: 0;
-  }
-  .temperature{
-    font-size: 3rem;
-  }
-  .min_max{
-    flex-direction: column;
-    gap: 0;
-  }
-  .precipitation, .humidity{
-    gap: 0.5rem;
-
-  }
-  .sub_card3{
-    margin-left: 0;
-  }
- } */
 
 body .layout_box{
   border-radius: 10px;
@@ -2285,10 +2258,23 @@ body .layout_box{
   .layout_box .right-forecast .forecast_instance i{
     margin-right: 0.1rem;
   }
+
+  .city{
+    transition: all 0.3s linear;
+  }
+
+  .city:hover{
+    /* transform: scale(1.03); */
+    box-shadow: 6px 6px 7px rgb(0 0 0 / 28%);
+  }
 }
 
 table tbody .tr-hidden{
   display: none;
+}
+
+.hover\:cursor-pointer:hover {
+  cursor: pointer;
 }
 
 .hover\:bg-gray-200:hover {
@@ -2304,6 +2290,11 @@ table tbody .tr-hidden{
 .hover\:text-black:hover {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.hover\:text-blue-300:hover {
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity));
 }
 
 .focus\:outline-none:focus {
@@ -2368,6 +2359,10 @@ table tbody .tr-hidden{
     height: 330px;
   }
 
+  .max-\[1024px\]\:h-\[340px\] {
+    height: 340px;
+  }
+
   .max-\[1024px\]\:flex-col {
     flex-direction: column;
   }
@@ -2376,12 +2371,20 @@ table tbody .tr-hidden{
     justify-content: center;
   }
 
+  .max-\[1024px\]\:gap-\[5px\] {
+    gap: 5px;
+  }
+
   .max-\[1024px\]\:p-0 {
     padding: 0px;
   }
 
   .max-\[1024px\]\:p-2 {
     padding: 0.5rem;
+  }
+
+  .max-\[1024px\]\:pt-0 {
+    padding-top: 0px;
   }
 
   .max-\[1024px\]\:text-\[1\.3rem\] {
@@ -2923,6 +2926,11 @@ table tbody .tr-hidden{
 :is(:where(.dark) .dark\:text-black) {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+:is(:where(.dark) .dark\:text-gray-400) {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 :is(:where(.dark) .dark\:text-white) {

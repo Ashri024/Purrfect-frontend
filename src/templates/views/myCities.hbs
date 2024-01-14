@@ -13,18 +13,10 @@
     <div class="main p-4 w-full max-[780px]:px-0 max-[780px]:py-0">
     {{>header}}
 
-        <div class="myCities max-[780px]:m-auto outline-1 outline-[#80808082] dark:outline dark:bg-[#181c2d] bg-white rounded-[10px] h-auto w-[95%] max-[900px]:w-[92%] m-auto p-4 max-[1200px]:mr-0 max-[780px]:pb-[70px]">
+        <div class="myCities max-[780px]:m-auto outline-1 outline-[#80808082] dark:outline dark:bg-[#181c2d] bg-white rounded-[10px] h-auto w-[95%] max-[900px]:w-[92%] m-auto p-4 max-[1200px]:mr-0 max-[780px]:pb-[70px] min-h-[87%] relative">
                 <h1 class="font-bold text-2xl">Recently Searched Cities</h1>
                 {{#if loggedIn}}
                 <div class="cities grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 min-[2000px]:grid-cols-4 gap-4 mt-6">
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
-                    {{>myCitiesCard}}
             </div>
             {{else}}
             <div class="lock flex flex-col items-center justify-center h-full">
@@ -32,6 +24,9 @@
                 <span>Login to get access</span>
             </div>
             {{/if}}
+            <div class="mt-[5px] w-full text-right">
+            <button class="hover:text-blue-300 px-4 py-2 rounded see_more">See More</button>
+            </div>
         </div>
     </div>
     {{>script}}

@@ -95,8 +95,10 @@ darkMode.each(function(){
   $(this).click(function(){
     isDarkMode= !isDarkMode;
     $("html").toggleClass("dark");
+    if(canvas){
     chart.destroy();
     createChart(globalDataValues);
+  }
     localStorage.setItem('darkMode', isDarkMode);
   })
 })
@@ -219,6 +221,10 @@ let loginUrl= `${backend_Url}/login`
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
 
       window.location.replace(`/`);
+    }).catch(err=>{
+      console.log("Sorry the email was not found: ",err);
+      // window.location.replace(`/`);
+
     });
 
 });}
@@ -331,6 +337,7 @@ search_box_responsive();
            `
             )
           .click(async function(){
+            let isSearched=true;
             let location =`${city.name}, ${city.admin1 ? city.admin1+",": ""} ${city.country? city.country:""} `;
             let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
             
@@ -339,13 +346,15 @@ search_box_responsive();
             localStorage.setItem('location', location2);
             localStorage.setItem('lat', latitude);
             localStorage.setItem('lon', longitude);
+
             if(window.location.pathname!=="/"){
-            await redirect(location2, latitude, longitude);
+            await redirect(isSearched);
             }
             $("#search_city").val(location);
             city_list.empty();
             $(".shimmer, .dark-shimmer, .dark-sub-shimmer").css("display", "inline-block");
-            loadHomePage(latitude, longitude,location2);
+            loadHomePage(latitude, longitude,location2, isSearched);
+
           });
           
           city_list.append(cityLi);
@@ -355,36 +364,36 @@ search_box_responsive();
     }
   });
   
-  function redirect(location,lat,lon){
+  function redirect(isSearched){
     return new Promise((resolve, reject)=>{
         try{
+          localStorage.setItem('isSearched', isSearched);
             window.location.href="/";
+
             resolve(true);
         }catch(err){
             reject(err);
         }
     })
 }
-  let precipitaion_unit="mm";
+  let precipitation_unit="mm";
   let temp_unit="&#176;";
   let temp_word="C";
   let wind_unit="km/h";
   let pressure_unit="hPa";
   let visibility_unit="m";
 
-  function loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
+  function loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
     $(".location span").html(location);
     $(".min").html(`Min: ${min}${temp_unit}`);
     $(".max").html(`Max: ${max}${temp_unit}`);
     $(".date span").html(currDate);
-    $(".precipitation span").html(`Precipitaion: ${precipitaion}${precipitaion_unit} `);
+    $(".precipitation span").html(`Precipitation: ${precipitation}${precipitation_unit} `);
     $(".humidity span").html(`Humidity: ${humidity}%`);
     $(".feelsLike span").html(`Feels Like: ${feelsLike}${temp_unit}`);
     $(".main_temp").html(`<span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">${temp}${temp_unit}</span>${temp_word}</div>`);
     $(".status").html(desc);
     $(".weatherIcon").attr("src", weatherIcon);
-
-    
   }
 
   function getWindStatus(windSpeed) {
@@ -701,14 +710,21 @@ $('tr[id]').each(function() {
     forecastSelectVisible(forecast);
   })
 
-  function loadHomePage(lat,lon, location){
+  let cookies = document.cookie.split('; ');
+  let email=null;
+  if(cookies.length>1){
+  email = cookies.find(row => row.startsWith('email=')).split('=')[1];
+  // console.log(email)
+}
+console.log("Email: ", email);
+  function loadHomePage(lat,lon, location, isSearched=false){
   globalLat=lat;
   globalLon=lon;
   closeAllForecastCards();
   let forecast= document.getElementById("forecast").value;
   forecastSelectVisible(forecast);
   console.log("Frontend query lat, lon, location :", lat, lon,location);
-  console.log(`${backend_Url}/weather?lat=${lat}&lon=${lon}`);
+  console.log(`${backend_Url}/weather?lat=${lat}&lon=${lon}&current=temperature_2m&forecast_days=1`);
     fetch(`${backend_Url}/weather?lat=${lat}&lon=${lon}`).then(res=>res.json()).then(data=>{
 
       //Received all the data now retrieving data for main Card
@@ -733,12 +749,54 @@ $('tr[id]').each(function() {
       const max= weatherData.daily.temperature_2m_max[0];
       const feelsLike= weatherData.current.apparent_temperature;
       const humidity= weatherData.current.relative_humidity_2m;
-      const precipitaion= weatherData.current.precipitation;
+      const precipitation= weatherData.current.precipitation;
       const weatherIcon= weatherImg.icon;
       const weatherBg= weatherImg.url;
       const desc= weatherDescription.desc;
 
-      loadMainCard(location,min,max,currDate,precipitaion,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
+      loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
+     //Send the city card data to mongo
+
+     let date = new Date(Date.now());
+     let optionsDB = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' };
+     currentDateDb= date.toLocaleDateString('en-US') + ', ' + date.toLocaleTimeString('en-US', optionsDB);
+
+     let searchedArg = localStorage.getItem('isSearched');
+     if(searchedArg === 'true'){
+    isSearched =searchedArg;
+    localStorage.setItem('isSearched', false);
+  }
+  console.log("BEfore search", isSearched);
+     if(isSearched && email){
+            fetch(`${backend_Url}/addCity`, {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                email: email,
+                location: location,
+                lat: lat,
+                lon: lon,
+                current_temp: temp,
+                min: min,
+                max: max,
+                precipitation: precipitation,
+                humidity: humidity,
+                icon: weatherIcon,
+                date: currentDateDb
+              }),
+            }).then(res => {
+              return res.json();
+            }).then(data=>{
+              console.log(data);
+            }).catch(err=>{
+              console.log(err);
+            });
+          }else{
+            console.log("Email not provided or is not being searched");
+          }
+
       let img = new Image();
       img.src = weatherBg;
       img.onload = function() {
@@ -791,6 +849,7 @@ $('tr[id]').each(function() {
   let location= localStorage.getItem('location');
   let lat= localStorage.getItem('lat');
   let lon= localStorage.getItem('lon');
+
   if(url === '/'){
     lat= parseFloat(lat);
     lon= parseFloat(lon);
@@ -803,9 +862,87 @@ $('tr[id]').each(function() {
     loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
   }
   }
-  // if(url === '/'){
-  //   console.log("home page");
-  //   loadHomePage();
-  // }
-  
+
+  //My city home page script
+
+  let searchHistory = "";
+
+  function loadSearchHistory(searchHistory){
+    let numberOfCities = $(".city").length;
+    let citiesToView = 20- numberOfCities-6;
+    console.log("Number of cities: ", numberOfCities);
+    for(let i = 19-numberOfCities; i >= citiesToView; i--){
+      let city = searchHistory[i];
+      if(city){
+      let cityName= city.location;
+      let min= city.min;
+      let max= city.max;
+      let temp= city.current_temp;
+      let precipitation= city.precipitation;
+      let humidity= city.humidity;
+      let weatherIcon= city.icon;
+      let date= city.date;
+      let lat = city.lat;
+      let lon = city.lon;
+      
+      let cityCard = $(`<div class="city bg-[#EEF6FF] dark:bg-[#ffffff1f] outline-1 outline-white dark:outline rounded-[10px] xl:min-w-[300px] xl:max-w-[410px] md:min-w-[250px] md:max-w-[510px] 2xl:max-w-[1000px] h-[240px] max-[1024px]:h-[340px] max-[1024px]:gap-[5px] flex flex-col items-center max-[1024px]:justify-center justify-around p-4 pt-0 max-[1024px]:p-2 max-[1024px]:pt-0 hover:cursor-pointer relative" title="Click to view in real time" lat="${lat}" lon="${lon}">
+
+      <span class="city_date relative w-full text-right text-gray-500 dark:text-gray-400 text-sm">${date}</span>
+
+      <div class="w-full flex flex-row justify-between max-[1024px]:flex-col gap-[10px]">
+
+          <div class="myCityLocation items-start flex flex-col gap-2 h-fit relative">
+          <div class="dark-sub-shimmer"></div>
+              <div class="flex gap-2">
+                  <img class="w-[25px] dark:hidden mt-1 h-[30px]" src="./resources/dark_profile/map-pin-2-fill.png">
+                  <img class="w-[25px] hidden dark:block mt-1 h-[30px]" src="./resources/darkModeIcons/location.svg">
+                  <span class="font-bold text-2xl max-[1024px]:text-[1.3rem] max-[1024px]:font-semibold city_location">${cityName}</span>
+              </div>
+              <span class="ml-7 font-semibold text-xl">Temperature: ${temp}${temp_unit}${temp_word}</span>
+              <span class="ml-7">Min: ${min}${temp_unit}${temp_word}</span>
+              <span class="ml-7">Max: ${max}${temp_unit}${temp_word}</span>
+          </div> 
+        <div class="flex flex-col justify-center items-center min-w-[132px] min-h-[130px] relative">
+        <div class="dark-sub-shimmer w-[130px] max-[1024px]:m-auto"></div>
+        <img src="${weatherIcon}" class="w-[130px] max-[1024px]:m-auto">
+        </div>
+      </div>
+      <div class="w-full pl-7 flex items-center justify-between max-[1024px]:p-0 relative">
+      <div class="dark-sub-shimmer"></div>
+          <span>Precipitaion: ${precipitation}${precipitation_unit}</span>
+          <span>Humidity: ${humidity}%</span>
+      </div>
+      </div>`);
+      
+      let city_location = cityCard.find(".city_location");
+      $clamp(city_location[0], {clamp: 1});
+      $(".cities").append(cityCard);
+      let img = cityCard.find('img[src="' + weatherIcon + '"]');
+      img.on('load', function() {
+        cityCard.find(".dark-sub-shimmer").css("display", "none");
+      });
+      }else{
+        console.log("No city tp display");
+      }
+    }
+  }
+
+  $(".see_more").click(function(){
+    loadSearchHistory(searchHistory);
+  })
+  function loadMyCities(){
+    console.log("Loading my cities");
+    // let email = localStorage.getItem('email');
+    if(email){
+    fetch(`${backend_Url}/getCities?email=${email}`).then(res=>res.json()).then(data=>{
+      searchHistory = data.searchHistory;
+      loadSearchHistory(searchHistory);
+      console.log(data);
+    })
+  }
+  }
+  if(url === "/myCities"){
+    loadMyCities();
+  }
+
 });
