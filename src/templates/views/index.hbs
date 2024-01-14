@@ -8,7 +8,7 @@
 </head>
 <body class="h-screen bg-[#EEF6FF] dark:bg-[#00071E] relative dark:text-white">
     <div class="search_cover hidden absolute top-0 bottom-0 left-0 right-0 opacity-30 bg-black z-30"></div>
-    <div class="main_container grid grid-cols-layout max-[1200px]:grid-cols-layout-sm max-[830px]:grid-cols-1 gap-4 h-auto min-[830px]:pr-3">
+    <div class="main_container grid grid-cols-layout max-[1200px]:grid-cols-layout-sm max-[830px]:grid-cols-1 gap-2 h-auto min-[830px]:pr-3">
 
         <!-- Side Panel -->
         <div class="layout_box lg:row-span-5 row-span-8 text-center flex flex-col items-start bottom-0 justify-center fixed w-[170px] min-[830px]:w-[200px] max-[830px]:h-auto max-[830px]:w-full h-full z-20 ">
@@ -187,7 +187,7 @@
         </div>
 
         <!-- 24 hour weather line chart-->
-        <div class="layout_box dayHourChart col-start-2 col-span-3 max-[1200px]:row-start-3 h-[200px] bg-white dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 lg:mr-0 relative">
+        <div class="layout_box dayHourChart col-start-2 col-span-3 max-[1200px]:row-start-3 h-[210px] bg-white dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 lg:mr-0 relative">
             <div class="dark-sub-shimmer"></div>
             <h1 class="absolute w-fit left-[40px] m-[3px]">24 Hour Chart</h1>
             <div id="graphContainer" class="relative p-2">
@@ -206,7 +206,7 @@
         {{!-- More detailed 4 cards --}}
         <div class="layout_box detail_cards col-start-2 col-end-5 h-[500px] bg-[#EEF6FF] dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 flex flex-row flex-wrap justify-between gap-0 align-content-around lg:mr-0">
             {{#if loggedIn}}
-            <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+            <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[47%] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Wind Speed</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -220,7 +220,7 @@
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg: lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[47%] lg: lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">UV Index</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -253,7 +253,7 @@
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[47%] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Visibility</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -269,7 +269,7 @@
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[230px] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
+              <div class="flex flex-col items-center justify-around min-[830px]:justify-center h-[47%] lg:w-[49%] w-[49%] bg-white rounded-lg dark:bg-[#181c2d] dark:outline outline-white outline-1">
 
                 <h2 class="text-xl mb-4">Sea Level Pressure</h2>
                 <div class="relative lg:w-[34%] w-[42%] max-w-[115px] lg:h-[50%] xl:h-[61%] flex items-center flex-col justify-center">
@@ -305,7 +305,7 @@
 
         <!-- right bottom card (2 SubCards) -->
         <div class="layout_box detail_cards col-span-2 max-[1200px]:col-span-3 max-[1200px]:col-start-2 min-h-[500px] row-span-1 dark:bg-[#181C2D] text-center max-[830px]:col-start-1 max-[830px]:col-span-1 flex flex-col items-center justify-around  xl:mr-0 max-[500px]:gap-[15px]">
-            <div class="flex flex-row items-center justify-center h-[230px] xl:w-[94%] w-full bg-white rounded-[20px] gap-[0px] px-4 dark:bg-[#181c2d] dark:outline outline-white outline-1 max-[500px]:h-[400px] max-[500px]:p-4 max-[500px]:flex-col">
+            <div class="flex flex-row items-center justify-center h-[47%] xl:h-[47%] w-full bg-white rounded-[10px] gap-[0px] px-2 dark:bg-[#181c2d] dark:outline outline-white outline-1 max-[500px]:h-[400px] max-[500px]:p-4 max-[500px]:flex-col">
                 <div class="air-visual w-full flex flex-col h-full justify-around">
                     <h2 class="mb-0 text-left font-medium text-[1.4rem] max-[500px]:text-[1.2rem]">Air Quality</h2>
                     <div class="relative w-[69%] max-[500px]:w-[100px] mx-auto min-w-[100px]">
@@ -320,7 +320,7 @@
 
                 <div class="air_detail text-left font-normal text-base flex flex-col items-start justify-center h-full w-full">
                     <div class="relative min-[830px]:h-[109px] min-[830px]:w-full px-2 max-[500px]:px-0 flex items-end" >
-                    <p class="air_description text-left mb-[13px] text-[#606781] font-medium text-[1.1rem] dark:text-white aqi_description max-[500px]:font-normal max-[500px]:text-base max-[500px]:break-all  ">
+                    <p class="air_description text-left mb-[0px] text-[#606781] font-medium text-[1rem] dark:text-white aqi_description max-[500px]:font-normal max-[500px]:text-base max-[500px]:break-all  ">
                         Very good quality air 
                         </p>
                     <div class="dark-sub-shimmer"></div>
@@ -344,7 +344,7 @@
             </div>
               
 
-            <div class="flex flex-col items-start justify-around h-[230px] bg-white rounded-[20px] px-4 xl:w-[94%] w-full dark:bg-[#181c2d] dark:outline outline-white outline-1">
+            <div class="flex flex-col items-start justify-around h-[47%] bg-white rounded-[10px] px-2 xl:h-[47%] w-full dark:bg-[#181c2d] dark:outline outline-white outline-1">
                 <h3 class="mb-0 text-left font-medium text-[1.4rem] max-[500px]:text-[1.2rem]">Sunrise & Sunset</h3>
 
                 <div class="flex flex-row items-center justify-around w-full">

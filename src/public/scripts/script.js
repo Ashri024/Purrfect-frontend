@@ -34,7 +34,8 @@ let minTicks="";
 let maxTicks="";
 function createChart(dataValues){
   let isDarkMode = document.documentElement.classList.contains('dark');
-
+  let maxValue= Math.max(...dataValues)+5;
+  let minValue= Math.min(...dataValues)-5;
   let backgroundColor = isDarkMode ? '#ffffff40' : '#eef6ff';
   let labelColor = isDarkMode ? '#fff' : '#000';
   Chart.register(ChartDataLabels);
@@ -73,10 +74,13 @@ function createChart(dataValues){
           grid: {
             display: false,
           },
+          suggestedMax: maxValue,
+          suggestedMin: minValue,
          
           ticks: {
             stepSize: 5,
             color: labelColor,
+
           }
         },
         x: {
@@ -103,14 +107,7 @@ function createChart(dataValues){
             value = value + '°C';
             return value.toString();
           }
-        },
-          beforeDraw: function(chart) {
-            let yScale = chart.scales.y;
-            let ticks = yScale.getTicks();
-            let minValue = ticks[0].value;
-            let maxValue = ticks[ticks.length - 1].value;
-    
-          },
+        }
     }
   }});
 }

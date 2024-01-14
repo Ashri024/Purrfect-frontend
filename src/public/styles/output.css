@@ -746,6 +746,10 @@ video {
   margin-top: 5px;
 }
 
+.mb-\[0px\] {
+  margin-bottom: 0px;
+}
+
 .block {
   display: block;
 }
@@ -861,6 +865,14 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[210px\] {
+  height: 210px;
+}
+
+.h-\[47\%\] {
+  height: 47%;
 }
 
 .min-h-\[420px\] {
@@ -1328,6 +1340,10 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-\[1rem\] {
+  font-size: 1rem;
 }
 
 .font-bold {
@@ -2760,6 +2776,14 @@ body .layout_box{
 
   .xl\:h-\[61\%\] {
     height: 61%;
+  }
+
+  .xl\:h-full {
+    height: 100%;
+  }
+
+  .xl\:h-\[47\%\] {
+    height: 47%;
   }
 
   .xl\:w-\[30px\] {
