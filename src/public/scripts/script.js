@@ -337,11 +337,12 @@ search_box_responsive();
             
             let latitude= city.latitude;
             let longitude= city.longitude;
-            if(window.location.pathname!=="/")
-            await redirect(location, latitude, longitude);
             localStorage.setItem('location', location);
-            localStorage.setItem('lat', lat);
-            localStorage.setItem('lon', lon);
+            localStorage.setItem('lat', latitude);
+            localStorage.setItem('lon', longitude);
+            if(window.location.pathname!=="/"){
+            await redirect(location, latitude, longitude);
+            }
 
             city_list.empty();
             let location2 =`${city.name}, ${city.admin1 ? city.admin1: ""} `;
@@ -359,9 +360,9 @@ search_box_responsive();
   function redirect(location,lat,lon){
     return new Promise((resolve, reject)=>{
         try{
-            localStorage.setItem('location', location);
-            localStorage.setItem('lat', lat);
-            localStorage.setItem('lon', lon);
+            // localStorage.setItem('location', location);
+            // localStorage.setItem('lat', lat);
+            // localStorage.setItem('lon', lon);
             window.location.href="/";
             resolve(true);
         }catch(err){
@@ -768,12 +769,13 @@ $('tr[id]').each(function() {
   let location= localStorage.getItem('location');
   let lat= localStorage.getItem('lat');
   let lon= localStorage.getItem('lon');
+  if(url === '/'){
   if(location && lat && lon){
     loadHomePage(lat,lon,location);
   }else{
     loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
   }
-
+  }
   // if(url === '/'){
   //   console.log("home page");
   //   loadHomePage();
