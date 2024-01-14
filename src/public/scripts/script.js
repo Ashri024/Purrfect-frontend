@@ -215,12 +215,12 @@ let loginUrl= `${backend_Url}/login`
       var date = new Date();
       date.setHours(date.getHours() + 1);
       var expires = "; expires=" + date.toGMTString();
-
+      console.log("Email backend data: ",data);
       document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
 
-      window.location.replace(`/`);
+      // window.location.replace(`/`);
     }).catch(err=>{
       console.log("Sorry the email was not found: ",err);
       // window.location.replace(`/`);
@@ -710,11 +710,11 @@ $('tr[id]').each(function() {
     forecastSelectVisible(forecast);
   })
 
-  let cookies = document.cookie.split('; ');
   let email=null;
+  let cookies = document.cookie.split('; ');
   if(cookies.length>1){
   email = cookies.find(row => row.startsWith('email=')).split('=')[1];
-  // console.log(email)
+  console.log(email)
 }
 console.log("Email: ", email);
   function loadHomePage(lat,lon, location, isSearched=false){
