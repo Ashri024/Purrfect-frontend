@@ -311,7 +311,7 @@ search_box_responsive();
     $("#search_city").val(value);
     let city_list = $(".city_list");
     if(value.trim().length>0){
-      fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${value.trim()}&count=7&language=en&format=json`).then(res=>res.json()).then(data=>{
+      fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${value.trim()}&count=15&language=en&format=json`).then(res=>res.json()).then(data=>{
         if(data.results){
         let cities=data.results;
 

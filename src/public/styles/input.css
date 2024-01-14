@@ -352,14 +352,14 @@
   overflow-y: hidden;
   transition: all 0.3s ease-in-out;
 }
-body::-webkit-scrollbar,.dropdown-content::-webkit-scrollbar,tbody::-webkit-scrollbar {
+body::-webkit-scrollbar,.dropdown-content::-webkit-scrollbar,.tbody::-webkit-scrollbar, .city_list::-webkit-scrollbar {
   width: 5px; /* Width of the scrollbar */
   height: 5px;
 }
-body::-webkit-scrollbar-track,.dropdown-content::-webkit-scrollbar-track, tbody::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,.dropdown-content::-webkit-scrollbar-track, tbody::-webkit-scrollbar-track,.city_list::-webkit-scrollbar-track  {
   background: #f1f1f1; /* Track background color */
 }
-body::-webkit-scrollbar-thumb,.dropdown-content::-webkit-scrollbar-thumb,tbody::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,.dropdown-content::-webkit-scrollbar-thumb,tbody::-webkit-scrollbar-thumb,.city_list::-webkit-scrollbar-thumb {
   background: #888; /* Thumb color */
 }
 
