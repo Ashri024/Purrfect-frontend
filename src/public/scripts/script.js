@@ -243,10 +243,10 @@ let loginUrl= `${backend_Url}/login`
   document.getElementById('signUpForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent default form submission behavior
     let name = document.getElementById('name');
-    let password = document.getElementById('password');
+    let password = document.getElementById('passwordSignUp');
     let confirmPass = document.getElementById('confirmPass');
     let phone = document.getElementById('phone');
-    let emailField = document.getElementById('email');
+    let emailField = document.getElementById('emailSignUp');
     
     fetch(`${backend_Url}/signUp`, {
       method: "POST",
@@ -962,4 +962,16 @@ console.log("Email: ", email);
     loadMyCities();
   }
 
+  $("#signUpRedirect").click(function(){
+    $("#loginFormParent").removeClass("flex");
+    $("#loginFormParent").addClass("hidden");
+    $("#signUpFormParent").removeClass("hidden");
+    $("#signUpFormParent").addClass("flex");
+  })
+  $("#loginRedirect").click(function(){
+    $("#signUpFormParent").removeClass("flex");
+    $("#signUpFormParent").addClass("hidden");
+    $("#loginFormParent").removeClass("hidden");
+    $("#loginFormParent").addClass("flex");
+  })
 });

@@ -747,3 +747,33 @@ thead th:nth-child(2), tbody td:nth-child(2) {
  table tbody .tr-hidden{
     display: none;
  }
+ .bg_cat{
+  transform: scaleX(1);
+ }
+ @media screen and (max-width:700px) {
+    #formContainer {
+      z-index: 1;
+      min-width: 100%;
+      background: url(https://f005.backblazeb2.com/file/WeatherApp/catGojo.png) no-repeat;
+      position: relative;
+      background-size: cover;
+      background-position: right;
+    }
+
+    #formContainer::before {
+      z-index: -1;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .redirectParent{
+      gap: 15px;
+    }
+    #formContainer .darkMode{
+      display: none;
+    }
+}

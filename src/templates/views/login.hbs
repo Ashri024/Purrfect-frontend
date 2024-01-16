@@ -4,19 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
+    {{>link}}
 </head>
-<body>
-    <h1>Login Form</h1>
+<body class="">
     {{!-- Create a login form which ask for email and password --}}
-    <form id="loginForm">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
+    <div class="flex flex-row w-full">
+        <div class="bg_cat w-full bg-red-300 h-screen max-[700px]:hidden">
+            <img src="./resources/catGojo2.png" alt="cat" class="w-full h-full object-cover object-center" id="cat_img">
+        </div>
+
         
-        <input type="submit" value="Login">
-        <span>Not already Registeres? <a href="/signUp">Sign Up</a></span>
-    </form>
+
+        <div id="formContainer" class="flex flex-col items-center justify-center h-screen min-w-[500px] relative">
+            <div class="profile-mode relative top-[10px] right-[10px] gap-[10px] px-4 py-1 h-[50px] flex items-center justify-end max-[830px]:p-0 w-full max-[830px]:justify-end max-[830px]:gap-[2px]">
+                <button class=" darkMode flex items-center justify-center  w-[50px] h-[50px] dark:hidden rounded-full max[700px]:hidden " ><img class="w-[95%]" src="./resources/dark_profile/Dark.svg"></button>
+
+                <button class=" darkMode items-center justify-center  w-[50px] h-[50px] rounded-full hidden dark:flex max[700px]:hidden " ><img class="w-[95%]" src="./resources/darkModeIcons/Dark.svg"></button>
+
+                <button class=" font-semibold text-base  {{#if loggedIn}} hidden{{/if}} "><a class="p-2 px-4 bg-white dark:outline-white min-w-[100px] rounded ml-2 max-[830px]:text-[0.9rem] hover:bg-white hover:text-black outline-2 transition-all outline-black outline dark:bg-[#181C2D]" href="/login">Login/SignUp</a></button>
+            </div>
+            <div id="loginFormParent" class="w-full max-w-[400px] min-h-[600px] flex flex-col items-center justify-center  max-[700px]:w-1/2 max-[700px]:min-w-[300px]">
+                <h1 class="mb-6 text-3xl text-center dark:text-white text-black font-bold">Login Form</h1>
+                <form id="loginForm" class="w-full p-4 flex h-[45%] flex-col items-center justify-evenly bg-white rounded shadow-md">
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="email">
+                            Email
+                        </label>
+                        <input class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="email" name="email" id="email">
+                    </div>
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+                            Password
+                        </label>
+                        <input class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" name="password" id="password">
+                    </div>
+                    <div class="redirectParent flex w-full items-center justify-between max-[700px]:gap-15px">
+                        <input class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline cursor-pointer" type="submit" value="Login">
+                        <span class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer" id="signUpRedirect">
+                            Not already Registered? Sign Up
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <div id="signUpFormParent" class="w-full max-w-[400px] min-h-[600px] hidden flex-col items-center justify-center max-[700px]:w-1/2 max-[700px]:min-w-[300px] max-[700px]:h-auto">
+                <h1 class="mb-6 text-3xl text-center dark:text-white text-black font-bold">Sign Up Form</h1>
+
+                <form id="signUpForm" class="w-full p-4 h-[80%] flex flex-col items-center justify-evenly bg-white rounded shadow-md">
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="name">
+                            Name
+                        </label>
+                        <input class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" name="name" id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="email">
+                            Email
+                        </label>
+                        <input class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="email" name="email" id="emailSignUp" placeholder="Enter your email">
+                    </div>
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="phone">
+                            Phone
+                        </label>
+                        <input class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="text" name="phone" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+                            Password
+                        </label>
+                        <input class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" name="password" id="passwordSignUp" placeholder="Enter your password">
+                    </div>
+                    <div class="w-full">
+                        <label class="block mb-2 text-sm font-bold text-gray-700" for="confirmPass">
+                            Confirm Password
+                        </label>
+                        <input class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" type="password" name="confirmPass" id="confirmPass" placeholder="Confirm your password">
+                    </div>
+                    <div class="flex w-full items-center justify-between">
+                        <input class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline cursor-pointer" type="submit" value="Submit">
+                        <span id="loginRedirect" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer" >
+                            Already Registered? Login
+                        </span>
+                    </div>
+                </form>
+             </div>   
+        </div>
+    </div>
     {{>script}}
 </body>
 
