@@ -328,9 +328,9 @@ let loginUrl= `${backend_Url}/login`
 
       console.log("Error while signUp: ", errorMessage);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>${errorMessage}</span>`).css({"display": "flex"});
+      <span>${errorMessage}</span>`).css({"opacity": "1", "height":"50px"});
       setTimeout(() => {
-        $(".loginPage .error").css({"display": "none"});
+        $(".loginPage .error").css({"opacity": "0", "height":"0"});
       }, 5000);
     });
 
