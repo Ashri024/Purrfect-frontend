@@ -271,9 +271,9 @@ let loginUrl= `${backend_Url}/login`
     }).catch(err=>{
       console.log("Sorry the email was not found: ",err);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>Login credentials are invalid</span>`).css({"display": "flex"});
+      <span>Login credentials are invalid</span>`).css({"opacity": "1", "height":"50px"});
       setTimeout(() => {
-        $(".loginPage .error").css({"display": "none"});
+        $(".loginPage .error").css({"opacity": "0", "height":"0"});
       }, 3000);
       // window.location.replace(`/`);
 
