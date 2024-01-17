@@ -6,16 +6,19 @@
     <title>Login Form</title>
     {{>link}}
 </head>
-<body class="">
+<body class="loginPage">
     {{!-- Create a login form which ask for email and password --}}
+    {{>error}}
+    {{>info}}
+
     <div class="flex flex-row w-full">
         <div class="bg_cat w-full h-screen max-[700px]:hidden">
-            <img src="https://f005.backblazeb2.com/file/WeatherApp/catGojo.png" alt="cat" class="w-full h-full object-cover object-center" id="cat_img">
+            <img src="https://f005.backblazeb2.com/file/WeatherApp/catGojo.jpg" alt="cat" class="w-full h-full object-cover object-center" id="cat_img">
         </div>
 
         
 
-        <div id="formContainer" class="flex flex-col items-center justify-center h-screen min-w-[500px] relative">
+        <div id="formContainer" class="flex flex-col items-center justify-start h-screen min-w-[500px] relative gap-[5%]">
             <div class="profile-mode relative top-[10px] right-[10px] gap-[10px] px-4 py-1 h-[50px] flex items-center justify-end max-[830px]:p-0 w-full max-[830px]:justify-end max-[830px]:gap-[2px]">
                 <button class=" darkMode flex items-center justify-center  w-[50px] h-[50px] dark:hidden rounded-full max[700px]:hidden " ><img class="w-[95%]" src="./resources/dark_profile/Dark.svg"></button>
 

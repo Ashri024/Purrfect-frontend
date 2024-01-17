@@ -1,12 +1,51 @@
 let isDarkMode=$("html").hasClass("dark");
 let globalDataValues = [20, 22, 25, 23, 26, 27, 24, 22];
 let chart;
+let hourFormat24 = localStorage.getItem("hourFormat24")|| "false";
+console.log("hourFormat24: ",hourFormat24);
+let tempUnit= localStorage.getItem('tempUnit') || "\u00B0";
+
+let tempWord=localStorage.getItem("tempWord");
+if(tempWord==null || tempWord==undefined){
+  localStorage.setItem("tempWord", "C");
+  tempWord="C";
+}
+
+let precipitationUnit= localStorage.getItem("precipitationUnit");
+if(precipitationUnit==null || precipitationUnit==undefined){
+  localStorage.setItem("precipitationUnit", "mm");
+  precipitationUnit="mm";
+}
+
+let windUnit= localStorage.getItem("windUnit");
+if(windUnit==null || windUnit==undefined){
+  localStorage.setItem("windUnit", "km/h");
+  windUnit="km/h";
+}
+
+let pressureUnit= localStorage.getItem("pressureUnit");
+if(pressureUnit==null || pressureUnit==undefined){
+  localStorage.setItem("pressureUnit", "hPa");
+  pressureUnit="hPa";
+}
+
+let visibilityUnit=localStorage.getItem("visibilityUnit");
+if(visibilityUnit==null || visibilityUnit==undefined){
+  localStorage.setItem("visibilityUnit", "m");
+  visibilityUnit="m";
+}
+
 const canvas = document.getElementById('myChart');
 let ctx;
 if(canvas){
   ctx = canvas.getContext('2d');
 }
-const labels=["1 AM","4 AM","7 AM","10 AM","1 PM","4 PM","7 PM","10 PM"];
+let labels="";
+if(hourFormat24 == "false"){
+labels=["1 AM","4 AM","7 AM","10 AM","1 PM","4 PM","7 PM","10 PM"];
+}else if(hourFormat24 == "true"){
+  labels=["01:00", "04:00", "07:00", "10:00", "13:00", "16:00", "19:00", "22:00"];
+}
 
 let minTicks="";
 let maxTicks="";
@@ -82,7 +121,7 @@ chart=new Chart(ctx, {
         anchor: 'end',
         color: labelColor ,
         formatter: function(value, context) {
-          value = value + '°C';
+          value = `${value} ${tempUnit}${tempWord} `;
           return value.toString();
         }
       }
@@ -112,8 +151,6 @@ if(localStorage.getItem('darkMode') === 'true'){
   $("html").removeClass("dark");
   isDarkMode=false;
 }
-
-
 
 if(canvas)
   createChart(globalDataValues);
@@ -226,13 +263,18 @@ let loginUrl= `${backend_Url}/login`
       document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
-
+      localStorage.setItem('loggedInRecently', "true");
       window.location.replace(`/`);
       // }else{
       //   console.log("Error, ", data);
       // }
     }).catch(err=>{
       console.log("Sorry the email was not found: ",err);
+      $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+      <span>Login credentials are invalid</span>`).css({"display": "flex"});
+      setTimeout(() => {
+        $(".loginPage .error").css({"display": "none"});
+      }, 3000);
       // window.location.replace(`/`);
 
     });
@@ -261,16 +303,73 @@ let loginUrl= `${backend_Url}/login`
         confirmPass: confirmPass.value
       }),
     }).then(res => {
+      if(!res.ok){
+        return res.json().then(err=>{
+        throw new Error(err.error);
+        })
+      }
       return res.json();
     }).then(data=>{
       if(data.status){
+        localStorage.setItem('registered', true);
         window.location.replace(`/login`);
       }
     })
     .catch(err => {
+      console.log(err.message);
+      let errorMessage = err.message;
+      if (errorMessage.includes("E11000 duplicate key error")) {
+        let fieldName = errorMessage.split("index: ")[1].split("_")[0];
+        errorMessage = `${fieldName} is already registered`;
+      } else if (err.name === 'ValidationError') {
+        errorMessage = Object.values(err.errors).map(val => val.message).join(', ');
+      }
+      errorMessage = errorMessage.replace("Register validation failed: ", "");
+
+      console.log("Error while signUp: ", errorMessage);
+      $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+      <span>${errorMessage}</span>`).css({"display": "flex"});
+      setTimeout(() => {
+        $(".loginPage .error").css({"display": "none"});
+      }, 5000);
     });
 
 });}
+
+$(".loginPage .info").each(function(i, info){
+  let isRegisteredRecently= localStorage.getItem("registered");
+  if(isRegisteredRecently=="true"){
+  $(info).html(`<img src="./resources/info.svg" alt="Success">
+  <span>Account created successfully</span>`).css({"opacity": "1", "height":"50px"});
+  localStorage.removeItem("registered");
+  setTimeout(() => {
+    $(info).css({"opacity": "0", "height":"0"});
+  }, 3000);
+}
+});
+
+$(".homePage .info").each(function(i, info){
+  let isLoggedInRecently= localStorage.getItem("loggedInRecently");
+  let isLoggedOutRecently = localStorage.getItem("loggedOutRecently");
+  if(isLoggedInRecently=="true"){
+    $(info).html(`<img src="./resources/info.svg" alt="Success">
+    <span>Logged in successfully</span>`).css({"opacity": "1", "height":"50px"});
+    localStorage.removeItem("loggedInRecently");
+    setTimeout(() => {
+      $(info).css({"opacity": "0", "height":"0"});
+    }, 3000);
+    return;
+}
+  if(isLoggedOutRecently=="true"){
+    $(info).html(`<img src="./resources/info.svg" alt="Success">
+    <span>Logged out successfully</span>`).css({"opacity": "1", "height":"50px"});
+    localStorage.removeItem("loggedOutRecently");
+    setTimeout(() => {
+      $(info).css({"opacity": "0", "height":"0"});
+    }, 3000);
+    return;
+  }
+});
 
   $(".logout").each(function(i, logoutBtn){
     $(logoutBtn).click(function(){
@@ -283,6 +382,7 @@ let loginUrl= `${backend_Url}/login`
         var name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
+      localStorage.setItem('loggedOutRecently', "true");
       window.location.replace(`/`);
     });
   });
@@ -316,7 +416,6 @@ window.addEventListener("resize", function(){
 });
 
 search_box_responsive();
-
 
   // MAIN APP STARTS HERE
 
@@ -358,7 +457,8 @@ search_box_responsive();
             localStorage.setItem('lon', longitude);
 
             if(window.location.pathname!=="/"){
-            await redirect(isSearched);
+            redirect(isSearched);
+            return;
             }
             $("#search_city").val(location);
             city_list.empty();
@@ -373,37 +473,91 @@ search_box_responsive();
       })
     }
   });
-  
+
+  async function searchCity(lat,lon,location){
+    let isSearched=true;
+    console.log("searchCity is called");
+    localStorage.setItem('location', location);
+            localStorage.setItem('lat', lat);
+            localStorage.setItem('lon', lon);
+            $("#search_city").val(location);
+            $(".shimmer, .dark-shimmer, .dark-sub-shimmer").css("display", "inline-block");
+            redirect(isSearched);
+  }
+
   function redirect(isSearched){
-    return new Promise((resolve, reject)=>{
-        try{
           localStorage.setItem('isSearched', isSearched);
             window.location.href="/";
-
-            resolve(true);
-        }catch(err){
-            reject(err);
-        }
-    })
+          console.log("True");
 }
-  let precipitation_unit="mm";
-  let temp_unit="&#176;";
-  let temp_word="C";
-  let wind_unit="km/h";
-  let pressure_unit="hPa";
-  let visibility_unit="m";
 
   function loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
     $(".location span").html(location);
-    $(".min").html(`Min: ${min}${temp_unit}`);
-    $(".max").html(`Max: ${max}${temp_unit}`);
+
+    let min2= convertTemp(min, tempWord);
+    let max2 = convertTemp(max, tempWord);
+    $(".min").html(`Min: ${min2.temp2}${min2.tempUnit2}`);
+    $(".max").html(`Max: ${max2.temp2}${max2.tempUnit2}`);
+
+    console.log("Hour",hourFormat24);
+    if(hourFormat24 == "true"){
+    let currDate2= convertTo24Hour(currDate);
+    $(".date span").html(currDate2);
+    } else{
     $(".date span").html(currDate);
-    $(".precipitation span").html(`Precipitation: ${precipitation}${precipitation_unit} `);
+    }
+
+    let precipitation2= convertPrecipitation(precipitation, precipitationUnit);
+    $(".precipitation span").html(`Precipitation: ${precipitation2}${precipitationUnit} `);
+
     $(".humidity span").html(`Humidity: ${humidity}%`);
-    $(".feelsLike span").html(`Feels Like: ${feelsLike}${temp_unit}`);
-    $(".main_temp").html(`<span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">${temp}${temp_unit}</span>${temp_word}</div>`);
+    let feelsLike2 = convertTemp(feelsLike, tempWord);
+    $(".feelsLike span").html(`Feels Like: ${feelsLike2.temp2} ${feelsLike2.tempUnit2}${tempWord}`);
+
+    let {temp2, tempUnit2}= convertTemp(temp, tempWord);
+    $(".main_temp").html(`<span class="temperature font-bold text-[3rem] min-[1400px]:text-[5rem]">${temp2}${tempUnit2}</span>${tempWord}</div>`);
+
     $(".status").html(desc);
     $(".weatherIcon").attr("src", weatherIcon);
+  }
+
+  function convertTo24Hour(timeStr) {
+    const [fullDate, timePart] = timeStr.split(' | ');
+    let [time, period] = timePart.split(' ');
+
+    let [hours, minutes] = time.split(':');
+    hours = +hours; // convert to number
+
+    if (period === 'PM' && hours !== 12) {
+        hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    // Ensure hours and minutes are two digits
+    hours = hours.toString().padStart(2, '0');
+    minutes = minutes.padStart(2, '0');
+
+    return `${fullDate} | ${hours}:${minutes}`;
+}
+
+  function convertPrecipitation(precipitation, precipitationUnit){
+    if(precipitationUnit==="mm"){
+      return precipitation
+    } else if(precipitationUnit==="in"){
+      return Math.round(precipitation/25.4);
+    }else if (precipitationUnit==="cm"){
+      return Math.round(precipitation/10);
+    }
+  }
+  function convertTemp(temp, tempWord){
+    if(tempWord==="C"){
+      return {temp2:temp, tempUnit2: "&#176;"};
+    }else if(tempWord==="F") {
+      return {temp2:Math.round((temp*9/5)+32), tempUnit2: " "};
+    }else if(tempWord==="K"){
+      return {temp2:Math.round(temp+273.15), tempUnit2: " "};
+    }
   }
 
   function getWindStatus(windSpeed) {
@@ -544,38 +698,76 @@ search_box_responsive();
     let hours = dateObj.getHours();
     let minutes = dateObj.getMinutes();
     let period = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; 
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    let timeStr = hours + ':' + minutes + ' ' + period;
+
+    if (hourFormat24 == "true") {
+      // For 24-hour format, we don't need to adjust hours or add a period
+      hours = hours < 10 ? '0' + hours : hours;
+    } else {
+      // For 12-hour format, adjust hours and add period
+      hours = hours % 12;
+      hours = hours ? hours : 12; 
+      hours = hours < 10 ? '0' + hours : hours;
+    }
+
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    let timeStr = hourFormat24 == "true" ? hours + ':' + minutes : hours + ':' + minutes + ' ' + period;
     return timeStr;
   }
+  function convertWindSpeed(wind_speed, windUnit){
+    if(windUnit==="km/h"){
+      return wind_speed.toFixed(3);
+    } else if(windUnit==="m/s"){
+      return (wind_speed / 3.6).toFixed(3);
+    } else if(windUnit==="mph"){
+      return (wind_speed * 0.621371).toFixed(3);
+    } else if(windUnit==="knots"){
+      return (wind_speed * 0.539957).toFixed(3);
+    }
+  }
 
+  function convertPressure(pressure, pressureUnit){
+    if(pressureUnit==="hPa"){
+      return pressure.toFixed(3);
+    } else if(pressureUnit==="inHg"){
+      return (pressure / 33.863886666667).toFixed(3);
+    } else if(pressureUnit==="psi"){
+      return (pressure * 0.0145038).toFixed(3);
+    } else if(pressureUnit==="kPa"){
+      return (pressure / 10).toFixed(3);
+    }
+  }
+
+  function convertVisibility(visibility, visibilityUnit){
+    if(visibilityUnit==="m"){
+      return visibility.toFixed(3);
+    } else if(visibilityUnit==="km"){
+      return (visibility / 1000).toFixed(3);
+    } else if(visibilityUnit==="miles"){
+      return (visibility / 1609.344).toFixed(3);
+    }
+  }
 
   function loadDetailCards(wind_speed,pressure,uv_index,visibility,air_pm25,air_pm10,aqi,sunrise,sunset)
   {
-    $(".wind_speed").html(`${wind_speed} ${wind_unit}`);
+    let wind_speed2= convertWindSpeed(wind_speed, windUnit);
+    $(".wind_speed").html(`${wind_speed2} ${windUnit}`);
     $(".wind_status").html(`${getWindStatus(wind_speed)}`);
 
-    $(".pressure").html(`${pressure} ${pressure_unit}`);
+    let pressure2 = convertPressure(pressure, pressureUnit);
+    $(".pressure").html(`${pressure2} ${pressureUnit}`);
     let { pressure_status, pressure_deg } = getPressureCategory(pressure);
     $(".pressure_status").html(`${pressure_status}`);
-    // if(isDarkMode){
-      $(".pressure_dark_dial").css("transform", `rotate(${pressure_deg}deg)`);
-    // }else{
-      $(".pressure_light_dial").css("transform", `rotate(${pressure_deg}deg)`);
-    // }
+    $(".pressure_dark_dial").css("transform", `rotate(${pressure_deg}deg)`);
+    $(".pressure_light_dial").css("transform", `rotate(${pressure_deg}deg)`);
 
     $(".uv_index").html(`${uv_index} UV`);
     let { uv_status, uv_degree } = getUVIndexCategory(uv_index);
     $(".uv_index_status").html(`${uv_status}`);
-    // if(isDarkMode){
-      $(".uv_dark_dial").css("transform", `rotate(${uv_degree}deg)`);
-    // }else{
-      $(".uv_light_dial").css("transform", `rotate(${uv_degree}deg)`);
-    // }
+    $(".uv_dark_dial").css("transform", `rotate(${uv_degree}deg)`);
+    $(".uv_light_dial").css("transform", `rotate(${uv_degree}deg)`);
 
-    $(".visibility").html(`${visibility} ${visibility_unit}`);
+    let visibility2 = convertVisibility(visibility, visibilityUnit);
+    $(".visibility").html(`${visibility2} ${visibilityUnit}`);
     $(".visibility_status").html(`${getVisibilityCategory(visibility)}`);
 
     $(".air_pm25").html(`Pm2.5: ${air_pm25} &#181;g/m<sup>3</sup>`);
@@ -585,7 +777,7 @@ search_box_responsive();
     $(".aqi_status").html(`${category}`);
     $(".aqi_description").html(`${description}`);
     $(".air_dial").css("transform", `rotate(${aqui_deg}deg)`);
-
+    
     $(".sunset_time").html(`${convertTime(sunset)}`);
     $(".sunrise_time").html(`${convertTime(sunrise)}`);
 
@@ -596,7 +788,8 @@ search_box_responsive();
     let hourly_temp_3_hour=[];
     let weather_code_3_hour=[];
     for(let i =0; i<8; i++){
-      hourly_temp_3_hour.push(hourly_temp[three_hour[i]]);
+      let three_hour2= convertTemp(hourly_temp[three_hour[i]], tempWord);
+      hourly_temp_3_hour.push(three_hour2.temp2);
       weather_code_3_hour.push(weather_code[three_hour[i]]);
     }
     let dataValues=hourly_temp_3_hour;
@@ -637,6 +830,19 @@ $('tr[id]').each(function() {
       });
     });
     }
+    function convertLabelTime(label) {
+      let [hour, period] = label.split(" ");
+  
+      hour = parseInt(hour);
+  
+      if (period === "PM" && hour !== 12) {
+          hour += 12;
+      } else if (period === "AM" && hour === 12) {
+          hour = 0;
+      }
+  
+      return hour.toString().padStart(2, '0').padEnd( 5,":00");
+  }
 
   function loadOnClick(lat, lon, data_target){
       const targetRow = $(`tr[data-target="${data_target.attr("id")}"]`);
@@ -648,9 +854,11 @@ $('tr[id]').each(function() {
           for(let i=0; i<hourlyObj.length; i++){
             targetRow.find(".dropdown-item").eq(i).find(".detail_icon").attr("src", hourlyObj[i].weatherIcon);
 
-            targetRow.find(".dropdown-item").eq(i).find(".detail_time").html(hourlyObj[i].label);
+            let labelTime2= convertLabelTime(hourlyObj[i].label);
+            targetRow.find(".dropdown-item").eq(i).find(".detail_time").html(labelTime2);
 
-            targetRow.find(".dropdown-item").eq(i).find(".detail_temp").html(`${hourlyObj[i].temperature}${temp_unit}${temp_word}`);
+            let detail_temp= convertTemp(hourlyObj[i].temperature, tempWord);
+            targetRow.find(".dropdown-item").eq(i).find(".detail_temp").html(`${detail_temp.temp2} ${detail_temp.tempUnit2}${tempWord}`);
           }
         targetRow.find(".dark-sub-shimmer").css("display", "none");
 
@@ -684,8 +892,10 @@ $('tr[id]').each(function() {
         forecastRow.find(".forecast_desc").html(desc);
         forecastRow.find(".forecast_desc").attr("title", desc);
 
-        forecastRow.find(".forecast_min").html(`${min}${temp_unit}${temp_word}`);
-        forecastRow.find(".forecast_max").html(`${max}${temp_unit}${temp_word}`);
+        let min2= convertTemp(min, tempWord);
+        forecastRow.find(".forecast_min").html(`${min2.temp2} ${min2.tempUnit2}${tempWord}`);
+        let max2= convertTemp(max, tempWord);
+        forecastRow.find(".forecast_max").html(`${max2.temp2} ${max2.tempUnit2}${tempWord}`);
         forecastRow.find(".forecast_icon").attr("src", weatherIcon);
       }
     })
@@ -727,6 +937,7 @@ $('tr[id]').each(function() {
   console.log(email)
 }
 console.log("Email: ", email);
+
   function loadHomePage(lat,lon, location, isSearched=false){
   globalLat=lat;
   globalLon=lon;
@@ -765,6 +976,7 @@ console.log("Email: ", email);
       const desc= weatherDescription.desc;
 
       loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
+
      //Send the city card data to mongo
 
      let date = new Date(Date.now());
@@ -813,6 +1025,8 @@ console.log("Email: ", email);
       $(".weather_main_card_before").css("background", `url(${weatherBg})`);
       $(".weather_main_card .dark-sub-shimmer").css("display", "none");
       $(".weather_main_card .dark-shimmer").css("display", "none");
+      $("#search_city").val("");
+
       // Perform your operation here
     };
      
@@ -848,6 +1062,13 @@ console.log("Email: ", email);
         console.log("Forecast loaded");
         $(".forecast_instance .dark-sub-shimmer").css("display", "none");
       });
+    }).catch(err=>{
+      console.log(err);
+      $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
+      <span>Some error occured. Please search another location.</span>`).css({"opacity": "1", "height":"50px"});
+      setTimeout(() => {
+        $(".homePage .error").css({"opacity": "0", "height":"0"});
+      }, 3000);
     })
   }
 
@@ -868,8 +1089,26 @@ console.log("Email: ", email);
     loadHomePage(lat,lon,location);
   }else{
     console.log("false local storage found: ", location, lat, lon );
-
-    loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
+    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+    function geoSuccess(pos) {
+      let crd = pos.coords;
+      console.log('Your current position is:');
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+      console.log(`More or less ${crd.accuracy} meters.`);
+      fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=5f1c5a1a3ba542738941b4df2036f8a9`).then(res=>res.json()).then(data=>{
+        console.log(data);
+        let city= data.features[0].properties.city;
+        let state = data.features[0].properties.state;
+        let location = `${city}, ${state}`;
+        loadHomePage(crd.latitude, crd.longitude, location);
+    });
+    }
+    function geoError(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+      loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
+    }
+    // loadHomePage(25,81,"Prayagraj, Uttar Pradesh");
   }
   }
 
@@ -878,24 +1117,31 @@ console.log("Email: ", email);
   let searchHistory = "";
 
   function loadSearchHistory(searchHistory){
-    console.log("load: ",searchHistory);
+    // console.log("load: ",searchHistory);
     let searchHistoryLength = searchHistory.length;
     let numberOfCities = $(".city").length;
     let citiesToView = searchHistoryLength - numberOfCities-6;
-    console.log("SearchHistory Length", searchHistoryLength);
-    console.log("Number of cities", numberOfCities);
-    console.log("Cities to view", citiesToView);
-    
+    if(searchHistoryLength == 0 ){
+      console.log("No cities to display");
+      $(".cities").append("<span class='text-left text-lg text-gray-500 dark:text-gray-400'>No cities to display</span>")
+      $(".see_more").css("display", "none");
+      $("#deleteHistory").attr("disabled", true);
+      return;
+    }
     for(let i= searchHistoryLength-numberOfCities-1; i >= citiesToView; i--){
-      console.log(i);
+      // console.log(i);
       let city = searchHistory[i];
-      console.log(city);
+      // console.log(city);
       if(city){
       let cityName= city.location;
       let min= city.min;
+      min= convertTemp(min, tempWord).temp2;
       let max= city.max;
+      max= convertTemp(max, tempWord).temp2;
       let temp= city.current_temp;
+      temp= convertTemp(temp, tempWord).temp2;
       let precipitation= city.precipitation;
+      precipitation = convertPrecipitation(precipitation, precipitationUnit);
       let humidity= city.humidity;
       let weatherIcon= city.icon;
       let date= city.date;
@@ -915,9 +1161,9 @@ console.log("Email: ", email);
                   <img class="w-[25px] hidden dark:block mt-1 h-[30px]" src="./resources/darkModeIcons/location.svg">
                   <span class="font-bold text-2xl max-[1024px]:text-[1.3rem] max-[1024px]:font-semibold city_location">${cityName}</span>
               </div>
-              <span class="ml-7 font-semibold text-xl">Temperature: ${temp}${temp_unit}${temp_word}</span>
-              <span class="ml-7">Min: ${min}${temp_unit}${temp_word}</span>
-              <span class="ml-7">Max: ${max}${temp_unit}${temp_word}</span>
+              <span class="ml-7 font-semibold text-xl">Temperature: ${temp}${tempUnit}${tempWord}</span>
+              <span class="ml-7">Min: ${min}${tempUnit}${tempWord}</span>
+              <span class="ml-7">Max: ${max}${tempUnit}${tempWord}</span>
           </div> 
         <div class="flex flex-col justify-center items-center min-w-[132px] min-h-[130px] relative">
         <div class="dark-sub-shimmer w-[130px] max-[1024px]:m-auto"></div>
@@ -926,7 +1172,7 @@ console.log("Email: ", email);
       </div>
       <div class="w-full pl-7 flex items-center justify-between max-[1024px]:p-0 relative">
       <div class="dark-sub-shimmer"></div>
-          <span>Precipitaion: ${precipitation}${precipitation_unit}</span>
+          <span>Precipitation: ${precipitation} ${precipitationUnit}</span>
           <span>Humidity: ${humidity}%</span>
       </div>
       </div>`);
@@ -934,12 +1180,19 @@ console.log("Email: ", email);
       let city_location = cityCard.find(".city_location");
       $clamp(city_location[0], {clamp: 1});
       $(".cities").append(cityCard);
+      cityCard.click(function(){
+        let lat = $(this).attr("lat");
+        let lon = $(this).attr("lon");
+        let location = $(this).find(".city_location").html();
+        searchCity(lat, lon, location);
+      });
       let img = cityCard.find('img[src="' + weatherIcon + '"]');
       img.on('load', function() {
         cityCard.find(".dark-sub-shimmer").css("display", "none");
       });
       }else{
         console.log("No city tp display");
+        return;
       }
     }
   }
@@ -973,5 +1226,79 @@ console.log("Email: ", email);
     $("#signUpFormParent").addClass("hidden");
     $("#loginFormParent").removeClass("hidden");
     $("#loginFormParent").addClass("flex");
+  })
+
+  $('.unit-options input[type=radio]').each(function() {
+    $(this).on('change', function() {
+      let unitOptionsId = $(this).closest('.unit-options').attr('id');
+      let selectedValue = $(this).val();
+      if(unitOptionsId === 'tempUnit'){
+      localStorage.setItem("tempWord", selectedValue);
+      if(selectedValue !== "C"){
+      localStorage.setItem("tempUnit", " ");
+      }else if(selectedValue ==="C"){
+      localStorage.setItem("tempUnit", "\u00B0");
+      }
+      $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+      setTimeout(function() {
+      $(".settingPage .info").css({"opacity": "0", "height":"0"});
+      }, 2000);
+      }else{
+        localStorage.setItem(unitOptionsId, selectedValue);
+        $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+        setTimeout(function() {
+        $(".settingPage .info").css({"opacity": "0", "height":"0"});
+        }, 2000);
+      }
+    });
+  });
+
+  $(".unit-options input[type=radio]").each(function(i, radio){
+    let unitOptionsId = $(radio).closest('.unit-options').attr('id');
+    let selectedValue = "";
+    if(unitOptionsId =="tempUnit"){
+      selectedValue = localStorage.getItem("tempWord");
+    }else{
+     selectedValue = localStorage.getItem(unitOptionsId);
+    }
+    if(selectedValue){
+      $(radio).each(function(i, radio){
+        if($(radio).val() === selectedValue){
+          $(radio).prop("checked", true);
+        }
+      })
+    }
+  });
+
+  $("#toggle-12hour").each(function(i, toggle){
+    let isChecked = localStorage.getItem('hourFormat24');
+    if(isChecked === "true"){
+      $(toggle).prop("checked", true);
+    }
+  });
+
+  $("#toggle-12hour").on("change", function(){
+    let isChecked = $(this).is(':checked');
+    localStorage.setItem('hourFormat24', isChecked);
+
+    $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+    setTimeout(function() {
+    $(".settingPage .info").css({"opacity": "0", "height":"0"});
+    }, 2000);
+  });
+  
+  $("#deleteHistory").click(function(){
+    if(email){
+      console.log("Deleting data", email);
+    fetch(`${backend_Url}/deleteCity?email=${email}`).then(res=>res.json()).then(data=>{
+      console.log(data);
+      $(".myCitiesPage .info").html(`<img src="./resources/info.svg" alt="Success">
+      <span>History deleted successfully!!</span>`).css({"opacity": "1", "height":"50px"});
+      setTimeout(function() {
+      $(".myCitiesPage .info").css({"opacity": "0", "height":"0"});
+      }, 2000);
+      $(".cities").empty();
+    })
+  }
   })
 });

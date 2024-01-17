@@ -588,6 +588,10 @@ video {
   right: 0px;
 }
 
+.right-1\/2 {
+  right: 50%;
+}
+
 .right-\[0px\] {
   right: 0px;
 }
@@ -616,6 +620,10 @@ video {
   top: 4px;
 }
 
+.top-\[5\%\] {
+  top: 5%;
+}
+
 .top-\[5px\] {
   top: 5px;
 }
@@ -638,6 +646,10 @@ video {
 
 .z-40 {
   z-index: 40;
+}
+
+.z-50 {
+  z-index: 50;
 }
 
 .col-span-2 {
@@ -794,6 +806,10 @@ video {
   display: none;
 }
 
+.h-0 {
+  height: 0px;
+}
+
 .h-\[0px\] {
   height: 0px;
 }
@@ -804,6 +820,10 @@ video {
 
 .h-\[100px\] {
   height: 100px;
+}
+
+.h-\[104\%\] {
+  height: 104%;
 }
 
 .h-\[130px\] {
@@ -866,10 +886,6 @@ video {
   height: 59%;
 }
 
-.h-\[600px\] {
-  height: 600px;
-}
-
 .h-\[80\%\] {
   height: 80%;
 }
@@ -919,12 +935,12 @@ video {
   min-height: 550px;
 }
 
-.min-h-\[87\%\] {
-  min-height: 87%;
-}
-
 .min-h-\[600px\] {
   min-height: 600px;
+}
+
+.min-h-\[87\%\] {
+  min-height: 87%;
 }
 
 .w-1\/2 {
@@ -1072,6 +1088,11 @@ video {
   transform-origin: bottom;
 }
 
+.translate-x-1\/2 {
+  --tw-translate-x: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -1120,6 +1141,10 @@ video {
 
 .items-center {
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .justify-start {
@@ -1172,6 +1197,10 @@ video {
 
 .gap-\[10px\] {
   gap: 10px;
+}
+
+.gap-\[5\%\] {
+  gap: 5%;
 }
 
 .overflow-hidden {
@@ -1237,13 +1266,31 @@ video {
   border-width: 1px;
 }
 
+.border-2 {
+  border-width: 2px;
+}
+
 .border-b {
   border-bottom-width: 1px;
+}
+
+.border-solid {
+  border-style: solid;
 }
 
 .border-black {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
+}
+
+.border-green-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+}
+
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity));
 }
 
 .border-b-black {
@@ -1265,6 +1312,11 @@ video {
   background-color: rgb(238 246 255 / var(--tw-bg-opacity));
 }
 
+.bg-\[\#ffdbd9\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 219 217 / var(--tw-bg-opacity));
+}
+
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
@@ -1275,9 +1327,9 @@ video {
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 
-.bg-red-300 {
+.bg-green-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
+  background-color: rgb(220 252 231 / var(--tw-bg-opacity));
 }
 
 .bg-transparent {
@@ -1486,6 +1538,16 @@ video {
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
+.text-green-600 {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
+}
+
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1539,6 +1601,10 @@ video {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+.duration-1000 {
+  transition-duration: 1000ms;
 }
 
 .header>div{
@@ -2373,7 +2439,7 @@ table tbody .tr-hidden{
   #formContainer {
     z-index: 1;
     min-width: 100%;
-    background: url(https://f005.backblazeb2.com/file/WeatherApp/catGojo.png) no-repeat;
+    background: url(https://f005.backblazeb2.com/file/WeatherApp/catGojo.jpg) no-repeat;
     position: relative;
     background-size: cover;
     background-position: right;
@@ -2440,6 +2506,10 @@ table tbody .tr-hidden{
 
 .active\:cursor-grabbing:active {
   cursor: grabbing;
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
 }
 
 @media (max-width: 1300px) {
@@ -3000,6 +3070,11 @@ table tbody .tr-hidden{
 
   .xl\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .xl\:py-\[0\.3rem\] {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
   }
 }
 

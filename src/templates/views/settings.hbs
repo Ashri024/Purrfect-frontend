@@ -7,19 +7,20 @@
     {{>link}}
 
 </head>
-<body>
+<body class="settingPage">
     {{>sidePanelAll}}
+    {{>error}}
+    {{>info}}
 
     <div class="main p-4 w-full max-[780px]:px-0 max-[780px]:py-0">
     {{>header}}
         <div class="settings max-[1000px]:mr-5  outline-1 outline-[#80808082] dark:outline dark:bg-[#181c2d] bg-white rounded-[10px] h-auto w-[90%] m-auto p-4 max-[780px]:m-auto max-[780px]:w-[95%] max-[780px]:p-2 max-[780px]:pb-[70px]">
             <h1 class="font-bold text-2xl ">Settings</h1>
-
             <div class="settings-options mt-6  ">
                 <div class="hourFormat dark:bg-[#ffffff1f] outline-1 outline-white dark:outline max-[780px]:mb-2 max-[780px]:p-2 w-[97%] m-auto mb-5 p-4 bg-[#eef6ff] rounded-[10px]">
-                    <label for="toggle-12hour" class="w-full text-lg font-medium flex flex-row items-center justify-between ">12-Hour Format
+                    <label for="toggle-12hour" class="w-full text-lg font-medium flex flex-row items-center justify-between ">24-Hour Format
                     <div class="toggle relative inline-block w-[50px] h-[27px]">
-                        <input type="checkbox" checked id="toggle-12hour" name="12hour">
+                        <input type="checkbox" id="toggle-12hour" name="12hour">
                         <span class="slider round"></span>
                     </div>
                     </label>
@@ -27,8 +28,8 @@
 
                 {{>settingsOptions}}
             </div>
-            </div>
         </div>
+    </div>
 
     {{>script}}
 </body>

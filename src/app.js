@@ -19,13 +19,13 @@ app.use(express.static(path.join(__dirname, "./public")));
 app.set("views", path.join(__dirname, "./templates/views"));
 app.set("view engine", "hbs");
 
-let settings_options=[  
-    {name:"Temperature", options:["Celsius", "Fahrenheit", "Kelvin"]},
-    {name:"Pressure", options:["hPa", "inHg", "mb", "psi"]},
-    {name:"Wind Speed", options:["m/s", "km/h", "mph", "knots"]},
-    {name:"Visibility", options:["km", "miles","meters"]},
-    {name:"Precipitation", options:["mm", "cm", "inches"]},
-]
+let settings_options = [
+    {name: "Temperature", id: "temp", options: [{optionName: "Celsius", value: "C"}, {optionName: "Fahrenheit", value: "F"}, {optionName: "Kelvin", value: "K"}]},
+    {name: "Pressure", id: "pressure", options: [{optionName: "hPa", value: "hPa"}, {optionName: "inHg", value: "inHg"}, {optionName: "kPa", value: "kPa"}, {optionName: "psi", value: "psi"}]},
+    {name: "Wind Speed", id: "wind", options: [{optionName: "m/s", value: "m/s"}, {optionName: "km/h", value: "km/h"}, {optionName: "mph", value: "mph"}, {optionName: "knots", value: "knots"}]},
+    {name: "Visibility", id: "visibility", options: [{optionName: "m", value: "m"}, {optionName: "miles", value: "miles"}, {optionName: "km", value: "km"}]},
+    {name: "Precipitation", id: "precipitation", options: [{optionName: "mm", value: "mm"}, {optionName: "cm", value: "cm"}, {optionName: "inches", value: "in"}]},
+];
 
 
 app.get('/', (req, res) => {
