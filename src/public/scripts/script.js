@@ -460,6 +460,7 @@ function updateSelection() {
     $("#search_city").val(value);
     let city_list = $(".city_list");
     if(e.keyCode != 38 && e.keyCode != 40 && e.keyCode != 13){
+      selectedIndex=-1;
     if(value.trim().length>0){
       fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${value.trim()}&count=15&language=en&format=json`).then(res=>res.json()).then(data=>{
         if(data.results){
@@ -1115,7 +1116,7 @@ console.log("Email: ", email);
     }).catch(err=>{
       console.log(err);
       $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>Some error occured. Please search another location.</span>`).addClass("errorInfoVisible");
+      <span>${err.message}</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
         $(".homePage .error").removeClass("errorInfoVisible");
       }, 3000);
