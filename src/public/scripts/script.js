@@ -1312,7 +1312,7 @@ console.log("Email: ", email);
         <span>Otp Successfully sent!!. Please check spam folder in case otp is not send or try again later.</span>`
        ).addClass("errorInfoVisible");
       setTimeout(() => {
-        // $(".loginPage .info").removeClass("errorInfoVisible");
+        $(".loginPage .info").removeClass("errorInfoVisible");
       }, 5000);
       console.log("Otp generated is: ",otp);
       console.log('Success:', data);
