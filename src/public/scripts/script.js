@@ -1284,6 +1284,7 @@ console.log("Email: ", email);
   $("#verifyEmail").click(function(e){
     e.preventDefault();
     console.log("clicked");
+    let emailToVerify = $("#emailSignUp").val();
 
     if(!emailToVerify.includes("@gmail.com")){
       $(this).addClass("disabledVerify");
