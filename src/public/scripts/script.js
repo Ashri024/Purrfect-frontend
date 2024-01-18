@@ -232,8 +232,11 @@ calculatePositions(canvas, globalDataValues);
   
 
 let loginUrl= `${backend_Url}/login`
+console.log(loginUrl)
+console.log(document.getElementById('loginForm'))
   if(document.getElementById('loginForm')){
   document.getElementById('loginForm').addEventListener('submit', function (event) {
+    console.log("clicked");
     event.preventDefault(); // Prevent default form submission behavior
     let emailField = document.getElementById('email');
     let passwordField = document.getElementById('password');
@@ -257,6 +260,7 @@ let loginUrl= `${backend_Url}/login`
       .then(data=>{
       var date = new Date();
       // if(data.email){
+        console.log(data);
       date.setHours(date.getHours() + 1);
       var expires = "; expires=" + date.toGMTString();
       console.log("Email backend data: ",data);
@@ -1271,15 +1275,16 @@ console.log("Email: ", email);
       $(".emailToVerify").addClass("disabledVerify");
     }
   });
-  if($("#emailSignUp").val().includes("@gmail.com")){
+
+  let emailToVerify = $("#emailSignUp").val();
+  if(emailToVerify && emailToVerify.includes("@gmail.com")){
     $(".emailToVerify").removeClass("disabledVerify");
   }
 
   $("#verifyEmail").click(function(e){
     e.preventDefault();
     console.log("clicked");
-  
-    let emailToVerify = $("#emailSignUp").val();
+
     if(!emailToVerify.includes("@gmail.com")){
       $(this).addClass("disabledVerify");
       return;
@@ -1306,7 +1311,7 @@ console.log("Email: ", email);
         <span>Otp Successfully sent!!. Please check spam folder in case otp is not send or try again later.</span>`
        ).addClass("errorInfoVisible");
       setTimeout(() => {
-        $(".loginPage .info").removeClass("errorInfoVisible");
+        // $(".loginPage .info").removeClass("errorInfoVisible");
       }, 5000);
       console.log("Otp generated is: ",otp);
       console.log('Success:', data);

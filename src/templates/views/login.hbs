@@ -26,6 +26,7 @@
 
                 <button class=" font-semibold text-base  {{#if loggedIn}} hidden{{/if}} "><a class="p-2 px-4 bg-white dark:outline-white min-w-[100px] rounded ml-2 max-[830px]:text-[0.9rem] hover:bg-white hover:text-black outline-2 transition-all outline-black outline dark:bg-[#181C2D]" href="/login">Login/SignUp</a></button>
             </div>
+
             <div id="loginFormParent" class="w-full max-w-[400px] min-h-[600px] flex flex-col items-center justify-center  max-[700px]:w-1/2 max-[700px]:min-w-[300px]">
                 <h1 class="mb-6 text-3xl text-center dark:text-white text-black font-bold">Login Form</h1>
                 <form id="loginForm" class="w-full p-4 flex h-[45%] flex-col items-center justify-evenly bg-white rounded shadow-md">
@@ -43,6 +44,7 @@
                     </div>
                     <div class="redirectParent flex w-full items-center justify-between max-[700px]:gap-15px">
                         <input class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline cursor-pointer" type="submit" value="Login">
+                        
                         <span class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 cursor-pointer" id="signUpRedirect">
                             Not already Registered? Sign Up
                         </span>
