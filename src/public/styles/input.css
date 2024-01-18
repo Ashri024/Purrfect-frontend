@@ -27,6 +27,14 @@
   transition: all 0.3s ease-in-out;
 
 }
+
+.errorInfoVisible{
+  opacity: 1;
+  height: 35px;
+  padding: 0rem 1rem ;
+  border-width: 2px;
+}
+
 .search_box img{
     z-index: 1;
 }
@@ -139,7 +147,7 @@
     /* border: 2px solid rgb(255, 255, 255); */
 
     /* Rain*/
-    background: rgba(255, 255, 255, 0.41); 
+    background: rgba(255, 255, 255, 0.3); 
     border: 2px solid rgb(255, 255, 255);
 
 
@@ -666,6 +674,12 @@ body .layout_box{
     height: 100%;
     border-radius: 10px;
 }
+.errorInfoVisible {
+  opacity: 1;
+  height: auto;
+  min-width: 300px;
+  padding: 0.3rem 0.5rem;
+}
 .location span{
   font-size: 1.3rem;
   max-width: 240px;
@@ -707,7 +721,7 @@ thead th:nth-child(2), tbody td:nth-child(2) {
   display: none;
 }
 .weather_main_card::after {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.4);
 }
 }
 
@@ -756,8 +770,8 @@ thead th:nth-child(2), tbody td:nth-child(2) {
       min-width: 100%;
       background: url(https://f005.backblazeb2.com/file/WeatherApp/catGojo.jpg) no-repeat;
       position: relative;
-      background-size: cover;
-      background-position: right;
+      background-size: 100% 50%;
+      background-position: top;
     }
 
     #formContainer::before {
@@ -768,7 +782,7 @@ thead th:nth-child(2), tbody td:nth-child(2) {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.5);
+      /* background: rgba(255, 255, 255, 0.5); */
     }
     .redirectParent{
       gap: 15px;
@@ -776,4 +790,24 @@ thead th:nth-child(2), tbody td:nth-child(2) {
     #formContainer .darkMode{
       display: none;
     }
+    #loginFormParent > h1{
+      color: black;
+      background: #ffffff87;
+      padding: 0.5rem 1rem;
+      border: 2px solid white;
+      border-radius: 10px;
+    }
+    .dark .loginPage {
+      background-color: #EEF6FF;
+    }
+}
+@media screen and (max-width:600px) {
+  #formContainer {
+    background-size: 130% 50%;
+}
+}
+@media screen and (max-width:440px) {
+  #formContainer {
+    background-size: 155% 50%;
+}
 }

@@ -271,9 +271,9 @@ let loginUrl= `${backend_Url}/login`
     }).catch(err=>{
       console.log("Sorry the email was not found: ",err);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>Login credentials are invalid</span>`).css({"opacity": "1", "height":"50px"});
+      <span>Login credentials are invalid</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
-        $(".loginPage .error").css({"opacity": "0", "height":"0"});
+        $(".loginPage .error").removeClass("errorInfoVisible");
       }, 3000);
       // window.location.replace(`/`);
 
@@ -328,9 +328,9 @@ let loginUrl= `${backend_Url}/login`
 
       console.log("Error while signUp: ", errorMessage);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>${errorMessage}</span>`).css({"opacity": "1", "height":"50px"});
+      <span>${errorMessage}</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
-        $(".loginPage .error").css({"opacity": "0", "height":"0"});
+        $(".loginPage .error").removeClass("errorInfoVisible");
       }, 5000);
     });
 
@@ -340,10 +340,10 @@ $(".loginPage .info").each(function(i, info){
   let isRegisteredRecently= localStorage.getItem("registered");
   if(isRegisteredRecently=="true"){
   $(info).html(`<img src="./resources/info.svg" alt="Success">
-  <span>Account created successfully</span>`).css({"opacity": "1", "height":"50px"});
+  <span>Account created successfully</span>`).addClass("errorInfoVisible");
   localStorage.removeItem("registered");
   setTimeout(() => {
-    $(info).css({"opacity": "0", "height":"0"});
+    $(info).removeClass("errorInfoVisible");
   }, 3000);
 }
 });
@@ -353,19 +353,19 @@ $(".homePage .info").each(function(i, info){
   let isLoggedOutRecently = localStorage.getItem("loggedOutRecently");
   if(isLoggedInRecently=="true"){
     $(info).html(`<img src="./resources/info.svg" alt="Success">
-    <span>Logged in successfully</span>`).css({"opacity": "1", "height":"50px"});
+    <span>Logged in successfully</span>`).addClass("errorInfoVisible");
     localStorage.removeItem("loggedInRecently");
     setTimeout(() => {
-      $(info).css({"opacity": "0", "height":"0"});
+      $(info).removeClass("errorInfoVisible");
     }, 3000);
     return;
 }
   if(isLoggedOutRecently=="true"){
     $(info).html(`<img src="./resources/info.svg" alt="Success">
-    <span>Logged out successfully</span>`).css({"opacity": "1", "height":"50px"});
+    <span>Logged out successfully</span>`).addClass("errorInfoVisible");
     localStorage.removeItem("loggedOutRecently");
     setTimeout(() => {
-      $(info).css({"opacity": "0", "height":"0"});
+      $(info).removeClass("errorInfoVisible");
     }, 3000);
     return;
   }
@@ -1065,9 +1065,9 @@ console.log("Email: ", email);
     }).catch(err=>{
       console.log(err);
       $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>Some error occured. Please search another location.</span>`).css({"opacity": "1", "height":"50px"});
+      <span>Some error occured. Please search another location.</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
-        $(".homePage .error").css({"opacity": "0", "height":"0"});
+        $(".homePage .error").removeClass("errorInfoVisible");
       }, 3000);
     })
   }
@@ -1239,15 +1239,15 @@ console.log("Email: ", email);
       }else if(selectedValue ==="C"){
       localStorage.setItem("tempUnit", "\u00B0");
       }
-      $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+      $(".settingPage .info").addClass("errorInfoVisible");
       setTimeout(function() {
-      $(".settingPage .info").css({"opacity": "0", "height":"0"});
+      $(".settingPage .info").removeClass("errorInfoVisible");
       }, 2000);
       }else{
         localStorage.setItem(unitOptionsId, selectedValue);
-        $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+        $(".settingPage .info").addClass("errorInfoVisible");
         setTimeout(function() {
-        $(".settingPage .info").css({"opacity": "0", "height":"0"});
+        $(".settingPage .info").removeClass("errorInfoVisible");
         }, 2000);
       }
     });
@@ -1281,9 +1281,9 @@ console.log("Email: ", email);
     let isChecked = $(this).is(':checked');
     localStorage.setItem('hourFormat24', isChecked);
 
-    $(".settingPage .info").css({"opacity": "1", "height":"50px"});
+    $(".settingPage .info").addClass("errorInfoVisible");
     setTimeout(function() {
-    $(".settingPage .info").css({"opacity": "0", "height":"0"});
+    $(".settingPage .info").removeClass("errorInfoVisible");
     }, 2000);
   });
   
@@ -1293,9 +1293,9 @@ console.log("Email: ", email);
     fetch(`${backend_Url}/deleteCity?email=${email}`).then(res=>res.json()).then(data=>{
       console.log(data);
       $(".myCitiesPage .info").html(`<img src="./resources/info.svg" alt="Success">
-      <span>History deleted successfully!!</span>`).css({"opacity": "1", "height":"50px"});
+      <span>History deleted successfully!!</span>`).addClass("errorInfoVisible");
       setTimeout(function() {
-      $(".myCitiesPage .info").css({"opacity": "0", "height":"0"});
+      $(".myCitiesPage .info").removeClass("errorInfoVisible");
       }, 2000);
       $(".cities").empty();
     })

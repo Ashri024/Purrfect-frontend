@@ -1036,6 +1036,10 @@ video {
   width: fit-content;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .w-full {
   width: 100%;
 }
@@ -1359,6 +1363,11 @@ video {
   padding: 1rem;
 }
 
+.px-0 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1627,6 +1636,13 @@ video {
   transition: all 0.3s ease-in-out;
 }
 
+.errorInfoVisible{
+  opacity: 1;
+  height: 35px;
+  padding: 0rem 1rem ;
+  border-width: 2px;
+}
+
 .search_box img{
   z-index: 1;
 }
@@ -1735,7 +1751,7 @@ video {
   /* background: rgb(49 49 49 / 41%); */
   /* border: 2px solid rgb(255, 255, 255); */
   /* Rain*/
-  background: rgba(255, 255, 255, 0.41);
+  background: rgba(255, 255, 255, 0.3);
   border: 2px solid rgb(255, 255, 255);
   z-index: 2;
   border-radius: 10px;
@@ -2331,6 +2347,13 @@ body .layout_box{
     border-radius: 10px;
   }
 
+  .errorInfoVisible {
+    opacity: 1;
+    height: auto;
+    min-width: 300px;
+    padding: 0.3rem 0.5rem;
+  }
+
   .location span{
     font-size: 1.3rem;
     max-width: 240px;
@@ -2382,7 +2405,7 @@ body .layout_box{
   }
 
   .weather_main_card::after {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.4);
   }
 }
 
@@ -2441,8 +2464,8 @@ table tbody .tr-hidden{
     min-width: 100%;
     background: url(https://f005.backblazeb2.com/file/WeatherApp/catGojo.jpg) no-repeat;
     position: relative;
-    background-size: cover;
-    background-position: right;
+    background-size: 100% 50%;
+    background-position: top;
   }
 
   #formContainer::before {
@@ -2453,7 +2476,7 @@ table tbody .tr-hidden{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.5);
+    /* background: rgba(255, 255, 255, 0.5); */
   }
 
   .redirectParent{
@@ -2462,6 +2485,30 @@ table tbody .tr-hidden{
 
   #formContainer .darkMode{
     display: none;
+  }
+
+  #loginFormParent > h1{
+    color: black;
+    background: #ffffff87;
+    padding: 0.5rem 1rem;
+    border: 2px solid white;
+    border-radius: 10px;
+  }
+
+  .dark .loginPage {
+    background-color: #EEF6FF;
+  }
+}
+
+@media screen and (max-width:600px) {
+  #formContainer {
+    background-size: 130% 50%;
+  }
+}
+
+@media screen and (max-width:440px) {
+  #formContainer {
+    background-size: 155% 50%;
   }
 }
 
@@ -2543,8 +2590,8 @@ table tbody .tr-hidden{
     height: 100px;
   }
 
-  .max-\[1200px\]\:h-\[280px\] {
-    height: 280px;
+  .max-\[1200px\]\:h-\[300px\] {
+    height: 300px;
   }
 
   .max-\[1200px\]\:grid-cols-layout-sm {
@@ -2719,6 +2766,11 @@ table tbody .tr-hidden{
     gap: 3px;
   }
 
+  .max-\[830px\]\:bg-\[\#EEF6FF\] {
+    --tw-bg-opacity: 1;
+    background-color: rgb(238 246 255 / var(--tw-bg-opacity));
+  }
+
   .max-\[830px\]\:p-0 {
     padding: 0px;
   }
@@ -2827,6 +2879,10 @@ table tbody .tr-hidden{
     padding: 1rem;
   }
 
+  .max-\[500px\]\:p-\[0\.1rem\] {
+    padding: 0.1rem;
+  }
+
   .max-\[500px\]\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
@@ -2851,6 +2907,12 @@ table tbody .tr-hidden{
 
   .max-\[500px\]\:font-normal {
     font-weight: 400;
+  }
+}
+
+@media (min-width: 501px) {
+  .min-\[501px\]\:text-nowrap {
+    text-wrap: nowrap;
   }
 }
 
@@ -3178,5 +3240,10 @@ table tbody .tr-hidden{
 @media (max-width: 830px) {
   :is(:where(.dark) .dark\:max-\[830px\]\:hidden) {
     display: none;
+  }
+
+  :is(:where(.dark) .max-\[830px\]\:dark\:bg-\[\#EEF6FF\]) {
+    --tw-bg-opacity: 1;
+    background-color: rgb(238 246 255 / var(--tw-bg-opacity));
   }
 }
