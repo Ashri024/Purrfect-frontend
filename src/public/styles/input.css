@@ -27,7 +27,10 @@
   transition: all 0.3s ease-in-out;
 
 }
-
+.shimmer_main_temp .dark-sub-shimmer{
+  height: 110%;
+  top: -10px;
+}
 .errorInfoVisible{
   opacity: 1;
   height: 35px;

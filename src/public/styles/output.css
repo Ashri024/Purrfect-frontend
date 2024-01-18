@@ -608,6 +608,10 @@ video {
   top: 0px;
 }
 
+.top-\[-10px\] {
+  top: -10px;
+}
+
 .top-\[0\%\] {
   top: 0%;
 }
@@ -828,6 +832,10 @@ video {
 
 .h-\[104\%\] {
   height: 104%;
+}
+
+.h-\[110\%\] {
+  height: 110%;
 }
 
 .h-\[130px\] {
@@ -1684,6 +1692,11 @@ video {
 
 #search_city{
   transition: all 0.3s ease-in-out;
+}
+
+.shimmer_main_temp .dark-sub-shimmer{
+  height: 110%;
+  top: -10px;
 }
 
 .errorInfoVisible{
