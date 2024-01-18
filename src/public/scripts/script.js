@@ -421,6 +421,32 @@ search_box_responsive();
 
   // SEARCH BOX FUNCTIONALITY
   
+  let selectedIndex = -1;
+  console.log($("#search_city"))
+  $("#search_city").keydown(function(e) {
+    console.log("Key function is called");
+    let city_list = $(".city_list");
+    let cityItems = city_list.children();
+
+    if (e.keyCode == 38) { // up arrow
+      if (selectedIndex > 0) {
+        cityItems.eq(selectedIndex).removeClass('selected');
+        selectedIndex--;
+        cityItems.eq(selectedIndex).addClass('selected');
+      }
+    } else if (e.keyCode == 40) { // down arrow
+      if (selectedIndex < cityItems.length - 1) {
+        cityItems.eq(selectedIndex).removeClass('selected');
+        selectedIndex++;
+        cityItems.eq(selectedIndex).addClass('selected');
+      }
+    }else if(e.keyCode == 13){
+      let selectedCity = cityItems.eq(selectedIndex);
+     selectedCity.click();
+     city_list.empty();
+    }
+  }); 
+
   $("#search_city").on("keyup", function() {
     let value = $(this).val().toLowerCase();
     $("#search_city").val(value);
@@ -431,9 +457,10 @@ search_box_responsive();
         let cities=data.results;
 
         city_list.empty();
+
         cities.forEach(city=>{
           let cityLi = $("<li></li>")
-          .addClass("border-b border-b-black px-4 py-2 flex flex-row items-center cursor-pointer hover:bg-gray-200 ")
+          .addClass("border-b border-b-black px-4 py-2 flex flex-row items-center cursor-pointer hover:bg-[lightgray] ")
           .html(
             `<i class="fa-solid fa-location-dot text-3xl mr-4"></i>
             <div class="flex flex-col">

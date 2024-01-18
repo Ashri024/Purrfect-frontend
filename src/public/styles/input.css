@@ -77,6 +77,10 @@
   #wave path {
     animation: moveWave 30s linear infinite alternate; /* Adjust duration as needed */
   }
+
+  .selected{
+    background-color: lightgray;
+  }
 .weather_main_card{
     z-index: 10;
 

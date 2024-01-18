@@ -1693,6 +1693,10 @@ video {
   /* Adjust duration as needed */
 }
 
+.selected{
+  background-color: lightgray;
+}
+
 .weather_main_card{
   z-index: 10;
   /* THunder */
@@ -2516,14 +2520,14 @@ table tbody .tr-hidden{
   cursor: pointer;
 }
 
+.hover\:bg-\[lightgray\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(211 211 211 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-blue-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-gray-200:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-white:hover {
