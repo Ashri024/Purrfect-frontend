@@ -420,42 +420,42 @@ search_box_responsive();
   // MAIN APP STARTS HERE
 
   // SEARCH BOX FUNCTIONALITY
-  
-  let selectedIndex = -1;
-  console.log($("#search_city"))
-  $("#search_city").keydown(function(e) {
-    console.log("Key function is called");
+  let selectedIndex =-1;
+  $("#search_city").keydown(function (e) {
     let city_list = $(".city_list");
     let cityItems = city_list.children();
 
     if (e.keyCode == 38) { // up arrow
-      console.log("up arrow selected index: ",selectedIndex);
-      if (selectedIndex > 0) {
-        selectedIndex--;
-        cityItems.eq(selectedIndex+1).removeClass('selected');
-        cityItems.eq(selectedIndex).addClass('selected');
-        cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+        if (selectedIndex > 0) {
+            selectedIndex--;
+            updateSelection();
+        }
     } else if (e.keyCode == 40) { // down arrow
-      console.log("down arrow selected index: ",selectedIndex);
-
-      if (selectedIndex < cityItems.length - 1) {
-        selectedIndex++;
-        cityItems.eq(selectedIndex-1).removeClass('selected');
-        cityItems.eq(selectedIndex).addClass('selected');
-        cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    }else if(e.keyCode == 13){
-      let selectedCity = cityItems.eq(selectedIndex);
-     selectedCity.click();
-     city_list.empty();
+        if (selectedIndex < cityItems.length - 1) {
+            selectedIndex++;
+            updateSelection();
+        }
+    } else if (e.keyCode == 13) { // Enter key
+        let selectedCity = cityItems.eq(selectedIndex);
+        selectedCity.click();
+        city_list.empty();
     }
-  }); 
+});
 
-  $("#search_city").on("keyup", function() {
+function updateSelection() {
+    let city_list = $(".city_list");
+    let cityItems = city_list.children();
+    console.log(selectedIndex);
+    cityItems.removeClass('selected');
+    cityItems.eq(selectedIndex).addClass('selected');
+    cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+  $("#search_city").on("keyup", function(e) {
     let value = $(this).val().toLowerCase();
     $("#search_city").val(value);
     let city_list = $(".city_list");
+    if(e.keyCode != 38 && e.keyCode != 40 && e.keyCode != 13){
     if(value.trim().length>0){
       fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${value.trim()}&count=15&language=en&format=json`).then(res=>res.json()).then(data=>{
         if(data.results){
@@ -504,6 +504,7 @@ search_box_responsive();
       }
       })
     }
+  }
   });
 
   async function searchCity(lat,lon,location){
