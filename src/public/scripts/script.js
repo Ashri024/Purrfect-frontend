@@ -973,6 +973,7 @@ console.log("Email: ", email);
       const precipitation= weatherData.current.precipitation;
       const weatherIcon= weatherImg.icon;
       const weatherBg= weatherImg.url;
+      console.log("Weather Bg obtained: ",weatherBg);
       const desc= weatherDescription.desc;
 
       loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
@@ -1011,24 +1012,36 @@ console.log("Email: ", email);
             }).then(res => {
               return res.json();
             }).then(data=>{
-              console.log(data);
+              console.log("Data is added to mongo Successfully: ",data);
             }).catch(err=>{
-              console.log(err);
+              console.log("Mongo Error",err.message);
+              $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
+              <span>Some error occured. Please search another location.</span>`).addClass("errorInfoVisible");
+              setTimeout(() => {
+                $(".homePage .error").removeClass("errorInfoVisible");
+              }, 3000);
+              throw new Error("Mongo Error",err.message);
             });
           }else{
             console.log("Email not provided or is not being searched");
           }
 
       let img = new Image();
-      img.src = weatherBg;
-      img.onload = function() {
-      $(".weather_main_card_before").css("background", `url(${weatherBg})`);
-      $(".weather_main_card .dark-sub-shimmer").css("display", "none");
-      $(".weather_main_card .dark-shimmer").css("display", "none");
-      $("#search_city").val("");
 
-      // Perform your operation here
-    };
+      if(weatherBg && weatherBg.code != "not_found"){
+        img.src = weatherBg;
+      } else {
+        weatherBg = "https://f005.backblazeb2.com/file/WeatherApp/windy.png";
+        img.src = weatherBg;
+      }
+
+      img.onload = function() {
+        console.log("Weather bg loaded");
+        $(".weather_main_card_before").css("background", `url(${weatherBg})`);
+        $(".weather_main_card .dark-sub-shimmer").css("display", "none");
+        $(".weather_main_card .dark-shimmer").css("display", "none");
+        $("#search_city").val("");
+      }
      
       //Loadiing Detail Cards
       const currentHour= new Date().getHours();
