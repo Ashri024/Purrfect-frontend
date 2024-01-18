@@ -275,7 +275,6 @@ let loginUrl= `${backend_Url}/login`
       setTimeout(() => {
         $(".loginPage .error").removeClass("errorInfoVisible");
       }, 3000);
-      // window.location.replace(`/`);
 
     });
 
@@ -312,6 +311,7 @@ let loginUrl= `${backend_Url}/login`
     }).then(data=>{
       if(data.status){
         localStorage.setItem('registered', true);
+        localStorage.setItem("signUpPage", false);
         window.location.replace(`/login`);
       }
     })
@@ -429,16 +429,21 @@ search_box_responsive();
     let cityItems = city_list.children();
 
     if (e.keyCode == 38) { // up arrow
+      console.log("up arrow selected index: ",selectedIndex);
       if (selectedIndex > 0) {
-        cityItems.eq(selectedIndex).removeClass('selected');
         selectedIndex--;
+        cityItems.eq(selectedIndex+1).removeClass('selected');
         cityItems.eq(selectedIndex).addClass('selected');
+        cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     } else if (e.keyCode == 40) { // down arrow
+      console.log("down arrow selected index: ",selectedIndex);
+
       if (selectedIndex < cityItems.length - 1) {
-        cityItems.eq(selectedIndex).removeClass('selected');
         selectedIndex++;
+        cityItems.eq(selectedIndex-1).removeClass('selected');
         cityItems.eq(selectedIndex).addClass('selected');
+        cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }else if(e.keyCode == 13){
       let selectedCity = cityItems.eq(selectedIndex);
@@ -1255,18 +1260,118 @@ console.log("Email: ", email);
     loadMyCities();
   }
 
-  $("#signUpRedirect").click(function(){
-    $("#loginFormParent").removeClass("flex");
-    $("#loginFormParent").addClass("hidden");
-    $("#signUpFormParent").removeClass("hidden");
-    $("#signUpFormParent").addClass("flex");
+  let signUpPage = localStorage.getItem("signUpPage")||"false";
+
+  $("#signUpRedirect").each(function(i, redirect){
+    console.log(redirect);
+    if(signUpPage === "true"){
+      $("#loginFormParent").removeClass("flex");
+      $("#loginFormParent").addClass("hidden");
+      $("#signUpFormParent").removeClass("hidden");
+      $("#signUpFormParent").addClass("flex");
+    }
+    $(redirect).on("click",function(){
+      console.log("Redirecting to signup");
+      localStorage.setItem("signUpPage", "true");
+      window.location.href="/login";
+    })
+    });
+
+    $("#loginRedirect").each(function(i, redirect){ 
+    console.log(redirect);
+
+      if(signUpPage === "false"){
+        $("#signUpFormParent").removeClass("flex");
+        $("#signUpFormParent").addClass("hidden");
+        $("#loginFormParent").removeClass("hidden");
+        $("#loginFormParent").addClass("flex");
+      }
+      $(redirect).on("click",function(){
+      console.log("Redirecting to login");
+
+        localStorage.setItem("signUpPage", "false");
+        window.location.href="/login";
+      })
+    });
+    function generateOtp(){
+      let otp = Math.floor(100000 + Math.random() * 900000);
+      return otp;
+    }
+let otp="";
+$("#verifyEmail").click(function(e){
+  e.preventDefault();
+  let emailToVerify = $("#emailSignUp").val();
+  console.log(emailToVerify);
+  $(".otp-input").each(function(i, input){
+    $(input).val("");
   })
-  $("#loginRedirect").click(function(){
-    $("#signUpFormParent").removeClass("flex");
-    $("#signUpFormParent").addClass("hidden");
-    $("#loginFormParent").removeClass("hidden");
-    $("#loginFormParent").addClass("flex");
+
+  //send email the otp
+  fetch(`${backend_Url}/sendEmail`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email: emailToVerify }),
   })
+  .then(response => response.json())
+  .then(data => {
+    otp=data.otp;
+    console.log("Otp generated is: ",otp);
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+
+    console.error('Error:', error);
+    $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+    <span>Some error occured. Please try again.</span>`).addClass("errorInfoVisible");
+    setTimeout(() => {
+      $(".loginPage .error").removeClass("errorInfoVisible");
+    }, 3000);
+
+  });
+
+  //make visible the otp box
+    $("#otpParent").removeClass("hidden").addClass("flex");
+    $(".otp-input")[0].focus();
+    $("#otpParent").on("keydown",function(e){
+      console.log(e.target.id, e.key);
+      if(e.key === "Enter"){
+        $("#otpBtn").click();
+      }
+    });
+    
+
+    $("#otpBtn").click(function(){
+      const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
+      const otpValues = otpInputs.map(input => input.value);
+      let otpEntered = otpValues.join('');
+      otpEntered = parseInt(otpEntered);
+      console.log(otpEntered);
+      $("#otpParent").removeClass("flex").addClass("hidden");
+      
+    if(otpEntered == otp){
+      $("#verifiedTick").removeClass("hidden").addClass("flex");
+      $("#verifyEmail").addClass("hidden");
+      $("#signUpSubmit").attr("disabled", false);
+      $("#emailSignUp").attr("disabled", true);
+      $(".editEmail").removeClass("hidden");
+    }else{
+      $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+      <span>Wrong OTP entered. Please try again.</span>`).addClass("errorInfoVisible");
+      setTimeout(() => {
+        $(".loginPage .error").removeClass("errorInfoVisible");
+      }, 3000);
+    
+    }
+})
+})
+$(".editEmail").click(function(){
+  $("#verifiedTick").removeClass("flex").addClass("hidden");
+  $("#verifyEmail").removeClass("hidden");
+  $("#signUpSubmit").attr("disabled", true);
+  $("#emailSignUp").attr("disabled", false);
+});
 
   $('.unit-options input[type=radio]').each(function() {
     $(this).on('change', function() {

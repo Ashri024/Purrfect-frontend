@@ -794,7 +794,7 @@ thead th:nth-child(2), tbody td:nth-child(2) {
     #formContainer .darkMode{
       display: none;
     }
-    #loginFormParent > h1{
+    #loginFormParent > h1, #signUpFormParent > h1{
       color: black;
       background: #ffffff87;
       padding: 0.5rem 1rem;
