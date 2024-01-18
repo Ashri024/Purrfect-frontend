@@ -1691,6 +1691,7 @@ video {
   height: 35px;
   padding: 0rem 1rem ;
   border-width: 2px;
+  z-index: 90;
 }
 
 .search_box img{
@@ -2409,6 +2410,7 @@ body .layout_box{
   .errorInfoVisible {
     opacity: 1;
     height: auto;
+    z-index: 90;
     min-width: 300px;
     padding: 0.3rem 0.5rem;
   }

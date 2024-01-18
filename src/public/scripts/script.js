@@ -1301,6 +1301,13 @@ console.log("Email: ", email);
     .then(response => response.json())
     .then(data => {
       otp=data.otp;
+      $(".loginPage .info").html( 
+        `<img src="./resources/info.svg" alt="Success">
+        <span>Otp Successfully sent!!. Please check spam folder in case otp is not send or try again later.</span>`
+       ).addClass("errorInfoVisible");
+      setTimeout(() => {
+        $(".loginPage .info").removeClass("errorInfoVisible");
+      }, 5000);
       console.log("Otp generated is: ",otp);
       console.log('Success:', data);
     })
