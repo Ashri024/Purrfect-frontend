@@ -1755,6 +1755,11 @@ video {
   color: black;
 }
 
+.disabledVerify{
+  background: gray!important;
+  cursor: auto;
+}
+
 .weather_main_card_before{
   /* content: ''; */
   position: absolute;

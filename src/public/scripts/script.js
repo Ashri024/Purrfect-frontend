@@ -1263,6 +1263,100 @@ console.log("Email: ", email);
 
   let signUpPage = localStorage.getItem("signUpPage")||"false";
 
+  $("#emailSignUp").on("keyup", function(e) {
+    // console.log($(this).val())
+    if($(this).val().includes("@gmail.com")) {
+      $(".emailToVerify").removeClass("disabledVerify");
+    }else{
+      $(".emailToVerify").addClass("disabledVerify");
+    }
+  });
+  if($("#emailSignUp").val().includes("@gmail.com")){
+    $(".emailToVerify").removeClass("disabledVerify");
+  }
+
+  $("#verifyEmail").click(function(e){
+    e.preventDefault();
+    console.log("clicked");
+  
+    let emailToVerify = $("#emailSignUp").val();
+    if(!emailToVerify.includes("@gmail.com")){
+      $(this).addClass("disabledVerify");
+      return;
+    }
+    $(this).removeClass("disabledVerify");
+    
+    $(".otp-input").each(function(i, input){
+      $(input).val("");
+    })
+  
+    //send email the otp
+    fetch(`${backend_Url}/sendEmail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: emailToVerify }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      otp=data.otp;
+      console.log("Otp generated is: ",otp);
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+  
+      console.error('Error:', error);
+      $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+      <span>Some error occured. Please try again.</span>`).addClass("errorInfoVisible");
+      setTimeout(() => {
+        $(".loginPage .error").removeClass("errorInfoVisible");
+      }, 3000);
+  
+    });
+  
+    //make visible the otp box
+      $("#otpParent").removeClass("hidden").addClass("flex");
+      $(".otp-input")[0].focus();
+      $("#otpParent").on("keydown",function(e){
+        console.log(e.target.id, e.key);
+        if(e.key === "Enter"){
+          $("#otpBtn").click();
+        }
+      });
+      
+  
+      $("#otpBtn").click(function(){
+        const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
+        const otpValues = otpInputs.map(input => input.value);
+        let otpEntered = otpValues.join('');
+        otpEntered = parseInt(otpEntered);
+        console.log(otpEntered);
+        $("#otpParent").removeClass("flex").addClass("hidden");
+        
+      if(otpEntered == otp){
+        $("#verifiedTick").removeClass("hidden").addClass("flex");
+        $("#verifyEmail").addClass("hidden");
+        $("#signUpSubmit").attr("disabled", false);
+        $("#emailSignUp").attr("disabled", true);
+        $(".editEmail").removeClass("hidden");
+      }else{
+        $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
+        <span>Wrong OTP entered. Please try again.</span>`).addClass("errorInfoVisible");
+        setTimeout(() => {
+          $(".loginPage .error").removeClass("errorInfoVisible");
+        }, 3000);
+      
+      }
+  })
+  })
+  
+  $(".editEmail").click(function(){
+    $("#verifiedTick").removeClass("flex").addClass("hidden");
+    $("#verifyEmail").removeClass("hidden");
+    $("#signUpSubmit").attr("disabled", true);
+    $("#emailSignUp").attr("disabled", false);
+  });
   $("#signUpRedirect").each(function(i, redirect){
     console.log(redirect);
     if(signUpPage === "true"){
@@ -1299,80 +1393,7 @@ console.log("Email: ", email);
       return otp;
     }
 let otp="";
-$("#verifyEmail").click(function(e){
-  e.preventDefault();
-  let emailToVerify = $("#emailSignUp").val();
-  console.log(emailToVerify);
-  $(".otp-input").each(function(i, input){
-    $(input).val("");
-  })
 
-  //send email the otp
-  fetch(`${backend_Url}/sendEmail`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: emailToVerify }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    otp=data.otp;
-    console.log("Otp generated is: ",otp);
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-
-    console.error('Error:', error);
-    $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-    <span>Some error occured. Please try again.</span>`).addClass("errorInfoVisible");
-    setTimeout(() => {
-      $(".loginPage .error").removeClass("errorInfoVisible");
-    }, 3000);
-
-  });
-
-  //make visible the otp box
-    $("#otpParent").removeClass("hidden").addClass("flex");
-    $(".otp-input")[0].focus();
-    $("#otpParent").on("keydown",function(e){
-      console.log(e.target.id, e.key);
-      if(e.key === "Enter"){
-        $("#otpBtn").click();
-      }
-    });
-    
-
-    $("#otpBtn").click(function(){
-      const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
-      const otpValues = otpInputs.map(input => input.value);
-      let otpEntered = otpValues.join('');
-      otpEntered = parseInt(otpEntered);
-      console.log(otpEntered);
-      $("#otpParent").removeClass("flex").addClass("hidden");
-      
-    if(otpEntered == otp){
-      $("#verifiedTick").removeClass("hidden").addClass("flex");
-      $("#verifyEmail").addClass("hidden");
-      $("#signUpSubmit").attr("disabled", false);
-      $("#emailSignUp").attr("disabled", true);
-      $(".editEmail").removeClass("hidden");
-    }else{
-      $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
-      <span>Wrong OTP entered. Please try again.</span>`).addClass("errorInfoVisible");
-      setTimeout(() => {
-        $(".loginPage .error").removeClass("errorInfoVisible");
-      }, 3000);
-    
-    }
-})
-})
-$(".editEmail").click(function(){
-  $("#verifiedTick").removeClass("flex").addClass("hidden");
-  $("#verifyEmail").removeClass("hidden");
-  $("#signUpSubmit").attr("disabled", true);
-  $("#emailSignUp").attr("disabled", false);
-});
 
   $('.unit-options input[type=radio]').each(function() {
     $(this).on('change', function() {
