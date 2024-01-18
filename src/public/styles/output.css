@@ -1699,6 +1699,11 @@ video {
   top: -10px;
 }
 
+html.dark .shimmer_main_temp .dark-sub-shimmer{
+  height: 110%;
+  top: -10px;
+}
+
 .errorInfoVisible{
   opacity: 1;
   height: 35px;
