@@ -2,7 +2,6 @@ let isDarkMode=$("html").hasClass("dark");
 let globalDataValues = [20, 22, 25, 23, 26, 27, 24, 22];
 let chart;
 let hourFormat24 = localStorage.getItem("hourFormat24")|| "false";
-console.log("hourFormat24: ",hourFormat24);
 let tempUnit= localStorage.getItem('tempUnit') || "\u00B0";
 
 let tempWord=localStorage.getItem("tempWord");
@@ -232,11 +231,8 @@ calculatePositions(canvas, globalDataValues);
   
 
 let loginUrl= `${backend_Url}/login`
-console.log(loginUrl)
-console.log(document.getElementById('loginForm'))
   if(document.getElementById('loginForm')){
   document.getElementById('loginForm').addEventListener('submit', function (event) {
-    console.log("clicked");
     event.preventDefault(); // Prevent default form submission behavior
     let emailField = document.getElementById('email');
     let passwordField = document.getElementById('password');
@@ -260,20 +256,16 @@ console.log(document.getElementById('loginForm'))
       .then(data=>{
       var date = new Date();
       // if(data.email){
-        console.log(data);
       date.setHours(date.getHours() + 1);
       var expires = "; expires=" + date.toGMTString();
-      console.log("Email backend data: ",data);
       document.cookie = `jwt0=${data.token}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `loggedIn=${data.loggedIn}; path=/; Secure; SameSite=None${expires}`;
       document.cookie = `email=${data.email}; path=/; Secure; SameSite=None${expires}`;
       localStorage.setItem('loggedInRecently', "true");
       window.location.replace(`/`);
       // }else{
-      //   console.log("Error, ", data);
       // }
     }).catch(err=>{
-      console.log("Sorry the email was not found: ",err);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
       <span>Login credentials are invalid</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
@@ -320,7 +312,6 @@ console.log(document.getElementById('loginForm'))
       }
     })
     .catch(err => {
-      console.log(err.message);
       let errorMessage = err.message;
       if (errorMessage.includes("E11000 duplicate key error")) {
         let fieldName = errorMessage.split("index: ")[1].split("_")[0];
@@ -330,7 +321,6 @@ console.log(document.getElementById('loginForm'))
       }
       errorMessage = errorMessage.replace("Register validation failed: ", "");
 
-      console.log("Error while signUp: ", errorMessage);
       $(".loginPage .error").html(`<img src="./resources/error.svg" alt="Error">
       <span>${errorMessage}</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
@@ -392,7 +382,6 @@ $(".homePage .info").each(function(i, info){
   });
 
   function search_box_responsive(){
-    console.log("responsive");
     $(".search_box").each(function(i, searchBox){
       $(searchBox).click(function(event){
 
@@ -449,7 +438,6 @@ search_box_responsive();
 function updateSelection() {
     let city_list = $(".city_list");
     let cityItems = city_list.children();
-    console.log(selectedIndex);
     cityItems.removeClass('selected');
     cityItems.eq(selectedIndex).addClass('selected');
     cityItems[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -514,7 +502,6 @@ function updateSelection() {
 
   async function searchCity(lat,lon,location){
     let isSearched=true;
-    console.log("searchCity is called");
     localStorage.setItem('location', location);
             localStorage.setItem('lat', lat);
             localStorage.setItem('lon', lon);
@@ -526,7 +513,6 @@ function updateSelection() {
   function redirect(isSearched){
           localStorage.setItem('isSearched', isSearched);
             window.location.href="/";
-          console.log("True");
 }
 
   function loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg){
@@ -537,7 +523,6 @@ function updateSelection() {
     $(".min").html(`Min: ${min2.temp2}${min2.tempUnit2}`);
     $(".max").html(`Max: ${max2.temp2}${max2.tempUnit2}`);
 
-    console.log("Hour",hourFormat24);
     if(hourFormat24 == "true"){
     let currDate2= convertTo24Hour(currDate);
     $(".date span").html(currDate2);
@@ -851,7 +836,6 @@ $('tr[id]').each(function() {
   })})
 
   function closeAllForecastCards(){
-    console.log("closeAllForecastCards");
   $('tr[id]').each(function() {
     const targetRow = $(`tr[data-target="${this.id}"]`);
     targetRow.find('.dropdown-content').removeClass('h-[150px]');
@@ -951,7 +935,6 @@ $('tr[id]').each(function() {
       for(let i=numberOfForecastVisible; i<forecast; i++){
     for(let i=0; i<forecast; i++){
     $("tr[id]").eq(i).removeClass("hidden");
-    // console.log($("tr[data-target]").eq(i));
     $("tr[data-target]").eq(i).removeClass("tr-hidden");
     }
   } }
@@ -972,9 +955,7 @@ $('tr[id]').each(function() {
   let cookies = document.cookie.split('; ');
   if(cookies.length>1){
   email = cookies.find(row => row.startsWith('email=')).split('=')[1];
-  console.log(email)
 }
-console.log("Email: ", email);
 
   function loadHomePage(lat,lon, location, isSearched=false){
   globalLat=lat;
@@ -982,8 +963,6 @@ console.log("Email: ", email);
   closeAllForecastCards();
   let forecast= document.getElementById("forecast").value;
   forecastSelectVisible(forecast);
-  console.log("Frontend query lat, lon, location :", lat, lon,location);
-  console.log(`${backend_Url}/weather?lat=${lat}&lon=${lon}&current=temperature_2m&forecast_days=1`);
     fetch(`${backend_Url}/weather?lat=${lat}&lon=${lon}`).then(res=>res.json()).then(data=>{
 
       //Received all the data now retrieving data for main Card
@@ -1011,7 +990,6 @@ console.log("Email: ", email);
       const precipitation= weatherData.current.precipitation;
       const weatherIcon= weatherImg.icon;
       const weatherBg= weatherImg.url;
-      console.log("Weather Bg obtained: ",weatherBg);
       const desc= weatherDescription.desc;
 
       loadMainCard(location,min,max,currDate,precipitation,humidity,feelsLike,temp,desc, weatherIcon,weatherBg);
@@ -1027,7 +1005,6 @@ console.log("Email: ", email);
     isSearched =searchedArg;
     localStorage.setItem('isSearched', false);
   }
-  console.log("BEfore search", isSearched);
      if(isSearched && email){
             fetch(`${backend_Url}/addCity`, {
               method: "POST",
@@ -1050,9 +1027,7 @@ console.log("Email: ", email);
             }).then(res => {
               return res.json();
             }).then(data=>{
-              console.log("Data is added to mongo Successfully: ",data);
             }).catch(err=>{
-              console.log("Mongo Error",err.message);
               $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
               <span>Some error occured. Please search another location.</span>`).addClass("errorInfoVisible");
               setTimeout(() => {
@@ -1061,7 +1036,6 @@ console.log("Email: ", email);
               throw new Error("Mongo Error",err.message);
             });
           }else{
-            console.log("Email not provided or is not being searched");
           }
 
       let img = new Image();
@@ -1074,7 +1048,6 @@ console.log("Email: ", email);
       }
 
       img.onload = function() {
-        console.log("Weather bg loaded");
         $(".weather_main_card_before").css("background", `url(${weatherBg})`);
         $(".weather_main_card .dark-sub-shimmer").css("display", "none");
         $(".weather_main_card .dark-shimmer").css("display", "none");
@@ -1110,11 +1083,9 @@ console.log("Email: ", email);
       })
       
       loadForecastSection(lat,lon).then(()=>{
-        console.log("Forecast loaded");
         $(".forecast_instance .dark-sub-shimmer").css("display", "none");
       });
     }).catch(err=>{
-      console.log(err);
       $(".homePage .error").html(`<img src="./resources/error.svg" alt="Error">
       <span>${err.message}</span>`).addClass("errorInfoVisible");
       setTimeout(() => {
@@ -1136,19 +1107,12 @@ console.log("Email: ", email);
     lat= parseFloat(lat);
     lon= parseFloat(lon);
   if(location && typeof location === 'string' && lat && typeof lat === 'number' && lon && typeof lon === 'number'){
-    console.log("local storage found: ", location, lat, lon );
     loadHomePage(lat,lon,location);
   }else{
-    console.log("false local storage found: ", location, lat, lon );
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
     function geoSuccess(pos) {
       let crd = pos.coords;
-      console.log('Your current position is:');
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
       fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&apiKey=5f1c5a1a3ba542738941b4df2036f8a9`).then(res=>res.json()).then(data=>{
-        console.log(data);
         let city= data.features[0].properties.city;
         let state = data.features[0].properties.state;
         let location = `${city}, ${state}`;
@@ -1168,21 +1132,17 @@ console.log("Email: ", email);
   let searchHistory = "";
 
   function loadSearchHistory(searchHistory){
-    // console.log("load: ",searchHistory);
     let searchHistoryLength = searchHistory.length;
     let numberOfCities = $(".city").length;
     let citiesToView = searchHistoryLength - numberOfCities-6;
     if(searchHistoryLength == 0 ){
-      console.log("No cities to display");
       $(".cities").append("<span class='text-left text-lg text-gray-500 dark:text-gray-400'>No cities to display</span>")
       $(".see_more").css("display", "none");
       $("#deleteHistory").attr("disabled", true);
       return;
     }
     for(let i= searchHistoryLength-numberOfCities-1; i >= citiesToView; i--){
-      // console.log(i);
       let city = searchHistory[i];
-      // console.log(city);
       if(city){
       let cityName= city.location;
       let min= city.min;
@@ -1242,7 +1202,6 @@ console.log("Email: ", email);
         cityCard.find(".dark-sub-shimmer").css("display", "none");
       });
       }else{
-        console.log("No city tp display");
         return;
       }
     }
@@ -1252,13 +1211,11 @@ console.log("Email: ", email);
     loadSearchHistory(searchHistory);
   })
   function loadMyCities(){
-    console.log("Loading my cities");
     // let email = localStorage.getItem('email');
     if(email){
     fetch(`${backend_Url}/getCities?email=${email}`).then(res=>res.json()).then(data=>{
       searchHistory = data.searchHistory;
       loadSearchHistory(searchHistory);
-      console.log(data);
     })
   }
   }
@@ -1269,7 +1226,6 @@ console.log("Email: ", email);
   let signUpPage = localStorage.getItem("signUpPage")||"false";
 
   $("#emailSignUp").on("keyup", function(e) {
-    // console.log($(this).val())
     if($(this).val().includes("@gmail.com")) {
       $(".emailToVerify").removeClass("disabledVerify");
     }else{
@@ -1284,7 +1240,6 @@ console.log("Email: ", email);
 
   $("#verifyEmail").click(function(e){
     e.preventDefault();
-    console.log("clicked");
     let emailToVerify = $("#emailSignUp").val();
 
     if(!emailToVerify.includes("@gmail.com")){
@@ -1315,8 +1270,6 @@ console.log("Email: ", email);
       setTimeout(() => {
         $(".loginPage .info").removeClass("errorInfoVisible");
       }, 5000);
-      console.log("Otp generated is: ",otp);
-      console.log('Success:', data);
     })
     .catch((error) => {
   
@@ -1333,7 +1286,6 @@ console.log("Email: ", email);
       $("#otpParent").removeClass("hidden").addClass("flex");
       $(".otp-input")[0].focus();
       $("#otpParent").on("keydown",function(e){
-        console.log(e.target.id, e.key);
         if(e.key === "Enter"){
           $("#otpBtn").click();
         }
@@ -1345,7 +1297,6 @@ console.log("Email: ", email);
         const otpValues = otpInputs.map(input => input.value);
         let otpEntered = otpValues.join('');
         otpEntered = parseInt(otpEntered);
-        console.log(otpEntered);
         $("#otpParent").removeClass("flex").addClass("hidden");
         
       if(otpEntered == otp){
@@ -1372,7 +1323,6 @@ console.log("Email: ", email);
     $("#emailSignUp").attr("disabled", false);
   });
   $("#signUpRedirect").each(function(i, redirect){
-    console.log(redirect);
     if(signUpPage === "true"){
       $("#loginFormParent").removeClass("flex");
       $("#loginFormParent").addClass("hidden");
@@ -1380,14 +1330,12 @@ console.log("Email: ", email);
       $("#signUpFormParent").addClass("flex");
     }
     $(redirect).on("click",function(){
-      console.log("Redirecting to signup");
       localStorage.setItem("signUpPage", "true");
       window.location.href="/login";
     })
     });
 
     $("#loginRedirect").each(function(i, redirect){ 
-    console.log(redirect);
 
       if(signUpPage === "false"){
         $("#signUpFormParent").removeClass("flex");
@@ -1396,7 +1344,6 @@ console.log("Email: ", email);
         $("#loginFormParent").addClass("flex");
       }
       $(redirect).on("click",function(){
-      console.log("Redirecting to login");
 
         localStorage.setItem("signUpPage", "false");
         window.location.href="/login";
@@ -1470,9 +1417,7 @@ let otp="";
   
   $("#deleteHistory").click(function(){
     if(email){
-      console.log("Deleting data", email);
     fetch(`${backend_Url}/deleteCity?email=${email}`).then(res=>res.json()).then(data=>{
-      console.log(data);
       $(".myCitiesPage .info").html(`<img src="./resources/info.svg" alt="Success">
       <span>History deleted successfully!!</span>`).addClass("errorInfoVisible");
       setTimeout(function() {
